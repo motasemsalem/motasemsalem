@@ -126,3 +126,27 @@ export const P = {
   sudan: [31.3, 20.8],
   maghreb: [21.0, 30.0],
 } satisfies Record<string, LonLat>;
+
+export const CANAL: LonLat[] = [
+  [32.3, 31.26],
+  [32.31, 30.9],
+  [32.27, 30.6],
+  [32.35, 30.35],
+  [32.55, 29.97],
+];
+
+// Reference cities, drawn faintly under the story's pins.
+export const CITIES: { at: LonLat; name: string }[] = [
+  { at: [31.24, 30.04], name: "القاهرة" },
+  { at: [29.92, 31.2], name: "الإسكندرية" },
+  { at: [32.9, 24.09], name: "أسوان" },
+  { at: [32.64, 25.69], name: "الأقصر" },
+  { at: [31.18, 27.18], name: "أسيوط" },
+  { at: [32.55, 29.97], name: "السويس" },
+  { at: [32.3, 31.26], name: "بورسعيد" },
+  { at: [33.8, 31.13], name: "العريش" },
+  { at: [27.24, 31.35], name: "مطروح" },
+  { at: [33.81, 27.26], name: "الغردقة" },
+  { at: [25.15, 31.55], name: "السلوم" },
+  { at: [25.54, 29.2], name: "سيوة" },
+];

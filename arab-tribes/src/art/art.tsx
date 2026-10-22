@@ -5,64 +5,173 @@ import { ar, bodyFont, C, headingFont } from "../theme";
 const popScale = (frame: number, at: number) =>
   interpolate(frame, [at, at + 6, at + 11], [0, 1.15, 1], clamp);
 
-// Fustat's tribal quarters (khiṭaṭ) laid out as city blocks that fill in one by one.
-const KHITAT = ["تُجيب", "لَخْم", "المَعافِر", "مَهْرة", "الأزد", "خَولان"];
+// Fustat as a city plan: the Nile, the Babylon fortress, the Mosque of Amr,
+// and the tribal quarters (khiṭaṭ) filling in as each tribe is named.
+const BLOCKS = [
+  "M 560 250 L 840 210 L 900 420 L 610 440 Z",
+  "M 250 250 L 520 245 L 560 440 L 300 470 Z",
+  "M 610 500 L 900 480 L 870 720 L 640 700 Z",
+  "M 300 530 L 570 500 L 600 700 L 330 740 Z",
+];
 
-export const KhitatArt: React.FC<{ readonly start: number }> = ({ start }) => {
+export const KhitatArt: React.FC<{
+  readonly start: number;
+  readonly blocks: readonly { name: string; frame: number }[];
+}> = ({ start, blocks }) => {
   const frame = useCurrentFrame();
-  const appear = progress(frame, start, 10);
+  const appear = progress(frame, start, 12);
+  const mosque = popScale(frame, start + 6);
   return (
-    <div
-      dir="rtl"
-      style={{
-        position: "absolute",
-        inset: "120px 80px 140px",
-        opacity: appear,
-        scale: 0.9 + 0.1 * appear,
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: 22,
-        padding: 28,
-        borderRadius: 36,
-        background: "rgba(15,11,9,0.88)",
-        border: `3px solid ${C.landEdge}`,
-      }}
+    <svg
+      width={1080}
+      height={940}
+      viewBox="0 0 1080 940"
+      style={{ position: "absolute", inset: 0, opacity: appear }}
     >
-      {KHITAT.map((name, i) => {
-        const at = start + 6 + i * 4;
+      <rect
+        x={60}
+        y={120}
+        width={960}
+        height={720}
+        rx={40}
+        fill="rgba(15,11,9,0.92)"
+        stroke={C.landEdge}
+        strokeWidth={3}
+      />
+      <path
+        d="M 150 120 C 120 330 210 520 150 840 L 90 840 C 150 520 60 330 90 120 Z"
+        fill={C.nile}
+        opacity={0.75}
+      />
+      <text
+        x={120}
+        y={480}
+        textAnchor="middle"
+        fontFamily={bodyFont}
+        fontSize={28}
+        fill={C.text}
+        transform="rotate(-90 120 480)"
+      >
+        النيل
+      </text>
+      {[250, 470, 760].map((y) => (
+        <path
+          key={y}
+          d={`M 200 ${y} L 990 ${y - 30}`}
+          stroke={C.landEdge}
+          strokeOpacity={0.3}
+          strokeWidth={4}
+          strokeDasharray="14 10"
+        />
+      ))}
+      <g
+        transform="translate(250 790)"
+        opacity={progress(frame, start + 2, 10)}
+      >
+        <rect
+          x={-55}
+          y={-40}
+          width={110}
+          height={70}
+          fill="none"
+          stroke={C.sand}
+          strokeWidth={4}
+        />
+        {[-55, -20, 15, 50].map((x) => (
+          <rect
+            key={x}
+            x={x - 6}
+            y={-54}
+            width={12}
+            height={14}
+            fill={C.sand}
+          />
+        ))}
+        <text
+          y={65}
+          textAnchor="middle"
+          fontFamily={bodyFont}
+          fontWeight={600}
+          fontSize={26}
+          fill={C.muted}
+        >
+          حصن بابليون
+        </text>
+      </g>
+      {blocks.map((b, i) => {
+        const p = popScale(frame, b.frame);
+        const color = i % 2 ? C.red : C.gold;
+        const [cx, cy] = [
+          [735, 330],
+          [405, 355],
+          [755, 600],
+          [450, 620],
+        ][i];
         return (
-          <div
-            key={name}
-            style={{
-              scale: popScale(frame, at),
-              borderRadius: 22,
-              background:
-                i % 2 ? "rgba(208,65,47,0.22)" : "rgba(242,179,61,0.16)",
-              border: `3px solid ${i % 2 ? C.red : C.gold}`,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 4,
-            }}
+          <g
+            key={b.name}
+            opacity={Math.min(1, p)}
+            transform={`translate(${cx} ${cy}) scale(${p}) translate(${-cx} ${-cy})`}
           >
-            <div style={{ fontFamily: bodyFont, fontSize: 30, color: C.muted }}>
-              خِطّة
-            </div>
-            <div
-              style={{
-                fontFamily: headingFont,
-                fontWeight: 800,
-                fontSize: 64,
-                color: C.text,
-              }}
+            <path
+              d={BLOCKS[i]}
+              fill={color}
+              fillOpacity={0.2}
+              stroke={color}
+              strokeWidth={4}
+              strokeLinejoin="round"
+            />
+            {[0, 1, 2].map((k) => (
+              <rect
+                key={k}
+                x={cx - 70 + k * 50}
+                y={cy + 30}
+                width={34}
+                height={26}
+                fill={color}
+                opacity={0.35}
+              />
+            ))}
+            <text
+              x={cx}
+              y={cy - 12}
+              textAnchor="middle"
+              fontFamily={bodyFont}
+              fontSize={26}
+              fill={C.muted}
             >
-              {name}
-            </div>
-          </div>
+              خِطّة
+            </text>
+            <text
+              x={cx}
+              y={cy + 22}
+              textAnchor="middle"
+              fontFamily={headingFont}
+              fontWeight={900}
+              fontSize={54}
+              fill={C.text}
+            >
+              {b.name}
+            </text>
+          </g>
         );
       })}
-    </div>
+      <g transform={`translate(590 470) scale(${mosque})`}>
+        <circle r={58} fill={C.bg} stroke={C.gold} strokeWidth={4} />
+        <path d="M -28 18 L -28 -2 Q 0 -40 28 -2 L 28 18 Z" fill={C.gold} />
+        <rect x={34} y={-40} width={10} height={58} fill={C.gold} />
+        <text
+          y={92}
+          textAnchor="middle"
+          fontFamily={headingFont}
+          fontWeight={700}
+          fontSize={28}
+          fill={C.gold}
+        >
+          جامع عمرو
+        </text>
+      </g>
+    </svg>
   );
 };
 
@@ -201,7 +310,54 @@ export const RebabArt: React.FC<{ readonly badgeAt: number }> = ({
   );
 };
 
-const Icon: React.FC<{ name: "majlis" | "poetry" | "coffee" }> = ({ name }) => {
+// A camel in side view; `stride` swings the legs (radians), `color` fills it.
+export const Camel: React.FC<{ stride: number; color: string }> = ({
+  stride,
+  color,
+}) => {
+  const leg = (x: number, phase: number) => {
+    const a = Math.sin(stride + phase) * 0.45;
+    return (
+      <line
+        x1={x}
+        y1={18}
+        x2={x + Math.sin(a) * 52}
+        y2={18 + Math.cos(a) * 52}
+        stroke={color}
+        strokeWidth={9}
+        strokeLinecap="round"
+      />
+    );
+  };
+  return (
+    <g>
+      {leg(-38, 0)}
+      {leg(-24, Math.PI)}
+      {leg(30, Math.PI)}
+      {leg(44, 0)}
+      <ellipse rx={60} ry={28} fill={color} />
+      <path d="M -34 -14 Q -4 -78 30 -14 Z" fill={color} />
+      <path
+        d="M 50 -6 Q 70 -30 82 -62"
+        stroke={color}
+        strokeWidth={18}
+        fill="none"
+        strokeLinecap="round"
+      />
+      <ellipse cx={96} cy={-64} rx={20} ry={11} fill={color} />
+      <path
+        d="M -58 -4 Q -76 10 -70 34"
+        stroke={color}
+        strokeWidth={5}
+        fill="none"
+      />
+    </g>
+  );
+};
+
+const Icon: React.FC<{ name: "majlis" | "poetry" | "coffee" | "camel" }> = ({
+  name,
+}) => {
   const frame = useCurrentFrame();
   const stroke = {
     stroke: C.gold,
@@ -221,6 +377,23 @@ const Icon: React.FC<{ name: "majlis" | "poetry" | "coffee" }> = ({ name }) => {
             <path d={`M ${x - 18} 58 Q ${x} 20 ${x + 18} 58`} />
           </g>
         ))}
+      </g>
+    );
+  if (name === "camel")
+    return (
+      <g>
+        <path
+          d="M -150 80 L 150 80"
+          stroke={C.sand}
+          strokeWidth={4}
+          strokeDasharray="16 12"
+          strokeDashoffset={frame * 6}
+        />
+        <g
+          transform={`translate(${Math.sin(frame / 9) * 10} ${-4 + Math.abs(Math.sin(frame / 4)) * -8}) scale(1.05)`}
+        >
+          <Camel stride={frame / 3} color={C.gold} />
+        </g>
       </g>
     );
   if (name === "poetry")
@@ -269,6 +442,7 @@ const Icon: React.FC<{ name: "majlis" | "poetry" | "coffee" }> = ({ name }) => {
 const CUSTOMS = [
   { icon: "majlis", title: "المجالس العُرفية", note: "لحلّ النزاعات" },
   { icon: "poetry", title: "الشعر البدوي", note: "ذاكرة القبيلة" },
+  { icon: "camel", title: "سباقات الهُجن", note: "سيناء والصحراء" },
   { icon: "coffee", title: "كرم الضيافة", note: "القهوة أولًا" },
 ] as const;
 
@@ -281,10 +455,10 @@ export const CustomsArt: React.FC<{ readonly cues: readonly number[] }> = ({
       dir="rtl"
       style={{
         position: "absolute",
-        inset: "40px 70px 60px",
+        inset: "110px 60px 40px",
         display: "flex",
         flexDirection: "column",
-        gap: 26,
+        gap: 20,
       }}
     >
       {CUSTOMS.map((c, i) => {
@@ -300,12 +474,13 @@ export const CustomsArt: React.FC<{ readonly cues: readonly number[] }> = ({
               padding: "0 40px",
               borderRadius: 32,
               background: "rgba(15,11,9,0.75)",
-              border: `3px solid ${i === 1 ? C.red : C.gold}`,
+              border: `3px solid ${i % 2 ? C.red : C.gold}`,
+              boxShadow: `0 0 ${40 * (1 - p)}px ${C.gold}`,
               opacity: p,
               translate: `${(1 - p) * 300}px 0`,
             }}
           >
-            <svg width={260} height={220} viewBox="-150 -120 300 240">
+            <svg width={210} height={168} viewBox="-150 -120 300 240">
               <Icon name={c.icon} />
             </svg>
             <div>
@@ -313,7 +488,7 @@ export const CustomsArt: React.FC<{ readonly cues: readonly number[] }> = ({
                 style={{
                   fontFamily: headingFont,
                   fontWeight: 900,
-                  fontSize: 68,
+                  fontSize: 62,
                   color: C.text,
                 }}
               >
@@ -360,5 +535,62 @@ export const GoldDust: React.FC<{
         );
       })}
     </svg>
+  );
+};
+
+// Every tribe in the reel, slamming into a wall of names.
+export const NamesWall: React.FC<{
+  readonly names: readonly string[];
+  readonly start: number;
+}> = ({ names, start }) => {
+  const frame = useCurrentFrame();
+  return (
+    <div
+      dir="rtl"
+      style={{
+        position: "absolute",
+        inset: "60px 40px 40px",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignContent: "center",
+        gap: "14px 14px",
+      }}
+    >
+      {names.map((name, i) => {
+        const at = start + i * 2;
+        const p = interpolate(
+          frame,
+          [at, at + 5, at + 9],
+          [2.2, 0.92, 1],
+          clamp,
+        );
+        const shine = (frame - start - i * 2) % 90;
+        const lit = shine >= 40 && shine < 52;
+        return (
+          <div
+            key={name}
+            style={{
+              opacity: progress(frame, at, 4),
+              scale: p,
+              padding: "6px 22px 10px",
+              borderRadius: 16,
+              fontFamily: headingFont,
+              fontWeight: 800,
+              fontSize: 40,
+              color: lit ? C.bg : i % 3 === 0 ? C.gold : C.text,
+              background: lit
+                ? C.gold
+                : i % 2
+                  ? "rgba(208,65,47,0.2)"
+                  : "rgba(242,179,61,0.12)",
+              border: `2px solid ${i % 2 ? C.red : C.gold}`,
+            }}
+          >
+            {name}
+          </div>
+        );
+      })}
+    </div>
   );
 };

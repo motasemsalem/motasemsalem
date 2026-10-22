@@ -14,6 +14,7 @@ import { Backdrop, SaduBand } from "./Backdrop";
 import { Captions } from "./Captions";
 import { Progress } from "./Progress";
 import { Sfx } from "./Sound";
+import { Grain, Tally, type TimedTribe, TribeCards } from "./Tribes";
 
 export type Chip = { readonly text: string; readonly at: number };
 export type Kicker =
@@ -126,7 +127,7 @@ const Chips: React.FC<{ chips: readonly Chip[] }> = ({ chips }) => {
       dir="rtl"
       style={{
         position: "absolute",
-        top: 1290,
+        top: 372,
         left: 50,
         right: 50,
         display: "flex",
@@ -173,8 +174,22 @@ export const Shell: React.FC<{
   readonly title?: string;
   readonly chips?: readonly Chip[];
   readonly words: Word[];
+  // Tribes introduced in this scene, shown as cards, and how many came before.
+  readonly tribes?: readonly TimedTribe[];
+  readonly tallyBefore?: number;
+  readonly cards?: boolean;
   readonly children: ReactNode;
-}> = ({ index, kicker, title, chips = [], words, children }) => {
+}> = ({
+  index,
+  kicker,
+  title,
+  chips = [],
+  words,
+  tribes = [],
+  tallyBefore,
+  cards = true,
+  children,
+}) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
   const flash = interpolate(frame, [0, 5], [0.35, 0], clamp);
@@ -206,10 +221,15 @@ export const Shell: React.FC<{
         {kicker ? <KickerBadge kicker={kicker} /> : null}
         {title ? <Title text={title} /> : null}
         <Chips chips={chips} />
+        {cards ? <TribeCards tribes={tribes} /> : null}
       </AbsoluteFill>
       <Captions words={words} />
       <SaduBand y={1820} />
       <Progress index={index} count={NARRATION.length} />
+      {tallyBefore === undefined ? null : (
+        <Tally before={tallyBefore} frames={tribes.map((t) => t.frame)} />
+      )}
+      <Grain />
       <AbsoluteFill style={{ background: C.sand, opacity: flash }} />
       <Sfx name="swoosh" volume={0.5} />
       {kicker && "count" in kicker ? (
@@ -217,6 +237,9 @@ export const Shell: React.FC<{
       ) : null}
       {chips.map((chip) => (
         <Sfx key={chip.text} name="pop" at={chip.at} volume={0.3} />
+      ))}
+      {tribes.map((t) => (
+        <Sfx key={t.name} name="hit-soft" at={t.frame} volume={0.45} />
       ))}
     </AbsoluteFill>
   );

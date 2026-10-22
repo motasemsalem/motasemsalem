@@ -7,6 +7,7 @@ Then compress the music, e.g.
   npx remotion ffmpeg -i public/music/beat.wav -b:a 160k public/music/beat.mp3
 """
 import os
+import sys
 import wave
 from functools import lru_cache
 
@@ -77,6 +78,16 @@ def hit():
     burst = lowpass(rng.normal(size=len(tt)), 1800) * np.exp(-tt * 14)
     ring = sum(np.sin(2 * np.pi * f * tt) * np.exp(-tt * d) * g for f, d, g in [(220, 3, 0.25), (553, 4, 0.15), (1107, 6, 0.08)])
     return sub + burst + ring
+
+
+def hit_soft():
+    """Short punchy accent for each tribe card: thump, click and a bright tail."""
+    tt = t(0.7)
+    freq = 55 + 90 * np.exp(-tt * 30)
+    thump = np.sin(2 * np.pi * np.cumsum(freq) / SR) * np.exp(-tt * 9)
+    click = highpass(rng.normal(size=len(tt)), 3000) * np.exp(-tt * 120) * 0.8
+    tail = sum(np.sin(2 * np.pi * f * tt) * np.exp(-tt * 7) * g for f, g in [(1318, 0.18), (1975, 0.1)])
+    return thump + click + tail
 
 
 def riser():
@@ -188,9 +199,13 @@ def beat(seconds=150.0):
     return np.stack([left, right], axis=1)
 
 
-SOUNDS = {'swoosh': swoosh, 'pop': pop, 'hit': hit, 'riser': riser, 'typing': typing, 'camera': camera}
+SOUNDS = {'hit-soft': hit_soft, 'swoosh': swoosh, 'pop': pop, 'hit': hit, 'riser': riser, 'typing': typing, 'camera': camera}
 
 if __name__ == '__main__':
+    # Pass sound names to regenerate only those (and "beat" for the music).
+    wanted = set(sys.argv[1:]) or {*SOUNDS, 'beat'}
     for name, make in SOUNDS.items():
-        save(f'public/sfx/{name}.wav', make())
-    save('public/music/beat.wav', beat(), peak=0.8)
+        if name in wanted:
+            save(f'public/sfx/{name}.wav', make())
+    if 'beat' in wanted:
+        save('public/music/beat.wav', beat(), peak=0.8)
