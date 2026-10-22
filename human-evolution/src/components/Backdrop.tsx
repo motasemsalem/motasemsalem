@@ -1,5 +1,5 @@
-import {AbsoluteFill, random, useCurrentFrame} from 'remotion';
-import {C} from '../theme';
+import { AbsoluteFill, random, useCurrentFrame } from "remotion";
+import { C } from "../theme";
 
 const DUST = new Array(40).fill(true).map((_, i) => ({
   x: random(`dust-x-${i}`) * 1920,
@@ -29,7 +29,10 @@ export const Backdrop: React.FC = () => {
         ))}
       </svg>
       <AbsoluteFill
-        style={{background: 'radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%)'}}
+        style={{
+          background:
+            "radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%)",
+        }}
       />
     </AbsoluteFill>
   );
