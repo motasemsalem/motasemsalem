@@ -53,7 +53,7 @@ const ALL_TRIBES: {
   { at: P.tarabin, label: "الترابين", side: "right" },
   { at: P.muzeina, label: "مزينة", side: "right" },
   { at: P.matruh, label: "أولاد علي", side: "bottom" },
-  { at: [29.4, 27.0], label: "بنو هلال", side: "bottom" },
+  { at: [27.2, 25.0], label: "بنو هلال", side: "bottom" },
 ];
 
 export const IntroScene: React.FC<SceneProps> = ({ words, index }) => {
