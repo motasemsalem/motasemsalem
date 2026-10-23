@@ -8,7 +8,7 @@ export const RemotionRoot: React.FC = () => {
     <Composition
       id="OneHouseReel"
       component={OneHouseReel}
-      // Scene lengths come from the voiceover; see scripts/generate-audio.py.
+      // The length comes from the voiceover; see scripts/generate-audio.py.
       durationInFrames={timeline.total}
       fps={timeline.fps}
       width={1080}

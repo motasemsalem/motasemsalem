@@ -1,4 +1,4 @@
-"""Prepares a recorded voiceover: loudness-normalizes it and transcribes it with word timings.
+"""Prepares a recorded voiceover: tightens long pauses, normalizes loudness, and transcribes it with word timings.
 
 Writes public/voiceover/voiceover.mp3 and public/voiceover/whisper.json.
 Needs ffmpeg and faster-whisper (pip install faster-whisper); the large-v3 model downloads on first run.
@@ -16,7 +16,9 @@ src = sys.argv[1]
 os.makedirs('public/voiceover', exist_ok=True)
 out = 'public/voiceover/voiceover.mp3'
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src,
-                '-af', 'highpass=f=70,loudnorm=I=-15:TP=-1.5:LRA=9',
+                # Shorten any pause longer than 0.3 s to 0.2 s, then normalize loudness.
+                '-af', 'highpass=f=70,silenceremove=stop_periods=-1:stop_duration=0.3:stop_threshold=-40dB:stop_silence=0.2,'
+                       'loudnorm=I=-15:TP=-1.5:LRA=9',
                 '-ar', '44100', '-b:a', '192k', out], check=True)
 
 raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', out, '-ac', '1', '-ar', '16000', '-f', 's16le', '-'],

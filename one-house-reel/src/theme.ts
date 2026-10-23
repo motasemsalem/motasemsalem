@@ -22,7 +22,7 @@ loadFont({
 });
 
 // Brand colours, taken from the One House logo.
-export const C = {
+export const BRAND = {
   navy: "#062448",
   deep: "#020d1c",
   ink: "#04162d",

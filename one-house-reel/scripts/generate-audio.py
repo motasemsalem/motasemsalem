@@ -1,8 +1,8 @@
 """Builds the scene timeline from the recorded voiceover, then synthesizes the music bed and sound effects.
 
 1. Aligns the script in src/narration.ts to the Whisper word timings in public/voiceover/whisper.json
-   (written by scripts/transcribe.py) and writes src/timeline.json: where each scene starts and
-   the timing of every script word, so cuts and captions land on the spoken words.
+   (written by scripts/transcribe.py) and writes src/timeline.json: the timing of every script word
+   and where each section starts, so every animation cue lands on its spoken word.
 2. Writes public/music/score.mp3: a 120 BPM cinematic track whose drop lands on the logo
    and whose sections follow the scenes.
 3. Writes the one-shot sound effects to public/sfx/.
@@ -22,7 +22,6 @@ from scipy.signal import butter, sosfilt
 
 SR = 44100
 FPS = 30
-TRANSITION_FRAMES = 8
 END_HOLD_SECONDS = 1.6  # end card stays up after the last word
 rng = np.random.default_rng(11)
 
@@ -94,27 +93,17 @@ def find(words, phrase, after=0):
 def build_timeline():
     words = script_timings()
     total = int(np.ceil((words[-1]['end'] + END_HOLD_SECONDS) * FPS))
-    firsts, at = [], 0
-    for _, phrase in SCENE_FROM:
+    sections, at = {}, 0
+    for scene, phrase in SCENE_FROM:
         at = find(words, phrase, at)
-        firsts.append(at)
-    # Scene i becomes visible TRANSITION_FRAMES before its first word, so the cut lands on the word.
-    starts = [0] + [max(0, int(words[k]['start'] * FPS) - TRANSITION_FRAMES) for k in firsts[1:]]
-    frames = [starts[i + 1] + TRANSITION_FRAMES - starts[i] for i in range(len(starts) - 1)] + [total - starts[-1]]
-    bounds = firsts[1:] + [len(words)]
-    scene_words = {
-        scene: [{'text': w['text'], 'start': round(w['start'] - starts[i] / FPS, 3), 'end': round(w['end'] - starts[i] / FPS, 3)}
-                for w in words[firsts[i]:bounds[i]]]
-        for i, scene in enumerate(SCENES)
-    }
+        sections[scene] = 0 if not sections else int(words[at]['start'] * FPS)
     # Per-frame narrator activity; sound effects duck under it (src/components/Sound.tsx).
     activity = voice_activity(SR // FPS)
     voice = [round(float(activity[f]) if f < len(activity) else 0.0, 2) for f in range(total)]
-    timeline = {'fps': FPS, 'transitionFrames': TRANSITION_FRAMES, 'total': total, 'voice': voice,
-                'starts': dict(zip(SCENES, starts)), 'frames': dict(zip(SCENES, frames)), 'words': scene_words}
+    timeline = {'fps': FPS, 'total': total, 'sections': sections, 'voice': voice, 'words': words}
     with open('src/timeline.json', 'w', encoding='utf-8') as f:
         json.dump(timeline, f, ensure_ascii=False, indent=1)
-    print('timeline', f'{total / FPS:.1f}s', {s: round(f / FPS, 1) for s, f in zip(SCENES, frames)})
+    print('timeline', f'{total / FPS:.1f}s', {s: round(f / FPS, 1) for s, f in sections.items()})
     return timeline
 
 
@@ -286,8 +275,7 @@ CHORDS = [  # Am – F – C – G, voiced around A3
 
 def score(tl):
     total = tl['total'] / FPS + 1.0
-    # Cut points: where each scene's first word starts (scenes appear TRANSITION_FRAMES earlier).
-    sec = {s: (tl['starts'][s] + (TRANSITION_FRAMES if s != 'hook' else 0)) / FPS for s in SCENES}
+    sec = {s: f / FPS for s, f in tl['sections'].items()}
     end = tl['total'] / FPS
     drop = sec['brand']
     buf = np.zeros((int(total * SR), 2))

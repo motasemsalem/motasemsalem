@@ -1,6 +1,6 @@
 import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { backOut, clamp, progress } from "../anim";
-import { bodyFont, C, headingFont } from "../theme";
+import { backOut, clamp, pop } from "../cues";
+import { bodyFont, BRAND, headingFont } from "../theme";
 
 // A phone that flies in at `start` and receives One House site-update notifications.
 export const Phone: React.FC<{
@@ -9,7 +9,7 @@ export const Phone: React.FC<{
   readonly top?: number;
 }> = ({ start, updates, top = 500 }) => {
   const frame = useCurrentFrame();
-  const phone = progress(frame, start, 18, backOut);
+  const phone = pop(frame, start, 18, backOut);
   if (phone <= 0) return null;
   return (
     <div
@@ -30,7 +30,7 @@ export const Phone: React.FC<{
       <div style={{ position: "absolute", top: 22, left: 190, width: 120, height: 32, borderRadius: 16, background: "#000" }} />
       <Img src={staticFile("brand/logo-white.png")} style={{ position: "absolute", top: 120, left: 110, width: 260, opacity: 0.9 }} />
       {updates.map((u, i) => {
-        const p = progress(frame, start + 10 + i * 9, 12, backOut);
+        const p = pop(frame, start + 10 + i * 9, 12, backOut);
         return (
           <div
             key={u}
@@ -51,13 +51,13 @@ export const Phone: React.FC<{
               boxShadow: "0 12px 30px rgba(0,0,0,0.35)",
             }}
           >
-            <div style={{ width: 64, height: 64, borderRadius: 16, background: C.red, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 64, height: 64, borderRadius: 16, background: BRAND.red, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width={40} height={40} viewBox="0 0 40 40">
                 <path d="M 4 22 L 20 6 L 36 22 M 10 18 V 34 H 30 V 18" stroke="white" strokeWidth={4} fill="none" strokeLinejoin="round" />
               </svg>
             </div>
             <div>
-              <div style={{ fontFamily: headingFont, fontWeight: 700, fontSize: 30, color: C.navy }}>ون هاوس</div>
+              <div style={{ fontFamily: headingFont, fontWeight: 700, fontSize: 30, color: BRAND.navy }}>ون هاوس</div>
               <div style={{ fontFamily: bodyFont, fontWeight: 600, fontSize: 28, color: "#33445c" }}>{u}</div>
             </div>
           </div>
