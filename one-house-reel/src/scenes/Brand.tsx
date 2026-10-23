@@ -1,7 +1,7 @@
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { at, backOut, clamp, easeInOut, progress, rand } from "../anim";
 import { Backdrop } from "../components/Backdrop";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C, headingFont } from "../theme";
 
 // Rotating engineering rings behind the logo.
@@ -28,7 +28,7 @@ const Rings: React.FC<{ readonly p: number }> = ({ p }) => {
 
 export const Brand: React.FC = () => {
   const frame = useCurrentFrame();
-  const name = at("brand", "وان");
+  const name = at("brand", "ون");
   const icon = progress(frame, 2, 24, backOut);
   const word = progress(frame, 16, 22, easeInOut);
   const sweep = interpolate(frame, [34, 70], [-0.3, 1.3], clamp);
@@ -142,7 +142,6 @@ export const Brand: React.FC = () => {
       </div>
 
       <AbsoluteFill style={{ backgroundColor: "white", opacity: flash }} />
-      <Voice id="brand" />
       <Sfx name="whoosh" at={14} volume={0.35} />
       <Sfx name="chime" at={name} volume={0.3} />
       <Sfx name="swoosh" at={name + 24} volume={0.3} />

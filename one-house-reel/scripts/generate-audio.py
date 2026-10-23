@@ -1,7 +1,8 @@
-"""Builds the scene timeline (and caption word timings) from the voiceover, then synthesizes the music bed and sound effects.
+"""Builds the scene timeline from the recorded voiceover, then synthesizes the music bed and sound effects.
 
-1. Reads public/voiceover/*.mp3 durations and writes src/timeline.json (frames per scene),
-   so the video and the music share the same cut points.
+1. Aligns the script in src/narration.ts to the Whisper word timings in public/voiceover/whisper.json
+   (written by scripts/transcribe.py) and writes src/timeline.json: where each scene starts and
+   the timing of every script word, so cuts and captions land on the spoken words.
 2. Writes public/music/score.mp3: a 120 BPM cinematic track whose drop lands on the logo
    and whose sections follow the scenes.
 3. Writes the one-shot sound effects to public/sfx/.
@@ -9,6 +10,7 @@
 Everything is generated from oscillators and noise, so there are no licensing concerns.
 Needs numpy + scipy, and ffmpeg on PATH.  Usage: python3 scripts/generate-audio.py
 """
+import difflib
 import json
 import os
 import re
@@ -20,62 +22,99 @@ from scipy.signal import butter, sosfilt
 
 SR = 44100
 FPS = 30
-TRANSITION_FRAMES = 12
+TRANSITION_FRAMES = 8
+END_HOLD_SECONDS = 1.6  # end card stays up after the last word
 rng = np.random.default_rng(11)
 
-# Must match the order in src/narration.ts.
-MIN_SECONDS = {}
-src = open('src/narration.ts', encoding='utf-8').read()
-for scene_id, minimum in re.findall(r'id: "(\w+)",\s*minSeconds: ([\d.]+)', src):
-    MIN_SECONDS[scene_id] = float(minimum)
-SCENES = list(MIN_SECONDS)
+narration = open('src/narration.ts', encoding='utf-8').read()
+SCRIPT_WORDS = re.search(r'SCRIPT = `(.*?)`', narration, re.S).group(1).split()
+SCENE_FROM = re.findall(r'\{ id: "(\w+)", from: "([^"]+)" \}', narration)
+SCENES = [scene for scene, _ in SCENE_FROM]
 
 
-def lead(scene):
-    return 0.8 if scene == 'hook' else 0.6
+def norm(word):
+    word = re.sub(r'[\u064B-\u0652\u0640.,،:!؟?…"]', '', word)
+    for a, b in ['أا', 'إا', 'آا', 'ةه', 'ىي', 'ؤو', 'ئي', 'ظض', 'زظ']:
+        word = word.replace(a, b)
+    return word
 
 
-def tail(scene):
-    return 3.0 if scene == 'closing' else 1.0
+def align(script, heard):
+    """Global alignment of script words to transcribed words; returns, per script word, the heard index or None."""
+    n, m = len(script), len(heard)
+    a, b = [norm(w) for w in script], [norm(w['text']) for w in heard]
+    gap = -0.6
+    score = np.zeros((n + 1, m + 1))
+    score[:, 0] = np.arange(n + 1) * gap
+    score[0, :] = np.arange(m + 1) * gap
+    move = np.zeros((n + 1, m + 1), dtype=int)  # 0 diagonal, 1 skip script, 2 skip heard
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            sim = difflib.SequenceMatcher(None, a[i - 1], b[j - 1]).ratio()
+            options = (score[i - 1, j - 1] + sim - 0.4, score[i - 1, j] + gap, score[i, j - 1] + gap)
+            move[i, j] = int(np.argmax(options))
+            score[i, j] = options[move[i, j]]
+    pairs, i, j = [None] * n, n, m
+    while i > 0 and j > 0:
+        if move[i, j] == 0:
+            pairs[i - 1] = j - 1
+            i, j = i - 1, j - 1
+        elif move[i, j] == 1:
+            i -= 1
+        else:
+            j -= 1
+    return pairs
 
 
-def duration(path):
-    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path],
-                         capture_output=True, text=True, check=True)
-    return float(out.stdout)
+def script_timings():
+    heard = json.load(open('public/voiceover/whisper.json', encoding='utf-8'))
+    pairs = align(SCRIPT_WORDS, heard)
+    times = [(heard[k]['start'], heard[k]['end']) if k is not None else None for k in pairs]
+    # Spread any unmatched script words evenly between their matched neighbours.
+    for i, tm in enumerate(times):
+        if tm is None:
+            prev = next((times[k][1] for k in range(i - 1, -1, -1) if times[k]), 0.0)
+            j = next((k for k in range(i + 1, len(times)) if times[k]), None)
+            nxt = times[j][0] if j is not None else heard[-1]['end']
+            span = (j if j is not None else len(times)) - i + 1
+            times[i] = (prev + (nxt - prev) / span, prev + (nxt - prev) / span * 2)
+    unmatched = [SCRIPT_WORDS[i] for i, k in enumerate(pairs) if k is None]
+    print('aligned', len(SCRIPT_WORDS), 'script words; unmatched:', unmatched)
+    return [{'text': w, 'start': round(s, 3), 'end': round(e, 3)} for w, (s, e) in zip(SCRIPT_WORDS, times)]
 
 
-def words(scene):
-    """Word timings (seconds from the start of the voice clip) from the ElevenLabs character alignment."""
-    a = json.load(open(f'public/voiceover/{scene}.json', encoding='utf-8'))
-    out, cur = [], None
-    for ch, start, end in zip(a['characters'], a['character_start_times_seconds'], a['character_end_times_seconds']):
-        if ch.isspace():
-            cur = None
-            continue
-        if cur is None:
-            cur = {'text': '', 'start': round(start, 3), 'end': round(end, 3)}
-            out.append(cur)
-        cur['text'] += ch
-        cur['end'] = round(end, 3)
-    return out
+def find(words, phrase, after=0):
+    parts = phrase.split()
+    for i in range(after, len(words) - len(parts) + 1):
+        if all(words[i + k]['text'].startswith(p) for k, p in enumerate(parts)):
+            return i
+    raise ValueError(f'"{phrase}" not found in the script')
 
 
 def build_timeline():
-    frames, starts, at = {}, {}, 0
-    for scene in SCENES:
-        voice = duration(f'public/voiceover/{scene}.mp3')
-        n = max(round(MIN_SECONDS[scene] * FPS), int(np.ceil((lead(scene) + voice + tail(scene)) * FPS)))
-        frames[scene] = n
-        starts[scene] = at
-        at += n - TRANSITION_FRAMES
-    total = at + TRANSITION_FRAMES
-    timeline = {'fps': FPS, 'transitionFrames': TRANSITION_FRAMES, 'total': total,
-                'leadSeconds': {s: lead(s) for s in SCENES}, 'frames': frames, 'starts': starts,
-                'words': {s: words(s) for s in SCENES}}
+    words = script_timings()
+    total = int(np.ceil((words[-1]['end'] + END_HOLD_SECONDS) * FPS))
+    firsts, at = [], 0
+    for _, phrase in SCENE_FROM:
+        at = find(words, phrase, at)
+        firsts.append(at)
+    # Scene i becomes visible TRANSITION_FRAMES before its first word, so the cut lands on the word.
+    starts = [0] + [max(0, int(words[k]['start'] * FPS) - TRANSITION_FRAMES) for k in firsts[1:]]
+    frames = [starts[i + 1] + TRANSITION_FRAMES - starts[i] for i in range(len(starts) - 1)] + [total - starts[-1]]
+    bounds = firsts[1:] + [len(words)]
+    scene_words = {
+        scene: [{'text': w['text'], 'start': round(w['start'] - starts[i] / FPS, 3), 'end': round(w['end'] - starts[i] / FPS, 3)}
+                for w in words[firsts[i]:bounds[i]]]
+        for i, scene in enumerate(SCENES)
+    }
+    # Per-frame narrator activity; sound effects duck under it (src/components/Sound.tsx).
+    activity = voice_activity(SR // FPS)
+    voice = [round(float(activity[f]) if f < len(activity) else 0.0, 2) for f in range(total)]
+    timeline = {'fps': FPS, 'transitionFrames': TRANSITION_FRAMES, 'total': total, 'voice': voice,
+                'starts': dict(zip(SCENES, starts)), 'frames': dict(zip(SCENES, frames)), 'words': scene_words}
     with open('src/timeline.json', 'w', encoding='utf-8') as f:
         json.dump(timeline, f, ensure_ascii=False, indent=1)
-    print('timeline', f'{total / FPS:.1f}s', frames)
+    print('timeline', f'{total / FPS:.1f}s', {s: round(f / FPS, 1) for s, f in zip(SCENES, frames)})
     return timeline
 
 
@@ -247,9 +286,10 @@ CHORDS = [  # Am – F – C – G, voiced around A3
 
 def score(tl):
     total = tl['total'] / FPS + 1.0
-    sec = {s: tl['starts'][s] / FPS for s in SCENES}
+    # Cut points: where each scene's first word starts (scenes appear TRANSITION_FRAMES earlier).
+    sec = {s: (tl['starts'][s] + (TRANSITION_FRAMES if s != 'hook' else 0)) / FPS for s in SCENES}
     end = tl['total'] / FPS
-    drop = sec['brand'] + 0.15
+    drop = sec['brand']
     buf = np.zeros((int(total * SR), 2))
     drums = np.zeros_like(buf)
     bass = np.zeros_like(buf)
@@ -274,7 +314,7 @@ def score(tl):
     add(fx, pan(bell(note('A5')), -0.2) * 0.35, drop)
 
     groove_from = sec['foundation']
-    quiet = (sec['values'], sec['values'] + 2 * BAR)  # breathe under the values intro
+    quiet = (sec['bathroom'], sec['bathroom'] + BAR)  # breathe under the bathroom intro
     arp_from = sec['columns']
     t0 = drop
     k = 0
@@ -296,7 +336,7 @@ def score(tl):
                 add(bass, pan(sub(note(root), BEAT * 0.9), 0), bt + BEAT / 2 if b % 2 else bt)
         if bar_t >= arp_from - 0.01:
             pattern = [0, 1, 2, 1, 2, 0, 2, 1]
-            octave = 2.0 if bar_t >= sec['process'] else 1.0
+            octave = 2.0 if bar_t >= sec['stats'] else 1.0
             for i, p_ in enumerate(pattern):
                 f = note(chord[p_]) * 2 * octave
                 add(arps, pan(pluck(f), -0.4 if i % 2 else 0.4) * 0.35, bar_t + i * BEAT / 2)
@@ -304,8 +344,8 @@ def score(tl):
         t0 += BAR
         k += 1
     for s in SCENES[3:]:
-        add(fx, pan(riser(1.2), 0) * 0.45, sec[s] - 1.2)
-        add(fx, pan(impact(1.5), 0) * 0.35, sec[s])
+        add(fx, pan(riser(1.2), 0) * 0.15, sec[s] - 1.2)
+        add(fx, pan(impact(1.5), 0) * 0.15, sec[s])
 
     # Closing: final chord hit, ring out.
     close = sec['closing']
@@ -323,11 +363,34 @@ def score(tl):
 
     mix = (drums * 0.9 + bass * 0.55 + pads * 0.5 * side + arps * 0.45 * side + fx * 0.7)
     mix = reverb(mix, 2.0, 0.18)
+    mix *= voice_duck(len(mix))[:, None]
     # Fade out after the voice ends.
     fade = np.clip((end - np.arange(len(mix)) / SR) / 2.5, 0, 1)[:, None]
     mix *= fade
     mix = np.tanh(mix * 1.3)
     return mix
+
+
+def voice_activity(hop):
+    """0–1 per `hop` samples: how much the narrator is speaking (fast attack, slow release)."""
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', 'public/voiceover/voiceover.mp3', '-ac', '1', '-ar', str(SR),
+                          '-f', 's16le', '-'], capture_output=True, check=True).stdout
+    voice = np.frombuffer(raw, np.int16).astype(float) / 32768
+    rms = np.sqrt(np.convolve(voice ** 2, np.ones(hop) / hop, 'same'))[::hop]
+    active = np.clip((20 * np.log10(rms + 1e-9) + 45) / 15, 0, 1)  # 0 below -45 dB, 1 above -30 dB
+    env, level = np.zeros_like(active), 0.0
+    release = 0.3 ** (hop / SR / 0.25)  # falls to 30% within 250 ms of silence
+    for i, a in enumerate(active):
+        level = a if a > level else level * release
+        env[i] = level
+    return env
+
+
+def voice_duck(n, depth=0.7):
+    """Gain curve that dips the music while the narrator speaks, so word endings stay clear."""
+    hop = int(0.01 * SR)
+    env = voice_activity(hop)
+    return np.interp(np.arange(n) / hop, np.arange(len(env)), 1 - depth * env, right=1.0)
 
 
 def save(path, x, peak=0.9):

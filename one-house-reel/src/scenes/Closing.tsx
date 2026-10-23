@@ -1,6 +1,6 @@
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { at, backOut, clamp, easeInOut, progress, rand } from "../anim";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C, headingFont } from "../theme";
 
 // Bricks fly in and stack into a short wall under the logo.
@@ -42,7 +42,7 @@ export const Closing: React.FC = () => {
   const frame = useCurrentFrame();
   const brick = at("closing", "طوبة");
   const key = at("closing", "المفتاح");
-  const cta = at("closing", "ابعتلنا");
+  const cta = at("closing", "احجز");
   const right = at("closing", "صح");
   const logo = progress(frame, 4, 26, backOut);
   const wipe = progress(frame, 0, 18, easeInOut);
@@ -107,7 +107,7 @@ export const Closing: React.FC = () => {
               boxShadow: "0 24px 60px rgba(224,7,26,0.45)",
               fontFamily: headingFont,
               fontWeight: 800,
-              fontSize: 66,
+              fontSize: 54,
               color: "white",
             }}
           >
@@ -117,7 +117,7 @@ export const Closing: React.FC = () => {
               <circle cx={35} cy={31} r={4} fill={C.red} />
               <circle cx={46} cy={31} r={4} fill={C.red} />
             </svg>
-            ابعتلنا رسالة دلوقتي
+            احجز استشارتك المجانية
           </div>
           {/* Tapping finger */}
           <svg
@@ -161,9 +161,31 @@ export const Closing: React.FC = () => {
       >
         وخلّي بيتك <span style={{ color: C.red, fontFamily: headingFont, fontWeight: 900 }}>يبدأ صح</span>
       </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 1712,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 14,
+          fontFamily: headingFont,
+          fontWeight: 600,
+          fontSize: 40,
+          color: C.navy,
+          opacity: progress(frame, cta + 10, 16),
+        }}
+      >
+        <svg width={40} height={40} viewBox="0 0 40 40">
+          <circle cx={20} cy={20} r={17} fill="none" stroke={C.red} strokeWidth={3} />
+          <path d="M 3 20 H 37 M 20 3 Q 8 20 20 37 Q 32 20 20 3" fill="none" stroke={C.red} strokeWidth={3} />
+        </svg>
+        onehouse-eg.web.app
+      </div>
 
-      <Voice id="closing" />
-      <Sfx name="whoosh" at={0} volume={0.4} />
+      <Sfx name="whoosh" at={0} volume={0.1} />
       {Array.from({ length: 7 }, (_, i) => (
         <Sfx key={i} name="pop" at={brick - 6 + i * 5} volume={0.18} />
       ))}

@@ -1,264 +1,297 @@
-import { AbsoluteFill, Img, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { at, backOut, clamp, easeInOut, progress, rand } from "../anim";
-import { Backdrop } from "../components/Backdrop";
-import { IsoBuilding } from "../components/IsoBuilding";
-import { Key } from "../components/Key";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C, headingFont } from "../theme";
 
-const PHOTOS = [
-  "photos/foundation-site.jpg",
-  "photos/formwork-wide.jpg",
-  "photos/aerial-roof.jpg",
-  "photos/foundation-columns.jpg",
-  "photos/formwork-props.jpg",
-  "photos/aerial-sunset.jpg",
-];
+// Where the apartment the hook points at sits on the aerial photo (1080×1920 frame space).
+const FLAT = { x: 600, y: 1330 };
+// The building's structural grid as it lines up with the photo.
+const COLS = [120, 335, 560, 790];
+const BEAMS = [960, 1150, 1340, 1530, 1720];
 
-// Big kinetic Arabic line with an RGB-split glitch while it lands.
-const Slam: React.FC<{
-  readonly text: string;
-  readonly start: number;
+// Words that pop in one by one, each on the frame the narrator says it.
+const Line: React.FC<{
+  readonly words: { text: string; at: number; color?: string }[];
   readonly size: number;
-  readonly y: number;
-  readonly color?: string;
-  readonly end?: number;
-}> = ({ text, start, size, y, color = C.white, end = 9999 }) => {
+  readonly top: number;
+  readonly out?: number;
+}> = ({ words, size, top, out = 99999 }) => {
   const frame = useCurrentFrame();
-  const p = progress(frame, start, 10, backOut);
-  const glitch = interpolate(frame - start, [0, 10], [1, 0], clamp);
-  const out = progress(frame, end, 8);
-  if (frame < start || out >= 1) return null;
-  const jx = (rand(frame) - 0.5) * 40 * glitch;
-  const jy = (rand(frame + 50) - 0.5) * 20 * glitch;
-  const base: React.CSSProperties = {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: y,
-    textAlign: "center",
-    fontFamily: headingFont,
-    fontWeight: 900,
-    fontSize: size,
-    lineHeight: 1.1,
-  };
-  const transform = `translate(${jx}px, ${jy}px) scale(${2.2 - 1.2 * p - out * 0.3})`;
+  const gone = progress(frame, out, 6);
+  if (frame < words[0].at - 2 || gone >= 1) return null;
   return (
-    <div dir="rtl" style={{ position: "absolute", inset: 0, opacity: interpolate(p, [0, 0.3], [0, 1], clamp) * (1 - out) }}>
-      <div style={{ ...base, color: "#00e5ff", transform: `${transform} translate(${-14 * glitch}px, 0)`, opacity: 0.7 * glitch, mixBlendMode: "screen" }}>{text}</div>
-      <div style={{ ...base, color: C.red, transform: `${transform} translate(${14 * glitch}px, 0)`, opacity: 0.8 * glitch, mixBlendMode: "screen" }}>{text}</div>
-      <div style={{ ...base, color, transform, textShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>{text}</div>
+    <div
+      dir="rtl"
+      style={{
+        position: "absolute",
+        top,
+        left: 60,
+        right: 60,
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: "0 26px",
+        opacity: 1 - gone,
+        transform: `translateY(${-gone * 40}px)`,
+      }}
+    >
+      {words.map((w) => {
+        const p = progress(frame, w.at - 2, 8, backOut);
+        return (
+          <span
+            key={w.text + w.at}
+            style={{
+              display: "inline-block",
+              fontFamily: headingFont,
+              fontWeight: 900,
+              fontSize: size,
+              lineHeight: 1.15,
+              color: w.color ?? C.white,
+              opacity: interpolate(p, [0, 0.3], [0, 1], clamp),
+              transform: `scale(${1.6 - 0.6 * p}) translateY(${(1 - p) * 30}px)`,
+              textShadow: "0 10px 40px rgba(0,0,0,0.75)",
+            }}
+          >
+            {w.text}
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
+// Structural skeleton seen through the scanner: columns, beams, rebar, and footings below ground.
+const Skeleton: React.FC<{ readonly steel: number; readonly concrete: number; readonly base: number; readonly frame: number }> = ({
+  steel,
+  concrete,
+  base,
+  frame,
+}) => {
+  const glow = 0.6 + 0.4 * Math.sin(frame / 4);
+  return (
+    <svg width={1080} height={2500} style={{ position: "absolute", left: 0, top: 0 }}>
+      {/* concrete columns and beams */}
+      <g opacity={0.35 + 0.65 * concrete}>
+        {COLS.map((x) => (
+          <rect key={x} x={x - 26} y={900} width={52} height={1100} fill={`rgba(120,200,255,${0.18 + 0.25 * concrete})`} stroke="#9fe0ff" strokeWidth={3} />
+        ))}
+        {BEAMS.map((y) => (
+          <rect key={y} x={60} y={y - 16} width={780} height={32} fill={`rgba(120,200,255,${0.14 + 0.2 * concrete})`} stroke="#9fe0ff" strokeWidth={2} />
+        ))}
+      </g>
+      {/* rebar */}
+      <g stroke={C.redGlow} strokeWidth={4} opacity={steel * glow} style={{ filter: "drop-shadow(0 0 8px rgba(255,42,61,0.9))" }}>
+        {COLS.flatMap((x) => [x - 14, x + 14].map((rx) => <line key={`${x}${rx}`} x1={rx} y1={2000 - 1100 * steel} x2={rx} y2={2000} />))}
+        {COLS.flatMap((x) =>
+          Array.from({ length: 18 }, (_, i) => 920 + i * 60)
+            .filter((y) => y > 2000 - 1100 * steel)
+            .map((y) => <line key={`${x}s${y}`} x1={x - 20} y1={y} x2={x + 20} y2={y} strokeWidth={3} />),
+        )}
+        {BEAMS.map((y) => (
+          <line key={y} x1={60} y1={y} x2={60 + 780 * steel} y2={y} strokeDasharray="20 8" />
+        ))}
+      </g>
+      {/* ground line and footings below the building */}
+      <line x1={0} y1={2000} x2={1080} y2={2000} stroke="white" strokeWidth={5} strokeDasharray="26 12" opacity={base} />
+      <g opacity={base}>
+        {COLS.map((x) => (
+          <g key={x}>
+            <rect x={x - 26} y={2000} width={52} height={140 * base} fill="rgba(120,200,255,0.35)" stroke="#9fe0ff" strokeWidth={3} />
+            <rect x={x - 110} y={2140} width={220} height={90} fill="rgba(120,200,255,0.4)" stroke="#9fe0ff" strokeWidth={4} transform={`translate(0 ${(1 - base) * 60})`} />
+            <rect x={x - 130} y={2230} width={260} height={24} fill="rgba(200,200,200,0.4)" stroke="white" strokeWidth={2} transform={`translate(0 ${(1 - base) * 60})`} />
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+};
+
+const Tag: React.FC<{ readonly label: string; readonly x: number; readonly y: number; readonly start: number; readonly end: number }> = ({
+  label,
+  x,
+  y,
+  start,
+  end,
+}) => {
+  const frame = useCurrentFrame();
+  const p = progress(frame, start - 2, 10, backOut) * (1 - progress(frame, end, 5));
+  if (frame < start - 2 || p <= 0) return null;
+  return (
+    <div
+      dir="rtl"
+      style={{
+        position: "absolute",
+        left: x,
+        top: y,
+        padding: "14px 34px",
+        borderRadius: 16,
+        background: C.red,
+        boxShadow: "0 16px 50px rgba(224,7,26,0.6)",
+        fontFamily: headingFont,
+        fontWeight: 800,
+        fontSize: 64,
+        color: "white",
+        transform: `translate(-50%, -50%) scale(${0.4 + 0.6 * p})`,
+        opacity: interpolate(p, [0, 0.3], [0, 1], clamp),
+      }}
+    >
+      {label}
     </div>
   );
 };
 
 export const Hook: React.FC = () => {
   const frame = useCurrentFrame();
-  const stop = at("hook", "استنّى");
-  const key = at("hook", "مفتاح");
-  const story = at("hook", "حكاية");
-  const unseen = at("hook", "شُفتهاش");
-  const dig = at("hook", "حكاية", 1);
-  const pit = at("hook", "بحفرة");
-  const end = at("hook", "وبتخلص");
-  const keyEnd = at("hook", "بالمفتاح");
+  const flat = at("hook", "شقة");
+  const but = at("hook", "بس");
+  const inside = at("hook", "جوّه");
+  const steel = at("hook", "الحديد");
+  const concrete = at("hook", "والخرسانة");
+  const base = at("hook", "والأساس");
+  const show = at("hook", "تعالى");
 
-  // Phase visibility.
-  const keyIn = progress(frame, key - 18, 26, backOut);
-  const keyOut = progress(frame, story, 14, easeInOut);
-  const montage = frame >= story && frame < dig;
-  const digP = progress(frame, dig - 6, 16, easeInOut);
-  const digOut = progress(frame, end, 14, easeInOut);
-  const build = interpolate(frame, [end, keyEnd + 10], [0, 6.4], { ...clamp, easing: easeInOut });
-  const finalKey = progress(frame, keyEnd, 18, backOut);
-
-  const flash = Math.max(
-    interpolate(frame, [stop - 1, stop, stop + 6], [0, 0.9, 0], clamp),
-    interpolate(frame, [dig - 3, dig - 2, dig + 6], [0, 0.6, 0], clamp),
+  // Camera: push in on the photo, zoom towards the flat, then tilt down to the foundations.
+  const zoom =
+    interpolate(frame, [0, flat], [1.22, 1.05], { ...clamp, easing: easeInOut }) +
+    interpolate(frame, [but, inside], [0, 0.32], { ...clamp, easing: easeInOut }) -
+    interpolate(frame, [steel, steel + 12], [0, 0.32], { ...clamp, easing: easeInOut });
+  const tilt = interpolate(frame, [base - 4, base + 14], [0, -560], { ...clamp, easing: easeInOut });
+  const scan = interpolate(frame, [inside, steel + 4], [0, 1], { ...clamp, easing: easeInOut });
+  const kick = Math.max(
+    interpolate(frame - flat, [0, 8], [1, 0], clamp),
+    interpolate(frame - show, [0, 8], [1, 0], clamp),
   );
-  const shake = interpolate(frame - stop, [0, 14], [1, 0], clamp);
-  const camera = `translate(${(rand(frame * 3) - 0.5) * 30 * shake}px, ${(rand(frame * 7) - 0.5) * 30 * shake}px)`;
+  const shake = `translate(${(rand(frame) - 0.5) * 24 * kick}px, ${(rand(frame + 9) - 0.5) * 24 * kick}px)`;
+  const bracket = progress(frame, flat - 2, 10, backOut) * (1 - progress(frame, steel, 8));
+  const dim = progress(frame, show, 6);
 
   return (
     <AbsoluteFill style={{ backgroundColor: "black", overflow: "hidden" }}>
-      <AbsoluteFill style={{ opacity: interpolate(frame, [stop, stop + 10], [0, 1], clamp), transform: camera }}>
-        <Backdrop glow="rgba(224, 7, 26, 0.22)" />
-      </AbsoluteFill>
-
-      {/* 0 – stop: a blinking rec dot and a scan line on black, building suspense. */}
-      {frame < stop + 4 && (
-        <AbsoluteFill>
-          <div style={{ position: "absolute", top: 120, right: 80, width: 26, height: 26, borderRadius: 13, background: C.red, opacity: Math.floor(frame / 6) % 2 ? 1 : 0.2 }} />
-          <div style={{ position: "absolute", left: 0, right: 0, top: 960 + (rand(frame) - 0.5) * 6, height: 3, background: "rgba(255,255,255,0.6)", transform: `scaleX(${progress(frame, 0, stop)})` }} />
-        </AbsoluteFill>
-      )}
-
-      <AbsoluteFill style={{ transform: camera }}>
-        <Slam text="استنّى!" start={stop} size={250} y={330} color={C.red} end={story} />
-        <Slam text="ثانية واحدة" start={at("hook", "ثانية")} size={86} y={640} end={story} />
-
-        {/* The key */}
+      <AbsoluteFill style={{ transform: shake }}>
         <div
           style={{
             position: "absolute",
-            left: 540 - 200,
-            top: 820,
-            transform: `perspective(1400px) translateY(${(1 - keyIn) * 700 - keyOut * 900}px) rotateY(${(1 - keyIn) * 260 + Math.sin(frame / 14) * 14}deg) rotateZ(${-18 + keyIn * 18}deg) scale(${0.78 - keyOut * 0.2})`,
-            transformOrigin: "200px 300px",
-            opacity: keyIn * (1 - keyOut),
-            filter: "drop-shadow(0 40px 60px rgba(0,0,0,0.6))",
+            left: 0,
+            top: 0,
+            width: 1080,
+            height: 2500,
+            transformOrigin: `${FLAT.x}px ${FLAT.y}px`,
+            transform: `translateY(${tilt}px) scale(${zoom})`,
           }}
         >
-          <Key shine={interpolate(frame, [key, key + 30], [0, 1], clamp)} />
+          <div style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 2500, background: "#3b2a1a" }} />
+          <Img src={staticFile("photos/aerial-sunset.jpg")} style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 2000, objectFit: "cover", objectPosition: "center top" }} />
+          {/* X-ray layer, revealed from the top by the scanner */}
+          <div style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 2500, clipPath: `inset(0 0 ${(1 - scan) * 100}% 0)` }}>
+            <Img
+              src={staticFile("photos/aerial-sunset.jpg")}
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                width: 1080,
+                height: 2000,
+                objectFit: "cover",
+                objectPosition: "center top",
+                filter: "grayscale(1) invert(1) brightness(0.55) contrast(1.5) sepia(1) hue-rotate(170deg) saturate(2.2)",
+              }}
+            />
+            <div style={{ position: "absolute", left: 0, top: 2000, width: 1080, height: 500, background: "linear-gradient(180deg, #06223f, #020d1c)" }} />
+            <Skeleton
+              frame={frame}
+              steel={progress(frame, steel - 4, 22, easeInOut)}
+              concrete={progress(frame, concrete - 4, 18)}
+              base={progress(frame, base + 4, 18, easeInOut)}
+            />
+          </div>
+          {/* Scanner bar */}
+          {scan > 0 && scan < 1 && (
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: scan * 2500 - 4,
+                height: 8,
+                background: "#9fe0ff",
+                boxShadow: "0 0 40px 14px rgba(95,200,255,0.8)",
+              }}
+            />
+          )}
+          {/* "Your flat" target brackets */}
+          <svg width={1080} height={2500} style={{ position: "absolute", left: 0, top: 0, opacity: bracket }}>
+            <g transform={`translate(${FLAT.x} ${FLAT.y}) scale(${1.8 - 0.8 * bracket})`} stroke={C.red} strokeWidth={8} fill="none">
+              <path d="M -130 -60 V -100 H -90 M 90 -100 H 130 V -60 M 130 60 V 100 H 90 M -90 100 H -130 V 60" />
+              <circle r={10} fill={C.red} />
+            </g>
+          </svg>
         </div>
+      </AbsoluteFill>
+
+      {/* Top gradient so the lines always read */}
+      <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(2,13,28,0.85) 0%, rgba(2,13,28,0.2) 38%, transparent 60%, rgba(2,13,28,0.5) 100%)" }} />
+
+      <Line
+        top={180}
+        size={92}
+        out={but}
+        words={[
+          { text: "إنت دافع", at: 0 },
+          { text: "تحويشة عمرك", at: at("hook", "تحويشة"), color: C.red },
+          { text: "في شقة", at: flat },
+        ]}
+      />
+      <Line
+        top={180}
+        size={96}
+        out={steel - 4}
+        words={[
+          { text: "إيه اللي", at: at("hook", "إيه") },
+          { text: "جوّه", at: inside, color: C.red },
+          { text: "الحيطة دي؟", at: at("hook", "الحيطة") },
+        ]}
+      />
+      {frame >= flat && frame < steel && (
         <div
           dir="rtl"
           style={{
             position: "absolute",
-            top: 1470,
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            fontFamily: headingFont,
-            fontWeight: 800,
-            fontSize: 92,
-            color: C.white,
-            opacity: progress(frame, key, 10) * (1 - keyOut),
-            transform: `translateY(${(1 - progress(frame, key, 12)) * 40}px)`,
+            left: FLAT.x - 90,
+            top: 1500,
+            padding: "10px 26px",
+            borderRadius: 12,
+            background: "rgba(2,13,28,0.85)",
+            border: `3px solid ${C.red}`,
+            fontFamily: bodyFont,
+            fontWeight: 600,
+            fontSize: 44,
+            color: "white",
+            opacity: bracket,
           }}
         >
-          قبل ما تستلم <span style={{ color: C.red }}>مفتاح بيتك</span>
-        </div>
-      </AbsoluteFill>
-
-      {/* Strobe montage of the real sites, hidden behind frosted glass: the story you never saw. */}
-      {montage && (
-        <AbsoluteFill>
-          <Img
-            src={staticFile(PHOTOS[Math.floor((frame - story) / 5) % PHOTOS.length])}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              transform: `scale(${1.25 - progress(frame, story, dig - story) * 0.15})`,
-              filter: `blur(${interpolate(frame, [story, unseen, unseen + 12], [26, 18, 0], clamp)}px) saturate(1.2)`,
-            }}
-          />
-          <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(2,13,28,0.55), rgba(2,13,28,0.85))" }} />
-          <div dir="rtl" style={{ position: "absolute", top: 640, left: 0, right: 0, textAlign: "center" }}>
-            <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 120, color: C.white, lineHeight: 1.15, transform: `scale(${0.8 + 0.2 * progress(frame, story, 10, backOut)})` }}>
-              حكاية كاملة
-            </div>
-            <div
-              style={{
-                display: "inline-block",
-                marginTop: 30,
-                padding: "16px 44px",
-                fontFamily: headingFont,
-                fontWeight: 800,
-                fontSize: 84,
-                color: C.white,
-                background: C.red,
-                borderRadius: 18,
-                transform: `rotate(-4deg) scale(${interpolate(progress(frame, unseen, 8, backOut), [0, 1], [2.4, 1])})`,
-                opacity: progress(frame, unseen, 4),
-                boxShadow: "0 20px 60px rgba(224,7,26,0.6)",
-              }}
-            >
-              إنت ما شُفتهاش
-            </div>
-          </div>
-        </AbsoluteFill>
-      )}
-
-      {/* Cross-section: ground line, soil strata, the pit, then the building rises out of it. */}
-      {frame >= dig - 6 && (
-        <AbsoluteFill style={{ opacity: digP }}>
-          <svg width={1080} height={1920} style={{ position: "absolute", inset: 0 }}>
-            <defs>
-              <pattern id="soil" width={40} height={40} patternUnits="userSpaceOnUse">
-                <rect width={40} height={40} fill="#6b4a2f" />
-                <circle cx={8} cy={10} r={3} fill="#7d5a3c" />
-                <circle cx={28} cy={26} r={4} fill="#5a3c25" />
-                <circle cx={18} cy={34} r={2} fill="#8a6847" />
-              </pattern>
-              <clipPath id="pitClip">
-                <rect x={540 - 260 * progress(frame, pit, 22, easeInOut)} y={1100} width={520 * progress(frame, pit, 22, easeInOut)} height={330} />
-              </clipPath>
-            </defs>
-            {/* Strata slide up */}
-            <g transform={`translate(0 ${(1 - digP) * 500 + digOut * 60})`}>
-              <rect x={0} y={1100} width={1080} height={820} fill="url(#soil)" />
-              <rect x={0} y={1300} width={1080} height={160} fill="#57391f" opacity={0.8} />
-              <rect x={0} y={1460} width={1080} height={460} fill="#3e2815" opacity={0.9} />
-              <line x1={0} y1={1100} x2={1080} y2={1100} stroke={C.white} strokeWidth={6} strokeDasharray="30 14" />
-              {/* The pit, with the real foundation photo inside it */}
-              <g clipPath="url(#pitClip)">
-                <image href={staticFile("photos/foundation-site.jpg")} x={280} y={980} width={520} height={600} preserveAspectRatio="xMidYMid slice" />
-                <rect x={280} y={1100} width={520} height={330} fill="none" stroke={C.red} strokeWidth={10} />
-              </g>
-              {/* Depth dimension line */}
-              <g opacity={progress(frame, pit + 14, 12)}>
-                <line x1={850} y1={1100} x2={850} y2={1430} stroke="white" strokeWidth={3} />
-                <path d="M 838 1116 L 850 1100 L 862 1116 M 838 1414 L 850 1430 L 862 1414" stroke="white" strokeWidth={3} fill="none" />
-                <text x={880} y={1280} fill="white" fontFamily={bodyFont} fontWeight={600} fontSize={40}>العمق</text>
-              </g>
-              {/* The building rising from the pit */}
-              <g opacity={interpolate(build, [0, 0.2], [0, 1], clamp)}>
-                <IsoBuilding cx={540} cy={1060} scale={1.05} floors={6} built={build} mode="solid" showFoundation={false} />
-              </g>
-            </g>
-          </svg>
-          <div dir="rtl" style={{ position: "absolute", top: 250, left: 0, right: 0, textAlign: "center", opacity: 1 - digOut }}>
-            <div style={{ fontFamily: bodyFont, fontWeight: 600, fontSize: 56, color: C.steel }}>حكاية بتبدأ</div>
-            <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 100, color: C.white, transform: `scale(${0.85 + 0.15 * progress(frame, pit, 10, backOut)})` }}>
-              بحفرة في <span style={{ color: C.red }}>الأرض</span>
-            </div>
-          </div>
-          <div dir="rtl" style={{ position: "absolute", top: 250, left: 0, right: 0, textAlign: "center", opacity: progress(frame, end, 10) }}>
-            <div style={{ fontFamily: bodyFont, fontWeight: 600, fontSize: 56, color: C.steel }}>وبتخلص</div>
-            <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 100, color: C.white }}>
-              بالمفتاح <span style={{ color: C.red }}>في إيدك</span>
-            </div>
-          </div>
-        </AbsoluteFill>
-      )}
-
-      {/* The key lands in front of the finished building. */}
-      {frame >= keyEnd && (
-        <div
-          style={{
-            position: "absolute",
-            left: 870 - 200,
-            top: 1240,
-            transform: `translateY(${(1 - finalKey) * -900}px) rotate(${(1 - finalKey) * -90 + Math.sin((frame - keyEnd) / 6) * 6 * (1 - progress(frame, keyEnd + 18, 30))}deg) scale(0.42)`,
-            transformOrigin: "200px 0px",
-            filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.7))",
-          }}
-        >
-          <Key shine={progress(frame, keyEnd + 14, 24)} />
+          شقتك
         </div>
       )}
 
-      <AbsoluteFill style={{ backgroundColor: "white", opacity: flash, pointerEvents: "none" }} />
+      <Tag label="حديد" x={300} y={620} start={steel} end={show} />
+      <Tag label="خرسانة" x={760} y={820} start={concrete} end={show} />
+      <Tag label="أساس" x={540} y={1460} start={base + 8} end={show} />
 
-      <Voice id="hook" />
-      <Sfx name="subdrop" at={0} volume={0.5} />
-      <Sfx name="impact" at={stop} volume={0.7} />
-      <Sfx name="glitch" at={stop} volume={0.35} />
-      <Sfx name="whoosh" at={key - 16} volume={0.4} />
-      <Sfx name="keys" at={key} volume={0.35} />
-      <Sfx name="swoosh" at={story} volume={0.35} />
-      {Array.from({ length: Math.floor((dig - story) / 5) }, (_, i) => (
-        <Sequence key={i} from={story + i * 5} durationInFrames={10} layout="none">
-          <Sfx name="shutter" volume={0.12} />
-        </Sequence>
-      ))}
-      <Sfx name="stamp" at={unseen} volume={0.55} />
-      <Sfx name="impact" at={dig} volume={0.4} />
-      <Sfx name="hammer" at={pit + 4} volume={0.3} />
-      <Sfx name="riser" at={end} volume={0.35} />
-      <Sfx name="keys" at={keyEnd + 14} volume={0.45} />
+      {frame >= show && <AbsoluteFill style={{ background: `rgba(2,13,28,${0.65 * dim})` }} />}
+      <Line top={780} size={150} words={[{ text: "تعالى", at: show }, { text: "أوريك", at: at("hook", "أوريك"), color: C.red }]} />
+
+      <Sfx name="subdrop" at={0} volume={0.45} />
+      <Sfx name="swoosh" at={at("hook", "تحويشة") - 2} volume={0.3} />
+      <Sfx name="stamp" at={flat} volume={0.5} />
+      <Sfx name="whoosh" at={but} volume={0.35} />
+      <Sfx name="riser" at={inside - 10} volume={0.3} />
+      <Sfx name="glitch" at={inside} volume={0.25} />
+      <Sfx name="blip" at={steel} volume={0.4} />
+      <Sfx name="blip" at={concrete} volume={0.4} />
+      <Sfx name="whoosh" at={base - 4} volume={0.4} />
+      <Sfx name="impact" at={base + 12} volume={0.35} />
+      <Sfx name="glitch" at={show} volume={0.35} />
+      <Sfx name="impact" at={show} volume={0.5} />
     </AbsoluteFill>
   );
 };

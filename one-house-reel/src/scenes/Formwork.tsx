@@ -3,7 +3,7 @@ import { at, backOut, clamp, easeInOut, progress } from "../anim";
 import { Backdrop } from "../components/Backdrop";
 import { Captions } from "../components/Captions";
 import { Callout, ChapterHeader, PhotoCard } from "../components/Kit";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C, headingFont } from "../theme";
 
 // A spirit level whose bubble wobbles, then settles in the middle.
@@ -100,8 +100,7 @@ export const Formwork: React.FC = () => {
         ضبط المنسوب
       </div>
       <Captions id="formwork" y={1520} />
-      <Voice id="formwork" />
-      <Sfx name="whoosh" at={0} volume={0.3} />
+      <Sfx name="whoosh" at={0} volume={0.1} />
       {[0, 1, 2, 3].map((i) => (
         <Sfx key={i} name="hammer" at={at("formwork", "بتتركب") + i * 9} volume={0.18} />
       ))}

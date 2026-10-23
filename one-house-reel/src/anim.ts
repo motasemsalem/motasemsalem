@@ -21,8 +21,8 @@ export const progress = (
   interpolate(frame, [start, start + duration], [0, 1], { ...clamp, easing });
 
 export type Word = { text: string; start: number; end: number };
+// Script words with their spoken times, in seconds from the start of the scene.
 export const sceneWords = (id: SceneId): Word[] => timeline.words[id];
-export const voiceLead = (id: SceneId) => timeline.leadSeconds[id] * FPS;
 
 // Frame (within the scene) at which the narrator starts saying `word`.
 // `nth` picks a later occurrence when the word repeats.
@@ -30,7 +30,7 @@ export const at = (id: SceneId, word: string, nth = 0) => {
   const hits = sceneWords(id).filter((w) => w.text.includes(word));
   const hit = hits[nth];
   if (!hit) throw new Error(`"${word}" is not in the ${id} narration`);
-  return Math.round(voiceLead(id) + hit.start * FPS);
+  return Math.round(hit.start * FPS);
 };
 
 // Deterministic pseudo-random in [0, 1).

@@ -2,7 +2,7 @@ import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "rem
 import { at, backOut, clamp, easeInOut, progress } from "../anim";
 import { Captions } from "../components/Captions";
 import { ChapterHeader, Check } from "../components/Kit";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C } from "../theme";
 
 // Line drawing of a column rebar cage: vertical bars rise, then stirrups wrap them one by one.
@@ -46,8 +46,8 @@ const RebarCage: React.FC<{ readonly bars: number; readonly stirrups: number }> 
 
 const STEPS = [
   { word: "حديد", label: "تربيط الحديد" },
-  { word: "بيتراجع", label: "مراجعة على الرسم" },
-  { word: "الخرسانة", label: "استلام قبل الصب" },
+  { word: "بيتراجع", label: "مراجعة على الرسومات" },
+  { word: "مهندس", label: "استلام مهندس الموقع" },
 ] as const;
 
 export const Columns: React.FC = () => {
@@ -123,8 +123,7 @@ export const Columns: React.FC = () => {
         })}
       </div>
       <Captions id="columns" />
-      <Voice id="columns" />
-      <Sfx name="whoosh" at={0} volume={0.3} />
+      <Sfx name="whoosh" at={0} volume={0.1} />
       <Sfx name="riser" at={rise - 10} volume={0.2} />
       {STEPS.map((s) => (
         <Sfx key={s.word} name="pop" at={at("columns", s.word) + 8} volume={0.4} />

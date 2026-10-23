@@ -2,7 +2,7 @@ import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "rem
 import { at, backOut, clamp, easeInOut, progress } from "../anim";
 import { Captions } from "../components/Captions";
 import { ChapterHeader } from "../components/Kit";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C, headingFont } from "../theme";
 
 const FLOORS = ["الأرضي", "الأول", "التاني", "التالت", "الرابع"];
@@ -34,11 +34,11 @@ const Snow: React.FC<{ readonly frame: number }> = ({ frame }) => (
 
 export const Floors: React.FC = () => {
   const frame = useCurrentFrame();
-  const grow = at("floors", "المبنى");
-  const eyes = at("floors", "عينيك");
+  const grow = at("floors", "العمارة");
+  const eyes = at("floors", "عينك");
   const team = at("floors", "وفريقنا");
-  const hot = at("floors", "الحر");
-  const cold = at("floors", "البرد");
+  const hot = at("floors", "حر");
+  const cold = at("floors", "برد");
   const swap = progress(frame, team - 6, 18, easeInOut);
   const lit = interpolate(frame, [0, eyes + 10], [0, FLOORS.length], clamp);
   const gauge = progress(frame, 4, 14) * (1 - progress(frame, team - 6, 12));
@@ -125,8 +125,8 @@ export const Floors: React.FC = () => {
       {/* In the heat and in the cold */}
       <div dir="rtl" style={{ position: "absolute", left: 80, right: 80, top: 1180, display: "flex", gap: 30, justifyContent: "center" }}>
         {[
-          { at: hot, label: "في الحر", icon: <Sun frame={frame} />, tint: "rgba(255,176,32,0.18)" },
-          { at: cold, label: "وفي البرد", icon: <Snow frame={frame} />, tint: "rgba(159,212,255,0.18)" },
+          { at: hot, label: "حر الصيف", icon: <Sun frame={frame} />, tint: "rgba(255,176,32,0.18)" },
+          { at: cold, label: "برد الشتا", icon: <Snow frame={frame} />, tint: "rgba(159,212,255,0.18)" },
         ].map((b) => {
           const p = progress(frame, b.at - 4, 14, backOut);
           return (
@@ -155,8 +155,7 @@ export const Floors: React.FC = () => {
         })}
       </div>
       <Captions id="floors" />
-      <Voice id="floors" />
-      <Sfx name="whoosh" at={0} volume={0.3} />
+      <Sfx name="whoosh" at={0} volume={0.1} />
       {FLOORS.map((f, i) => (
         <Sfx key={f} name="blip" at={((i + 1) / FLOORS.length) * (eyes + 10) - 6} volume={0.25} />
       ))}

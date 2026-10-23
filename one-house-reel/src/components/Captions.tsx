@@ -1,10 +1,10 @@
 import { interpolate, useCurrentFrame } from "remotion";
-import { backOut, clamp, FPS, sceneWords, voiceLead } from "../anim";
+import { backOut, clamp, FPS, sceneWords } from "../anim";
 import type { SceneId } from "../narration";
 import { C, headingFont } from "../theme";
 
 const MAX_WORDS = 4;
-const strip = (w: string) => w.replace(/[.,،:!؟]/g, "");
+const strip = (w: string) => w.replace(/[.,،:!؟?…]/g, "");
 
 // Groups words into short phrases, breaking at punctuation or after MAX_WORDS.
 const phrases = (id: SceneId) => {
@@ -12,7 +12,7 @@ const phrases = (id: SceneId) => {
   let cur: ReturnType<typeof sceneWords> = [];
   for (const w of sceneWords(id)) {
     cur.push(w);
-    if (/[.,،:!؟]$/.test(w.text) || cur.length >= MAX_WORDS) {
+    if (/[.,،:!؟?…]$/.test(w.text) || cur.length >= MAX_WORDS) {
       out.push({ words: cur, start: cur[0].start, end: w.end });
       cur = [];
     }
@@ -21,13 +21,13 @@ const phrases = (id: SceneId) => {
   return out;
 };
 
-// Word-by-word captions synced to the ElevenLabs timings; the spoken word is boxed in red.
+// Word-by-word captions synced to the voiceover word timings; the spoken word is boxed in red.
 export const Captions: React.FC<{ readonly id: SceneId; readonly y?: number }> = ({
   id,
   y = 1490,
 }) => {
   const frame = useCurrentFrame();
-  const t = (frame - voiceLead(id)) / FPS;
+  const t = frame / FPS;
   const list = phrases(id);
   const idx = list.findIndex((p, i) => t < (list[i + 1]?.start ?? p.end + 0.6));
   const phrase = idx >= 0 && t >= list[0].start - 0.1 ? list[idx] : null;

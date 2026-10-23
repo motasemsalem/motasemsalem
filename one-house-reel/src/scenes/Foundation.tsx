@@ -3,7 +3,7 @@ import { at, easeInOut, progress } from "../anim";
 import { Backdrop } from "../components/Backdrop";
 import { Captions } from "../components/Captions";
 import { Callout, ChapterHeader, PhotoCard } from "../components/Kit";
-import { Sfx, Voice } from "../components/Sound";
+import { Sfx } from "../components/Sound";
 import { bodyFont, C } from "../theme";
 
 // Blueprint cross-section of a footing: soil, lean concrete, reinforced footing, column neck.
@@ -53,7 +53,7 @@ const Section: React.FC<{ readonly pc: number; readonly rc: number; readonly nec
 export const Foundation: React.FC = () => {
   const frame = useCurrentFrame();
   const dig = at("foundation", "حفر");
-  const pc = at("foundation", "وخرسانة");
+  const pc = at("foundation", "خرسانة");
   const rc = at("foundation", "وقواعد");
   const calc = at("foundation", "بالحساب");
   const strong = at("foundation", "البيت");
@@ -84,8 +84,7 @@ export const Foundation: React.FC = () => {
         />
       </div>
       <Captions id="foundation" />
-      <Voice id="foundation" />
-      <Sfx name="whoosh" at={0} volume={0.3} />
+      <Sfx name="whoosh" at={0} volume={0.1} />
       <Sfx name="hammer" at={dig} volume={0.25} />
       <Sfx name="swoosh" at={dig} volume={0.3} />
       <Sfx name="blip" at={pc} volume={0.3} />

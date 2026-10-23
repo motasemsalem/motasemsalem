@@ -1,10 +1,10 @@
 import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { clamp } from "../anim";
-import { NARRATION } from "../narration";
+import { SCENES } from "../narration";
 import timeline from "../timeline.json";
 import { bodyFont, C } from "../theme";
 
-const CHAPTERS = NARRATION.slice(2, -1).map((s) => s.id);
+const CHAPTERS = SCENES.slice(2, -1).map((s) => s.id);
 
 // Story-style chapter progress bar, small logo and a site label — shown between the logo and the end card.
 export const Hud: React.FC = () => {
