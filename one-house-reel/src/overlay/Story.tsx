@@ -52,7 +52,7 @@ export const Story: React.FC = () => {
       <Chapter num="01" label="الأساس" from={C.start} to={section("columns") - 4} />
       <Beat from={C.start} to={C.dig - 2} title="كل حاجة بتبدأ من تحت" accent="تحت" />
       <Beat from={C.dig} to={C.lean - 2} title="حفر بالمقاسات" accent="حفر" />
-      <Beat from={C.lean} to={C.footings - 2} title="خرسانة نضيفة" accent="نضيفة" />
+      <Beat from={C.lean} to={C.footings - 2} title="خرسانة نضافة" accent="نضافة" />
       <Beat from={C.footings} to={cue("لأن") - 2} title="قواعد مسلحة" accent="مسلحة" sub="بالحساب الإنشائي" subAt={C.calc} />
       <Beat from={cue("لأن")} to={section("columns") - 4} kicker="البيت القوي" title="بيبان من أساسه" accent="أساسه" sub="مش من دهانه" subAt={cue("مش")} />
 

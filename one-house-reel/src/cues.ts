@@ -44,7 +44,7 @@ export const C = {
   base: cue("والأساس"),
   rewind: cue("تعالى"),
   brand: cue("إحنا"),
-  brandName: cue("وان"),
+  brandName: cue("ون"),
   start: section("foundation"),
   dig: cue("حفر"),
   lean: cue("خرسانة"),
