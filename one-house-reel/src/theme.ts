@@ -37,3 +37,6 @@ export const BRAND = {
   concrete: "#b9b3a7",
   wood: "#d8a35a",
 };
+
+// Soft shadow that keeps white type readable on any footage.
+export const SHADOW = "0 4px 24px rgba(0,0,0,0.7), 0 2px 6px rgba(0,0,0,0.55)";

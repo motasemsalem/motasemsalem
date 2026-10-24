@@ -96,12 +96,3 @@ export const C = {
   cta: cue("احجز"),
   right: cue("صح"),
 };
-
-// The film opens on the finished building, rewinds to an empty plot, then builds in step with the narration.
-// `build` is the construction clock every 3D part reads.
-export const buildClock = (frame: number) => {
-  const finished = C.design;
-  if (frame < C.rewind) return finished;
-  if (frame < C.brand) return interpolate(frame, [C.rewind, C.brand], [finished, C.start], { ...clamp, easing: Easing.in(Easing.quad) });
-  return Math.max(C.start, frame);
-};

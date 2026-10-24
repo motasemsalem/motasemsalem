@@ -7,10 +7,12 @@ export const Phone: React.FC<{
   readonly start: number;
   readonly updates: readonly string[];
   readonly top?: number;
-}> = ({ start, updates, top = 500 }) => {
+  readonly hide?: number;
+}> = ({ start, updates, top = 500, hide = Infinity }) => {
   const frame = useCurrentFrame();
   const phone = pop(frame, start, 18, backOut);
-  if (phone <= 0) return null;
+  if (phone <= 0 || frame > hide + 8) return null;
+  const out = pop(frame, hide, 8);
   return (
     <div
       style={{
@@ -24,6 +26,7 @@ export const Phone: React.FC<{
         border: "10px solid #1c2636",
         boxShadow: "0 60px 120px rgba(0,0,0,0.7), inset 0 0 0 2px rgba(255,255,255,0.15)",
         transform: `translateY(${(1 - phone) * 1600}px) rotate(${(1 - phone) * 12}deg)`,
+        opacity: 1 - out,
         overflow: "hidden",
       }}
     >

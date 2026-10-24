@@ -5,7 +5,7 @@ import timeline from "../timeline.json";
 // How far a sound effect dips while the narrator speaks, so it never covers a word.
 const DUCK = 0.75;
 
-// A one-shot sound effect at an absolute frame.
+// A one-shot sound effect at an absolute frame. "mk/…" names are Mixkit recordings (public/sfx/mk), the rest are synthesized.
 export const Sfx: React.FC<{
   readonly name: string;
   readonly at: number;
@@ -15,7 +15,7 @@ export const Sfx: React.FC<{
   return (
     <Audio
       name={`مؤثر: ${name}`}
-      src={staticFile(`sfx/${name}.wav`)}
+      src={staticFile(name.startsWith("mk/") ? `sfx/${name}.mp3` : `sfx/${name}.wav`)}
       from={from}
       volume={(f) => volume * (1 - DUCK * (timeline.voice[from + f] ?? 0))}
     />
