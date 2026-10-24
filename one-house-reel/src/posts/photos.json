@@ -1,0 +1,97 @@
+{
+ "bare-room": {
+  "file": "post-photos/bare-room.jpg",
+  "w": 1300,
+  "h": 1955
+ },
+ "sign-keys": {
+  "file": "post-photos/sign-keys.jpg",
+  "w": 3072,
+  "h": 1625
+ },
+ "luxe-apartment": {
+  "file": "post-photos/luxe-apartment.jpg",
+  "w": 1300,
+  "h": 1951
+ },
+ "marble": {
+  "file": "post-photos/marble.jpg",
+  "w": 1300,
+  "h": 1733
+ },
+ "porcelain": {
+  "file": "post-photos/porcelain.jpg",
+  "w": 1570,
+  "h": 1625
+ },
+ "wood": {
+  "file": "post-photos/wood.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "swatches": {
+  "file": "post-photos/swatches.jpg",
+  "w": 1300,
+  "h": 1652
+ },
+ "wires-wall": {
+  "file": "post-photos/wires-wall.jpg",
+  "w": 2427,
+  "h": 1625
+ },
+ "electrician": {
+  "file": "post-photos/electrician.jpg",
+  "w": 2441,
+  "h": 1625
+ },
+ "hoses-plan": {
+  "file": "post-photos/hoses-plan.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "ac-lounge": {
+  "file": "post-photos/ac-lounge.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "tv-wall": {
+  "file": "post-photos/tv-wall.jpg",
+  "w": 2708,
+  "h": 1625
+ },
+ "tiler": {
+  "file": "post-photos/tiler.jpg",
+  "w": 2444,
+  "h": 1625
+ },
+ "marble-bath": {
+  "file": "post-photos/marble-bath.jpg",
+  "w": 2413,
+  "h": 1625
+ },
+ "herringbone": {
+  "file": "post-photos/herringbone.jpg",
+  "w": 1625,
+  "h": 1625
+ },
+ "kitchen": {
+  "file": "post-photos/kitchen.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "double-door": {
+  "file": "post-photos/double-door.jpg",
+  "w": 1300,
+  "h": 1951
+ },
+ "big-windows": {
+  "file": "post-photos/big-windows.jpg",
+  "w": 2421,
+  "h": 1625
+ },
+ "villa-dusk": {
+  "file": "post-photos/villa-dusk.jpg",
+  "w": 2396,
+  "h": 1625
+ }
+}

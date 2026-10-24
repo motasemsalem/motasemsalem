@@ -20,18 +20,19 @@
 
 ## ريل التشطيبات (`FinishingReel`)
 
-ريل عمودي (1080×1920، حوالي 80 ثانية) لتشطيب الشقق والفلل وتجديدها. الريل بيمشي مع العميل خطوة بخطوة، من المعاينة لحد ما يستلم المفتاح، وكل بنود التشطيب بصور وفيديوهات حقيقية ومتظبطة على كلام التعليق الصوتي. النسخة المرندرة: [`renders/finishing-reel.mp4`](renders/finishing-reel.mp4) · السكريبت: [`FINISHING-SCRIPT.md`](FINISHING-SCRIPT.md).
+ريل عمودي (1080×1920، حوالي 80 ثانية) لتشطيب الشقق والفلل وتجديدها. الريل بيمشي مع العميل خطوة بخطوة، من المعاينة لحد ما يستلم المفتاح، وكل جملة عليها فيديو حقيقي (Pexels، أغلبه 4K متصور بالطول) بيوري نفس اللي بيتقال. الحركة هادية: لقطة لكل جملة، والجمل اللي فيها قايمة بنود بتظهر شاشة مقسومة، وكل بند في شريحة على كلمته. النسخة المرندرة: [`renders/finishing-reel.mp4`](renders/finishing-reel.mp4) · السكريبت: [`FINISHING-SCRIPT.md`](FINISHING-SCRIPT.md).
 
 ```console
-PIXABAY_KEY=... python3 scripts/prepare-finishing.py              # الصور والفيديوهات في public/finishing (مكبّرة بـ Real-ESRGAN)
+python3 scripts/prepare-finishing.py                             # فيديوهات Pexels في public/finishing
 python3 scripts/finishing-timeline.py path/to/recording.mp3      # التعليق الصوتي في public/finishing-vo وتوقيت كل كلمة
 python3 scripts/finishing-music.py                               # الموسيقى: الـ drop على «الشياكة»
 npx remotion render FinishingReel renders/finishing-reel.mp4
 ```
 
 - `src/finishing/FinishingReel.tsx`: ترتيب اللقطات والكلام والمؤثرات على كلمات التعليق.
-- `src/finishing/kit.tsx`: الصور بحركة كاميرا، والفيديوهات، والألوان، والانتقالات.
-- `src/finishing/overlays.tsx`: العناوين، والبنود بعلامة ✓، وعرض السعر والعقد، وعداد الضغط، واختبار المية، والليزر، والموبايل، والنهاية.
+- `src/finishing/kit.tsx`: الفيديوهات بحركة كاميرا هادية، والشاشة المقسومة، والألوان، والانتقالات.
+- `scripts/finishing_media.py`: رقم فيديو Pexels لكل لقطة. لو عندك فيديو من شغلكم، حطه في `public/finishing/<الاسم>.mp4`.
+- `src/finishing/overlays.tsx`: العناوين، وبنود المراحل بعلامة ✓، وعرض السعر والعقد، وعداد الضغط، واختبار المية، والليزر، والموبايل، والنهاية.
 
 ## الملفات
 

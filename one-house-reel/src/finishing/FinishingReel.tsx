@@ -2,9 +2,9 @@ import { Audio } from "@remotion/media";
 import { AbsoluteFill, Sequence, staticFile } from "remotion";
 import { Flash, Title } from "../overlay/Cine";
 import { at, section, TOTAL } from "./cues";
-import { Finish, LightLeak, type ShotDef, Sfx, Shots } from "./kit";
+import { Finish, LightLeak, type PanelDef, Panels, type ShotDef, Sfx, Shots } from "./kit";
 import { SCENES, type SceneId } from "./narration";
-import { EndCard, Gauge, InsideOut, Items, Laser, Phone, Quote, Trade, Watermark, WaterTest } from "./overlays";
+import { EndCard, Gauge, InsideOut, Laser, Phone, Quote, Trade, Watermark, WaterTest } from "./overlays";
 
 // One House finishing reel (1080x1920): the client's journey from the first visit to the keys, every trade on
 // real photos and clips, cut word by word to the voiceover in public/finishing-vo. Script: FINISHING-SCRIPT.md.
@@ -14,54 +14,111 @@ const next = (id: SceneId) => {
   return i + 1 < SCENES.length ? section(SCENES[i + 1].id) : TOTAL;
 };
 
+// One shot per phrase (two where the line turns), so each picture stays up long enough to read.
+// The list lines (materials, systems, floors, paint, carpentry, fittings) are split screens, see PANELS.
 const SHOTS: ShotDef[] = [
-  { media: "bare-room", from: at("hook"), move: "in", look: "site" },
-  { media: "sign-keys", from: at("hook", "اتفرج"), move: "in", look: "site" },
-  { media: "luxe-apartment", from: at("promise"), move: "in" },
-  { media: "plan-tape", from: at("visit"), move: "left", look: "site" },
-  { media: "render-lounge", from: at("design"), move: "in", look: "xray" },
-  { media: "render-lounge", from: at("design", "تشوف"), move: "out" },
-  { media: "tablet", from: at("materials") },
-  { media: "porcelain", from: at("materials", "بورسلين"), move: "left" },
-  { media: "marble", from: at("materials", "رخام"), move: "up" },
-  { media: "wood", from: at("materials", "باركيه"), move: "right" },
-  { media: "swatches", from: at("materials", "وألوانك"), move: "in" },
-  { media: "handshake", from: at("quote"), move: "in", look: "site" },
-  { media: "luxe-apartment", from: at("hidden"), move: "out" },
-  { media: "wires-wall", from: at("hidden", "باين"), move: "in", look: "xray" },
-  { media: "wall-hole", from: at("demo"), move: "in", look: "site" },
-  { media: "chisel-tiles", from: at("demo", "لو"), move: "left", look: "site" },
-  { media: "electrician", from: at("electric"), move: "right", look: "site", focus: 0.35 },
-  { media: "panel-hands", from: at("electric", "وسلك"), move: "in", look: "site" },
-  { media: "plumbing", from: at("plumbing"), look: "site" },
-  { media: "hoses-plan", from: at("plumbing", "قبل"), move: "left", look: "site" },
-  { media: "bath-stripped", from: at("insulation"), move: "in", look: "site" },
-  { media: "ac-lounge", from: at("systems"), move: "left" },
-  { media: "cctv", from: at("systems", "وكاميرات"), move: "in", look: "site" },
-  { media: "smart-tablet", from: at("systems", "وسمارت"), move: "right" },
-  { media: "level-hands", from: at("plaster"), move: "right", look: "site" },
-  { media: "linear-lights", from: at("luxe"), move: "up" },
-  { media: "tv-wall", from: at("gypsum"), move: "left" },
-  { media: "tiler", from: at("floors"), move: "right", look: "site" },
-  { media: "marble-bath", from: at("floors", "ورخام"), move: "in" },
-  { media: "herringbone", from: at("floors", "وباركيه"), move: "up" },
-  { media: "paint", from: at("paint") },
-  { media: "wood-bedroom", from: at("paint", "وتجاليد"), move: "in" },
-  { media: "kitchen", from: at("carpentry"), move: "left" },
-  { media: "walk-in", from: at("carpentry", "ودريسنج"), move: "in" },
-  { media: "double-door", from: at("carpentry", "وأبواب"), move: "in" },
-  { media: "big-windows", from: at("fittings"), move: "right" },
-  { media: "shower-dark", from: at("fittings", "وأطقم"), move: "in" },
-  { media: "villa-dusk", from: at("villa"), move: "left" },
-  { media: "villa-pool", from: at("villa", "ولاندسكيب"), move: "right" },
-  { media: "kitchen", from: at("follow"), move: "out" },
-  { media: "cleaning", from: at("handover"), move: "in" },
-  { media: "keys-house", from: at("handover", "جاهزة"), move: "in" },
+  { media: "contract", from: at("hook"), look: "site" },
+  { media: "brief", from: at("promise") },
+  { media: "level-room", from: at("visit"), look: "site" },
+  { media: "listen", from: at("visit", "ويسمع") },
+  { media: "designer", from: at("design") },
+  { media: "render-room", from: at("design", "تشوف") },
+  { media: "samples", from: at("materials") },
+  { media: "porcelain", from: at("materials", "بورسلين") },
+  { media: "quote", from: at("quote"), look: "site" },
+  { media: "luxe-white", from: at("hidden") },
+  { media: "conduits", from: at("hidden", "باين"), look: "xray" },
+  { media: "demolition", from: at("demo"), look: "site" },
+  { media: "drilling", from: at("electric"), look: "site", focus: 0.42 },
+  { media: "wires", from: at("electric", "وسلك"), look: "site" },
+  { media: "pipes", from: at("plumbing"), look: "site" },
+  { media: "wrench", from: at("plumbing", "قبل"), look: "site" },
+  { media: "screed", from: at("insulation"), look: "site", focus: 0.45 },
+  { media: "ac", from: at("systems") },
+  { media: "straightedge", from: at("plaster"), look: "site" },
+  { media: "luxe-lights", from: at("luxe") },
+  { media: "cove", from: at("gypsum") },
+  { media: "tiling", from: at("floors") },
+  { media: "roller", from: at("paint") },
+  { media: "kitchen", from: at("carpentry") },
+  { media: "slider", from: at("fittings") },
+  { media: "villa", from: at("villa") },
+  { media: "landscape", from: at("villa", "ولاندسكيب") },
+  { media: "skim", from: at("follow"), look: "site" },
+  { media: "cleaning", from: at("handover") },
+  { media: "move-in", from: at("handover", "جاهزة") },
 ];
+
+// Split screens: one band per item, each on its word.
+const PANELS: { id: SceneId; heading: string; from: number; rows: PanelDef[] }[] = [
+  {
+    id: "materials",
+    heading: "اختار خاماتك بإيدك",
+    from: at("materials", "بورسلين"),
+    rows: [
+      { media: "porcelain", at: at("materials", "بورسلين"), label: "بورسلين" },
+      { media: "marble", at: at("materials", "رخام"), label: "رخام" },
+      { media: "parquet", at: at("materials", "باركيه"), label: "باركيه", focusY: 0.7 },
+      { media: "colors", at: at("materials", "وألوانك"), label: "وألوانك" },
+    ],
+  },
+  {
+    id: "systems",
+    heading: "تأسيس الأنظمة",
+    from: at("systems"),
+    rows: [
+      { media: "ac", at: at("systems", "تكييف"), label: "تكييف", focusY: 0.3 },
+      { media: "tv", at: at("systems", "ونت"), label: "نت ودش", focusY: 0.45 },
+      { media: "cctv", at: at("systems", "وكاميرات"), label: "كاميرات", focusY: 0.45 },
+      { media: "smart", at: at("systems", "وسمارت"), label: "سمارت هوم", focusY: 0.5 },
+    ],
+  },
+  {
+    id: "floors",
+    heading: "أرضيات بالميزان",
+    from: at("floors"),
+    rows: [
+      { media: "tiling", at: at("floors"), label: "بورسلين" },
+      { media: "marble-floor", at: at("floors", "ورخام"), label: "رخام", focusY: 0.7 },
+      { media: "parquet", at: at("floors", "وباركيه"), label: "باركيه", focusY: 0.75 },
+    ],
+  },
+  {
+    id: "paint",
+    heading: "دهانات وتجاليد",
+    from: at("paint"),
+    rows: [
+      { media: "roller", at: at("paint"), label: "دهانات", focusY: 0.4 },
+      { media: "panelled", at: at("paint", "وورق"), label: "ورق حائط", focusY: 0.4 },
+      { media: "wood-clad", at: at("paint", "وتجاليد"), label: "تجاليد خشب", focusY: 0.45 },
+    ],
+  },
+  {
+    id: "carpentry",
+    heading: "نجارة على المقاس",
+    from: at("carpentry"),
+    rows: [
+      { media: "kitchen", at: at("carpentry"), label: "مطابخ", focusY: 0.55 },
+      { media: "closet", at: at("carpentry", "ودريسنج"), label: "دريسنج" },
+      { media: "door", at: at("carpentry", "وأبواب"), label: "أبواب", focusY: 0.45 },
+    ],
+  },
+  {
+    id: "fittings",
+    heading: "وكل التركيبات",
+    from: at("fittings"),
+    rows: [
+      { media: "slider", at: at("fittings"), label: "ألوميتال", focusY: 0.45 },
+      { media: "bath", at: at("fittings", "وأطقم"), label: "أطقم حمامات", focusY: 0.55 },
+      { media: "lights", at: at("fittings", "وكل"), label: "إضاءة وكهرباء", focusY: 0.35 },
+    ],
+  },
+];
+
 
 // Whooshes on the section cuts, ticks on the checks, and a few literal sounds.
 const SOUNDS: { name: string; at: number; volume?: number }[] = [
-  ...SCENES.slice(1, -2).map((s) => ({ name: "mk/whoosh-fast", at: section(s.id) - 6, volume: 0.22 })),
+  ...SCENES.slice(1, -2).map((s) => ({ name: "mk/whoosh-fast", at: section(s.id) - 6, volume: 0.16 })),
   { name: "mk/pen-write-paper", at: at("hook", "اتفرج"), volume: 0.35 },
   { name: "mk/data-scan", at: at("design"), volume: 0.3 },
   { name: "mk/shimmer-sparkle-sweep", at: at("design", "تشوف") - 4, volume: 0.3 },
@@ -102,68 +159,43 @@ export const FinishingReel: React.FC = () => (
     <LightLeak at={at("design", "تشوف") - 6} />
     <LightLeak at={at("luxe") - 4} length={34} />
     <LightLeak at={at("handover", "جاهزة") - 4} />
-    <Flash at={at("hidden", "باين")} color="#8fd8ff" peak={0.55} />
-    <Flash at={at("brand")} peak={0.8} />
+    <Flash at={at("hidden", "باين")} color="#8fd8ff" peak={0.35} />
+    <Flash at={at("brand")} peak={0.5} />
 
-    <Title from={at("hook")} to={at("hook", "اتفرج") - 2} text="قبل ما تمضي عقد تشطيب…" accent="عقد" size={92} top={1240} />
-    <Title from={at("hook", "اتفرج")} to={at("promise") - 2} text="اتفرج على ده للآخر" accent="للآخر" size={96} top={1260} />
+    {/* One card for the whole hook: the warning, then the ask under it. */}
+    <Title from={at("hook")} to={at("promise") - 2} text="قبل ما تمضي عقد تشطيب…" accent="عقد" sub="اتفرج على ده للآخر" subAt={at("hook", "اتفرج")} size={92} top={1240} />
     <Title from={at("promise", "هتعرف")} to={next("promise") - 2} kicker="في ون هاوس" kickerAt={at("promise")} text="هتعرف كل خطوة قبل ما تحصل" accent="خطوة" size={92} top={1200} />
     <Title from={at("visit", "معاينة")} to={next("visit") - 2} kicker="مهندس بينزلك" kickerAt={at("visit")} text="معاينة ببلاش" accent="ببلاش" sub="يقيس… ويسمع إنت عاوز إيه" subAt={at("visit", "يقيس")} size={110} top={1200} />
     <Title from={at("design")} to={next("design") - 2} text="تصميم 3D" accent="3D" sub="تشوف شقتك قبل ما نبدأ" subAt={at("design", "تشوف")} size={120} top={1240} />
-    <Items
-      from={at("materials")}
-      to={next("materials") - 2}
-      heading="اختار خاماتك بإيدك"
-      items={[
-        { at: at("materials", "بورسلين"), text: "بورسلين" },
-        { at: at("materials", "رخام"), text: "رخام" },
-        { at: at("materials", "باركيه"), text: "باركيه" },
-        { at: at("materials", "وألوانك"), text: "وألوانك" },
-      ]}
-      top={1020}
-    />
+    <Title from={at("materials")} to={at("materials", "بورسلين") - 2} text="وتختار خاماتك بإيدك" accent="بإيدك" size={96} top={1260} />
+    {PANELS.map((p) => (
+      <Panels key={p.id} from={p.from} to={next(p.id) - 2} heading={p.heading} rows={p.rows} />
+    ))}
     <Quote from={at("quote")} contractAt={at("quote", "وعقد")} stampAt={at("quote", "ومفيش")} to={next("quote") - 2} />
     <Title from={at("hidden")} to={next("hidden") - 2} text="نبدأ باللي مش باين" accent="مش باين" sub="لأنه أهم حاجة" subAt={at("hidden", "لأنه")} size={100} top={1240} />
 
     {/* Test graphics sit under the trade labels. */}
     <Gauge from={at("plumbing", "مواسير")} to={next("plumbing") - 2} holdAt={at("plumbing", "الحيطة")} />
     <WaterTest from={at("insulation", "ومية")} to={next("insulation") - 2} doneAt={at("insulation", "البلاط")} />
-    <Trade from={at("demo")} to={next("demo") - 2} n={1} of={6} name="تكسير وتجديد" points={[{ at: at("demo", "لو"), text: "لو الشقة قديمة" }]} />
+    <Trade from={at("demo")} to={next("demo") - 2} n={1} of={5} name="تكسير وتجديد" points={[{ at: at("demo", "لو"), text: "لو الشقة قديمة" }]} />
     <Trade
       from={at("electric")}
       to={next("electric") - 2}
       n={2}
-      of={6}
+      of={5}
       name="كهربا"
       points={[
         { at: at("electric", "كل"), text: "كل دايرة لوحدها" },
         { at: at("electric", "وسلك"), text: "سلك بالمقاس الصح" },
       ]}
     />
-    <Trade from={at("plumbing")} to={next("plumbing") - 2} n={3} of={6} name="سباكة" points={[{ at: at("plumbing", "بالضغط"), text: "اختبار ضغط قبل ما الحيطة تتقفل" }]} />
-    <Trade from={at("insulation")} to={next("insulation") - 2} n={4} of={6} name="عزل الحمامات والمطابخ" points={[{ at: at("insulation", "ومية"), text: "مية تقعد يومين قبل البلاط" }]} />
-    <Trade
-      from={at("systems")}
-      to={next("systems") - 2}
-      n={5}
-      of={6}
-      name="تأسيس"
-      points={[
-        { at: at("systems", "تكييف"), text: "تكييف" },
-        { at: at("systems", "ونت"), text: "نت ودش" },
-        { at: at("systems", "وكاميرات"), text: "كاميرات" },
-        { at: at("systems", "وسمارت"), text: "سمارت هوم" },
-      ]}
-    />
-    <Trade from={at("plaster")} to={next("plaster") - 2} n={6} of={6} name="محارة بالقدة والميزان" points={[{ at: at("plaster", "الحيطة"), text: "الحيطة مستقيمة" }]} />
+    <Trade from={at("plumbing")} to={next("plumbing") - 2} n={3} of={5} name="سباكة" points={[{ at: at("plumbing", "بالضغط"), text: "اختبار ضغط قبل ما الحيطة تتقفل" }]} />
+    <Trade from={at("insulation")} to={next("insulation") - 2} n={4} of={5} name="عزل الحمامات والمطابخ" points={[{ at: at("insulation", "ومية"), text: "مية تقعد يومين قبل البلاط" }]} />
+    <Trade from={at("plaster")} to={next("plaster") - 2} n={5} of={5} name="محارة بالقدة والميزان" points={[{ at: at("plaster", "الحيطة"), text: "الحيطة مستقيمة" }]} />
     <Laser from={at("plaster", "والميزان")} to={next("plaster") - 2} okAt={at("plaster", "المسطرة")} />
 
     <Title from={at("luxe", "تيجي")} to={next("luxe") - 2} kicker="وبعدين" kickerAt={at("luxe")} text="تيجي الشياكة" accent="الشياكة" size={130} top={1180} />
     <Title from={at("gypsum")} to={next("gypsum") - 2} text="جبس بورد وإضاءة مخفية" accent="مخفية" size={96} top={1240} />
-    <Items from={at("floors")} to={next("floors") - 2} heading="أرضيات بالميزان" items={[{ at: at("floors"), text: "بورسلين" }, { at: at("floors", "ورخام"), text: "رخام" }, { at: at("floors", "وباركيه"), text: "باركيه" }]} top={1080} />
-    <Items from={at("paint")} to={next("paint") - 2} items={[{ at: at("paint"), text: "دهانات" }, { at: at("paint", "وورق"), text: "ورق حائط" }, { at: at("paint", "وتجاليد"), text: "تجاليد خشب" }]} top={1230} />
-    <Items from={at("carpentry")} to={next("carpentry") - 2} items={[{ at: at("carpentry"), text: "مطابخ" }, { at: at("carpentry", "ودريسنج"), text: "دريسنج" }, { at: at("carpentry", "وأبواب"), text: "أبواب" }]} top={1230} />
-    <Items from={at("fittings")} to={next("fittings") - 2} items={[{ at: at("fittings"), text: "ألوميتال" }, { at: at("fittings", "وأطقم"), text: "أطقم حمامات" }, { at: at("fittings", "وكل"), text: "وكل التركيبات" }]} top={1230} />
     <Title from={at("villa", "واجهات")} to={next("villa") - 2} kicker="ولو فيلا" kickerAt={at("villa")} text="واجهات ولاندسكيب" accent="ولاندسكيب" size={100} top={1240} />
 
     {/* Dim the room behind the phone. */}
@@ -174,9 +206,9 @@ export const FinishingReel: React.FC = () => (
       from={at("follow")}
       to={next("follow") - 2}
       messages={[
-        { at: at("follow", "كل"), photo: "electrician", text: "الكهربا خلصت" },
-        { at: at("follow", "بالصور"), photo: "level-hands", text: "المحارة خلصت" },
-        { at: at("follow", "مسافر"), photo: "tiler", text: "البلاط خلص" },
+        { at: at("follow", "كل"), photo: "drilling-still", text: "الكهربا خلصت" },
+        { at: at("follow", "بالصور"), photo: "straightedge-still", text: "المحارة خلصت" },
+        { at: at("follow", "مسافر"), photo: "tiling-still", text: "البلاط خلص" },
       ]}
     />
     <Title from={at("follow", "حتى")} to={next("follow") - 2} kicker="متابع كل مرحلة بالصور" kickerAt={at("follow")} text="حتى لو مسافر" accent="مسافر" size={92} top={1380} />

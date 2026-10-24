@@ -1,7 +1,7 @@
-import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { backOut, clamp, easeInOut, easeOut, pop } from "../cues";
 import { bodyFont, BRAND, headingFont, SHADOW } from "../theme";
-import { Photo } from "./kit";
+import { Media } from "./kit";
 
 // On-screen graphics for the finishing reel. Every one takes absolute frames and hides itself outside [from, to].
 
@@ -304,7 +304,7 @@ export const Phone: React.FC<{ readonly from: number; readonly to: number; reado
                 <div style={{ position: "relative", width: 380, height: 170, borderRadius: 16, overflow: "hidden" }}>
                   {/* The full 9:16 shot scaled to the bubble's width, centred vertically. */}
                   <div style={{ position: "absolute", left: 0, top: -253, width: 1080, height: 1920, transform: "scale(0.352)", transformOrigin: "0 0" }}>
-                    <Photo name={m.photo} move="in" look="site" t={0.5} />
+                    <Media name={m.photo} move="in" look="site" t={0.5} />
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 6px 2px" }}>
@@ -339,12 +339,15 @@ export const InsideOut: React.FC<{ readonly from: number; readonly to: number; r
   };
   return (
     <AbsoluteFill>
-      <AbsoluteFill>
-        <Photo name="luxe-apartment" move="in" look="warm" t={t} />
-      </AbsoluteFill>
-      <AbsoluteFill style={{ clipPath: `inset(${top}px 0 ${1920 - bottom}px 0)` }}>
-        <Photo name="wires-wall" move="out" look="xray" t={t} />
-      </AbsoluteFill>
+      {/* The clips start with the card. */}
+      <Sequence from={from} layout="none">
+        <AbsoluteFill>
+          <Media name="luxe-white" move="in" look="warm" t={t} />
+        </AbsoluteFill>
+        <AbsoluteFill style={{ clipPath: `inset(${top}px 0 ${1920 - bottom}px 0)` }}>
+          <Media name="conduits" move="out" look="xray" t={t} />
+        </AbsoluteFill>
+      </Sequence>
       {band > 0 && (
         <>
           <div style={{ position: "absolute", left: 0, right: 0, top: top - 2, height: 4, background: "#8fd8ff", boxShadow: "0 0 24px 6px rgba(95,200,255,0.8)" }} />
@@ -368,7 +371,9 @@ export const EndCard: React.FC<{ readonly from: number }> = ({ from }) => {
   return (
     <AbsoluteFill style={{ opacity: p }}>
       <AbsoluteFill style={{ filter: "blur(14px) brightness(0.45)", transform: "scale(1.1)" }}>
-        <Photo name="kitchen" move="in" look="warm" t={(f - from) / 90} />
+        <Sequence from={from} layout="none">
+          <Media name="kitchen" move="in" look="warm" t={(f - from) / 130} />
+        </Sequence>
       </AbsoluteFill>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 42%, rgba(6,36,72,0.35), rgba(2,13,28,0.92) 75%)" }} />
       <div dir="rtl" style={{ position: "absolute", top: 470, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 34 }}>

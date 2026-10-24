@@ -1,49 +1,56 @@
-# Media for the finishing reel (src/finishing). Photos are Pixabay ids, clips are Mixkit ids; credits in CREDITS.md.
-# scripts/prepare-finishing.py downloads them into public/finishing/.
+# Media for the finishing reel (src/finishing): Pexels videos, picked line by line to match the voiceover.
+# scripts/prepare-finishing.py downloads them into public/finishing/ (not committed).
 
-# name -> Pixabay photo id
-PHOTOS = {
-    "bare-room": 682484,       # empty room with a ladder, before finishing
-    "sign-keys": 3701777,      # signing a contract next to house keys
-    "luxe-apartment": 6572403, # finished modern apartment, glossy floor
-    "plan-tape": 3152429,      # floor plan and tape measure
-    "level-hands": 1080599,    # spirit level on a tiled floor
-    "render-lounge": 2685521,  # 3D render of a lounge
-    "marble": 1006628,         # white marble
-    "porcelain": 1478497,      # large porcelain floor
-    "wood": 2857073,           # wood planks
-    "swatches": 1744624,       # paint colour cards
-    "handshake": 4131482,      # handshake in an office
-    "wires-wall": 1696757,     # cables in conduits inside a wall
-    "wall-hole": 540830,       # broken-through wall
-    "chisel-tiles": 2668410,   # chiselling off old tiles
-    "electrician": 1080554,    # electrician fitting a socket
-    "panel-hands": 4198293,    # hands wiring a distribution board
-    "hoses-plan": 7689068,     # plumbing hoses on a plan
-    "bath-stripped": 3248474,  # bathroom stripped for renovation
-    "ac-lounge": 4148894,      # lounge with split AC and cove lighting
-    "cctv": 7267551,           # security cameras on a wall
-    "smart-tablet": 3920905,   # smart-home app on a tablet
-    "linear-lights": 7300384,  # linear ceiling lights
-    "tv-wall": 998265,         # TV wall with gypsum ceiling and spots
-    "tiler": 1080596,          # tiler laying a large tile
-    "marble-bath": 1737171,    # black marble bathroom
-    "herringbone": 7437972,    # herringbone parquet and stairs
-    "wood-bedroom": 2929723,   # bedroom with wood wall cladding
-    "kitchen": 10508073,       # modern kitchen with island
-    "walk-in": 3615613,        # walk-in dressing room
-    "double-door": 3117027,    # white double doors
-    "big-windows": 10517295,   # lounge with large black window frames
-    "shower-dark": 8323836,    # dark tiled shower
-    "villa-pool": 4955087,     # villa with pool at dusk
-    "villa-dusk": 5102547,     # modern villa facade at dusk
-    "cleaning": 2799475,       # gloved hand cleaning a counter
-    "keys-house": 4503738,     # house model and keys
+# name -> (Pexels video id, in-point in seconds)
+CLIPS = {
+    "contract": (8814707, 0.5),         # signing a contract in a folder
+    "brief": (7646289, 1.0),            # engineer going over a clipboard with the client
+    "level-room": (7817047, 1.0),       # engineer with a spirit level in an empty white room
+    "listen": (8293004, 1.0),           # couple choosing with the designer
+    "designer": (7504761, 4.0),         # designer modelling furniture on screen
+    "render-room": (40398039, 0.0),     # finished modern living room, the "3D" reveal
+    "samples": (7490437, 2.0),          # tile samples shown to the client
+    "porcelain": (4475615, 1.0),        # ceramic tiles laid out
+    "marble": (7830742, 1.0),           # marble surface
+    "parquet": (19228170, 2.0),         # foyer with hardwood floor
+    "colors": (8835702, 3.0),           # paint colour fan
+    "quote": (8725953, 0.5),            # signing papers on a desk
+    "luxe-white": (40398038, 0.0),      # luxury white living room
+    "conduits": (5930434, 0.5),         # conduits and boxes inside an unfinished wall
+    "demolition": (12568633, 1.0),      # breaking out a new doorway
+    "drilling": (34572318, 0.5),        # drilling a wall for wiring
+    "wires": (5090777, 2.0),            # hands sorting cable
+    "pipes": (8853520, 0.5),            # joining water pipes
+    "wrench": (8853515, 1.0),           # tightening a pipe joint
+    "screed": (24906854, 3.0),          # floor prepared before tiling
+    "ac": (39936357, 0.0),              # bedroom with a split AC
+    "tv": (37296802, 0.0),              # living room with a TV wall
+    "cctv": (34106136, 2.0),            # security camera on a facade
+    "smart": (39425769, 1.0),           # smart lamp switched by hand
+    "straightedge": (6474171, 1.0),     # long level checking a wall
+    "luxe-lights": (40398042, 0.0),     # white living room with pendant lights
+    "cove": (37674127, 0.0),            # gypsum ceiling with hidden cove lighting
+    "tiling": (24906852, 4.0),          # laying large porcelain tiles
+    "marble-floor": (37296795, 0.0),    # black and white marble living room
+    "roller": (6474137, 2.0),           # painting with a roller
+    "panelled": (40187581, 0.0),        # classic panelled walls
+    "wood-clad": (34236998, 0.0),       # wood-clad bedroom
+    "kitchen": (40187587, 0.0),         # kitchen with a marble island
+    "closet": (15887130, 1.0),          # walk-in dressing room
+    "door": (10240699, 2.0),            # white panel door
+    "slider": (8045174, 2.0),           # sliding glass door to the terrace
+    "bath": (40397795, 0.0),            # marble shower with brushed fittings
+    "lights": (34317035, 1.0),          # crystal pendant lights
+    "villa": (39576501, 0.0),           # modern villa facade by the pool
+    "landscape": (34812171, 4.0),       # villa and garden from above
+    "skim": (6474181, 1.0),             # skimming a wall, behind the phone
+    "cleaning": (6195527, 1.0),         # cleaning the finished kitchen
+    "move-in": (7579428, 1.0),          # couple opening the door of their new home
 }
 
-# name -> (Mixkit clip id, horizontal centre of the 9:16 crop)
-CLIPS = {
-    "plumbing": (49023, 0.42),  # plumber at a manifold
-    "paint": (2296, 0.62),      # painting a wall
-    "tablet": (41185, 0.50),    # scrolling interiors on a tablet (already vertical)
+# Stills cut from the clips, for the phone and the brand card: name -> (clip, seconds into the prepared clip)
+STILLS = {
+    "drilling-still": ("drilling", 2.0),
+    "straightedge-still": ("straightedge", 2.0),
+    "tiling-still": ("tiling", 2.0),
 }

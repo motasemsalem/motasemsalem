@@ -1,8 +1,8 @@
 import { AbsoluteFill, Img, staticFile } from "remotion";
 import { BRAND, bodyFont, headingFont } from "../theme";
-import media from "../finishing/media.json";
+import media from "./photos.json";
 
-// Facebook feed posts (1080x1350) for finishing and renovation, built on the finishing reel's photos (public/finishing).
+// Facebook feed posts (1080x1350) for finishing and renovation, on Pixabay photos (scripts/prepare-post-photos.py).
 // One frame for all of them, like a big brand's feed: full-bleed photo, logo, gold rule, and the same footer.
 // A "|" in a title is a line break; words in `accent` turn gold.
 export const FPOST_W = 1080;
@@ -159,7 +159,7 @@ export type FPostId = keyof typeof FPOSTS;
 
 const Photo: React.FC<{ readonly name: string; readonly pos?: string; readonly style?: React.CSSProperties }> = ({ name, pos = "50% 50%", style }) => {
   const m = MEDIA[name];
-  if (!m) throw new Error(`No photo "${name}" in media.json`);
+  if (!m) throw new Error(`No photo "${name}" in photos.json`);
   return <Img src={staticFile(m.file)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: pos, filter: GRADE, ...style }} />;
 };
 

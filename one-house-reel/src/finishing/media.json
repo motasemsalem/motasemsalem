@@ -1,182 +1,278 @@
 {
- "bare-room": {
-  "file": "finishing/bare-room.jpg",
-  "w": 1529,
-  "h": 2300
+ "contract": {
+  "file": "finishing/contract.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "sign-keys": {
-  "file": "finishing/sign-keys.jpg",
-  "w": 4349,
-  "h": 2300
+ "brief": {
+  "file": "finishing/brief.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "luxe-apartment": {
-  "file": "finishing/luxe-apartment.jpg",
-  "w": 1533,
-  "h": 2300
+ "level-room": {
+  "file": "finishing/level-room.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "plan-tape": {
-  "file": "finishing/plan-tape.jpg",
-  "w": 3459,
-  "h": 2300
+ "listen": {
+  "file": "finishing/listen.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "level-hands": {
-  "file": "finishing/level-hands.jpg",
-  "w": 3455,
-  "h": 2300
+ "designer": {
+  "file": "finishing/designer.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "render-lounge": {
-  "file": "finishing/render-lounge.jpg",
-  "w": 4089,
-  "h": 2300
+ "render-room": {
+  "file": "finishing/render-room.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "marble": {
-  "file": "finishing/marble.jpg",
-  "w": 1725,
-  "h": 2300
+ "samples": {
+  "file": "finishing/samples.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
  "porcelain": {
-  "file": "finishing/porcelain.jpg",
-  "w": 2223,
-  "h": 2300
+  "file": "finishing/porcelain.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "wood": {
-  "file": "finishing/wood.jpg",
-  "w": 3451,
-  "h": 2300
+ "marble": {
+  "file": "finishing/marble.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "swatches": {
-  "file": "finishing/swatches.jpg",
-  "w": 1809,
-  "h": 2300
+ "parquet": {
+  "file": "finishing/parquet.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "handshake": {
-  "file": "finishing/handshake.jpg",
-  "w": 3451,
-  "h": 2300
+ "colors": {
+  "file": "finishing/colors.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "wires-wall": {
-  "file": "finishing/wires-wall.jpg",
-  "w": 3435,
-  "h": 2300
+ "quote": {
+  "file": "finishing/quote.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "wall-hole": {
-  "file": "finishing/wall-hole.jpg",
-  "w": 1533,
-  "h": 2300
+ "luxe-white": {
+  "file": "finishing/luxe-white.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "chisel-tiles": {
-  "file": "finishing/chisel-tiles.jpg",
-  "w": 3447,
-  "h": 2300
+ "conduits": {
+  "file": "finishing/conduits.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "electrician": {
-  "file": "finishing/electrician.jpg",
-  "w": 3455,
-  "h": 2300
+ "demolition": {
+  "file": "finishing/demolition.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "panel-hands": {
-  "file": "finishing/panel-hands.jpg",
-  "w": 3451,
-  "h": 2300
+ "drilling": {
+  "file": "finishing/drilling.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "hoses-plan": {
-  "file": "finishing/hoses-plan.jpg",
-  "w": 3451,
-  "h": 2300
+ "wires": {
+  "file": "finishing/wires.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "bath-stripped": {
-  "file": "finishing/bath-stripped.jpg",
-  "w": 3451,
-  "h": 2300
+ "pipes": {
+  "file": "finishing/pipes.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "ac-lounge": {
-  "file": "finishing/ac-lounge.jpg",
-  "w": 3451,
-  "h": 2300
+ "wrench": {
+  "file": "finishing/wrench.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "screed": {
+  "file": "finishing/screed.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
+ },
+ "ac": {
+  "file": "finishing/ac.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "tv": {
+  "file": "finishing/tv.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
  "cctv": {
-  "file": "finishing/cctv.jpg",
-  "w": 3451,
-  "h": 2300
+  "file": "finishing/cctv.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "smart-tablet": {
-  "file": "finishing/smart-tablet.jpg",
-  "w": 3451,
-  "h": 2300
+ "smart": {
+  "file": "finishing/smart.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "linear-lights": {
-  "file": "finishing/linear-lights.jpg",
-  "w": 1533,
-  "h": 2300
+ "straightedge": {
+  "file": "finishing/straightedge.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "tv-wall": {
-  "file": "finishing/tv-wall.jpg",
-  "w": 3833,
-  "h": 2300
+ "luxe-lights": {
+  "file": "finishing/luxe-lights.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "tiler": {
-  "file": "finishing/tiler.jpg",
-  "w": 3459,
-  "h": 2300
+ "cove": {
+  "file": "finishing/cove.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "marble-bath": {
-  "file": "finishing/marble-bath.jpg",
-  "w": 3415,
-  "h": 2300
+ "tiling": {
+  "file": "finishing/tiling.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "herringbone": {
-  "file": "finishing/herringbone.jpg",
-  "w": 2300,
-  "h": 2300
+ "marble-floor": {
+  "file": "finishing/marble-floor.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "wood-bedroom": {
-  "file": "finishing/wood-bedroom.jpg",
-  "w": 1655,
-  "h": 2300
+ "roller": {
+  "file": "finishing/roller.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "panelled": {
+  "file": "finishing/panelled.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "wood-clad": {
+  "file": "finishing/wood-clad.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
  "kitchen": {
-  "file": "finishing/kitchen.jpg",
-  "w": 3451,
-  "h": 2300
+  "file": "finishing/kitchen.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "walk-in": {
-  "file": "finishing/walk-in.jpg",
-  "w": 3648,
-  "h": 2300
+ "closet": {
+  "file": "finishing/closet.mp4",
+  "w": 1920,
+  "h": 1080,
+  "video": true
  },
- "double-door": {
-  "file": "finishing/double-door.jpg",
-  "w": 1533,
-  "h": 2300
+ "door": {
+  "file": "finishing/door.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "big-windows": {
-  "file": "finishing/big-windows.jpg",
-  "w": 3427,
-  "h": 2300
+ "slider": {
+  "file": "finishing/slider.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "shower-dark": {
-  "file": "finishing/shower-dark.jpg",
-  "w": 1533,
-  "h": 2300
+ "bath": {
+  "file": "finishing/bath.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "villa-pool": {
-  "file": "finishing/villa-pool.jpg",
-  "w": 3451,
-  "h": 2300
+ "lights": {
+  "file": "finishing/lights.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "villa-dusk": {
-  "file": "finishing/villa-dusk.jpg",
-  "w": 3392,
-  "h": 2300
+ "villa": {
+  "file": "finishing/villa.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "landscape": {
+  "file": "finishing/landscape.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "skim": {
+  "file": "finishing/skim.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
  "cleaning": {
-  "file": "finishing/cleaning.jpg",
-  "w": 3451,
-  "h": 2300
+  "file": "finishing/cleaning.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
  },
- "keys-house": {
-  "file": "finishing/keys-house.jpg",
-  "w": 3063,
-  "h": 2300
+ "move-in": {
+  "file": "finishing/move-in.mp4",
+  "w": 1080,
+  "h": 1920,
+  "video": true
+ },
+ "drilling-still": {
+  "file": "finishing/drilling-still.jpg",
+  "w": 1920,
+  "h": 1080,
+  "video": false
+ },
+ "straightedge-still": {
+  "file": "finishing/straightedge-still.jpg",
+  "w": 1080,
+  "h": 1920,
+  "video": false
+ },
+ "tiling-still": {
+  "file": "finishing/tiling-still.jpg",
+  "w": 1920,
+  "h": 1080,
+  "video": false
  }
 }
