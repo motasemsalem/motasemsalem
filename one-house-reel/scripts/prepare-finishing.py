@@ -1,12 +1,11 @@
 # Downloads the finishing reel's media (scripts/finishing_media.py) into public/finishing/:
 #   clips:  each Pexels video at its highest resolution, cut from its in-point and scaled so it covers a
 #           1080x1920 frame (portrait) or 1920x1080 (landscape, so split panels keep the whole width); <name>.mp4.
-#   stills: a frame of a prepared clip; <name>.jpg.
 # Also writes src/finishing/media.json with each file's size.
 # Usage: python3 scripts/prepare-finishing.py [name ...]   (needs ffmpeg and curl)
 import json, os, subprocess, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from finishing_media import CLIPS, STILLS
+from finishing_media import CLIPS
 
 RAW = os.environ.get('RAW', '/tmp/claude-0/raw'); OUT = 'public/finishing'; FPS = 30
 CLIP_SECONDS = 8  # no shot holds longer than this
@@ -33,14 +32,7 @@ for name, (pid, start) in CLIPS.items():
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', str(start), '-t', str(length), '-i', src, '-vf', vf, '-an', '-c:v', 'libx264', '-crf', '17', '-preset', 'medium', '-pix_fmt', 'yuv420p', dst], check=True)
         print('clip', name, f'{w}x{h}', flush=True)
     w, h, _ = probe(dst)
-    manifest[name] = {'file': f'finishing/{name}.mp4', 'w': w, 'h': h, 'video': True}
-
-for name, (clip, t) in STILLS.items():
-    dst = f'{OUT}/{name}.jpg'
-    if (only and name in only) or (not only and not os.path.exists(dst)) or (only and clip in only):
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', str(t), '-i', f'{OUT}/{clip}.mp4', '-frames:v', '1', '-q:v', '2', dst], check=True)
-    w, h, _ = probe(dst)
-    manifest[name] = {'file': f'finishing/{name}.jpg', 'w': w, 'h': h, 'video': False}
+    manifest[name] = {'file': f'finishing/{name}.mp4', 'w': w, 'h': h}
 
 os.makedirs('src/finishing', exist_ok=True)
 json.dump(manifest, open('src/finishing/media.json', 'w'), indent=1)

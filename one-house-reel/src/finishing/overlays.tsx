@@ -283,7 +283,7 @@ export const Laser: React.FC<{ readonly from: number; readonly to: number; reado
   );
 };
 
-// Progress photos arriving on a phone.
+// Progress clips arriving on a phone.
 export const Phone: React.FC<{ readonly from: number; readonly to: number; readonly messages: readonly { readonly at: number; readonly photo: string; readonly text: string }[] }> = ({ from, to, messages }) => {
   const { f, visible, out } = useWindow(from, to);
   if (!visible) return null;
@@ -304,7 +304,10 @@ export const Phone: React.FC<{ readonly from: number; readonly to: number; reado
                 <div style={{ position: "relative", width: 380, height: 170, borderRadius: 16, overflow: "hidden" }}>
                   {/* The full 9:16 shot scaled to the bubble's width, centred vertically. */}
                   <div style={{ position: "absolute", left: 0, top: -253, width: 1080, height: 1920, transform: "scale(0.352)", transformOrigin: "0 0" }}>
-                    <Media name={m.photo} move="in" look="site" t={0.5} />
+                    {/* The clip starts playing when its message arrives. */}
+                    <Sequence from={m.at - 2} layout="none">
+                      <Media name={m.photo} move="in" look="site" t={(f - m.at) / 90} />
+                    </Sequence>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 6px 2px" }}>

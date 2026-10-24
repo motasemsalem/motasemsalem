@@ -48,9 +48,3 @@ CLIPS = {
     "move-in": (7579428, 1.0),          # couple opening the door of their new home
 }
 
-# Stills cut from the clips, for the phone and the brand card: name -> (clip, seconds into the prepared clip)
-STILLS = {
-    "drilling-still": ("drilling", 2.0),
-    "straightedge-still": ("straightedge", 2.0),
-    "tiling-still": ("tiling", 2.0),
-}

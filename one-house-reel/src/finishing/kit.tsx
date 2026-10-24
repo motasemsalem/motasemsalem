@@ -1,11 +1,11 @@
 import { Audio, Video } from "@remotion/media";
-import { AbsoluteFill, Easing, Img, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Easing, interpolate, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { clamp, easeOut, pop } from "../cues";
 import { BRAND, headingFont } from "../theme";
 import { VOICE } from "./cues";
 import media from "./media.json";
 
-// Footage for the finishing reel: Pexels clips (and a few stills cut from them) with a slow push, and the
+// Footage for the finishing reel: Pexels clips with a slow push, and the
 // dissolve between shots. Files come from scripts/prepare-finishing.py (public/finishing, sizes in media.json).
 // The camera barely moves and every shot holds for a whole phrase, so the viewer has time to take it in.
 
@@ -59,10 +59,10 @@ const Shot: React.FC<{ readonly shot: ShotDef; readonly length: number; readonly
   );
 };
 
-type MediaInfo = { file: string; w: number; h: number; video: boolean };
+type MediaInfo = { file: string; w: number; h: number };
 const MEDIA: Record<string, MediaInfo> = media;
 
-// A clip or still covering a box (the frame by default), with a slow push in or out.
+// A clip covering a box (the frame by default), with a slow push in or out.
 export const Media: React.FC<{
   readonly name: string;
   readonly move: Move;
@@ -84,7 +84,7 @@ export const Media: React.FC<{
   const left = Math.min(0, Math.max(width - w, width / 2 - focus * w));
   const top = Math.min(0, Math.max(height - h, height / 2 - focusY * h));
   const style: React.CSSProperties = { position: "absolute", left, top, width: w, height: h, filter: FILTERS[look] };
-  return m.video ? <Video name={name} src={staticFile(m.file)} muted style={style} /> : <Img src={staticFile(m.file)} style={style} />;
+  return <Video name={name} src={staticFile(m.file)} muted style={style} />;
 };
 
 // Colour wash per look on top of the filter: warm light for interiors, a cooler cast on site, a scan grid on x-ray.

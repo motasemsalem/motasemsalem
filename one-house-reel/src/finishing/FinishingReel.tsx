@@ -206,9 +206,9 @@ export const FinishingReel: React.FC = () => (
       from={at("follow")}
       to={next("follow") - 2}
       messages={[
-        { at: at("follow", "كل"), photo: "drilling-still", text: "الكهربا خلصت" },
-        { at: at("follow", "بالصور"), photo: "straightedge-still", text: "المحارة خلصت" },
-        { at: at("follow", "مسافر"), photo: "tiling-still", text: "البلاط خلص" },
+        { at: at("follow", "كل"), photo: "drilling", text: "الكهربا خلصت" },
+        { at: at("follow", "بالصور"), photo: "straightedge", text: "المحارة خلصت" },
+        { at: at("follow", "مسافر"), photo: "tiling", text: "البلاط خلص" },
       ]}
     />
     <Title from={at("follow", "حتى")} to={next("follow") - 2} kicker="متابع كل مرحلة بالصور" kickerAt={at("follow")} text="حتى لو مسافر" accent="مسافر" size={92} top={1380} />
