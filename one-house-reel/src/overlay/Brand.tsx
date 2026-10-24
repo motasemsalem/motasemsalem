@@ -31,7 +31,7 @@ export const BrandReveal: React.FC = () => {
         <Img
           src={staticFile("brand/logo-white.png")}
           style={{ width: 800 }}
-          effects={[shine({ progress: interpolate(frame, [from + 8, from + 34], [0, 1], clamp), angle: 25, haloIntensity: 0.5, coreIntensity: 1.2 })]}
+          effects={[shine({ progress: interpolate(frame, [from + 8, from + 34], [0, 1], clamp), angle: 25, haloIntensity: 0.5, coreIntensity: 1 })]}
         />
       </div>
       <div

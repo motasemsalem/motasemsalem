@@ -179,8 +179,8 @@ export const Callout: React.FC<{
           whiteSpace: "nowrap",
         }}
       >
-        <div style={{ fontFamily: headingFont, fontWeight: 700, fontSize: 38, color: "white", lineHeight: 1.2 }}>{label}</div>
-        {value && <div style={{ fontFamily: headingFont, fontWeight: 400, fontSize: 30, color, lineHeight: 1.2, direction: "ltr", textAlign: "right" }}>{value}</div>}
+        <div style={{ fontFamily: headingFont, fontWeight: 700, fontSize: 44, color: "white", lineHeight: 1.2 }}>{label}</div>
+        {value && <div style={{ fontFamily: headingFont, fontWeight: 500, fontSize: 34, color, lineHeight: 1.25, direction: "ltr", textAlign: "right" }}>{value}</div>}
       </div>
     </AbsoluteFill>
   );

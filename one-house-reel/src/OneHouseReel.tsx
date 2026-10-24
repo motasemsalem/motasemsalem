@@ -98,9 +98,9 @@ const Story: React.FC = () => (
     {/* Hook */}
     <Title from={0} to={cue("بس") - 2} kicker="إنت دافع" kickerAt={0} text="تحويشة عمرك" accent="عمرك" sub="في شقة" subAt={C.flat} size={130} top={260} />
     <Title from={cue("إيه")} to={C.steel - 4} kicker="بس عمرك سألت نفسك" kickerAt={cue("بس") + 2} text="إيه اللي جوّه الحيطة؟" accent="جوّه" size={104} top={260} />
-    <Callout at={C.steel + 2} to={C.concrete - 2} x={560} y={1080} dx={-260} dy={-260} label="حديد التسليح" value="Ø 16 mm" color={BLUE} />
-    <Callout at={C.concrete + 2} to={C.base - 2} x={420} y={980} dx={260} dy={-240} label="الخرسانة" value="C30 · 300 kg/cm²" color={BLUE} />
-    <Callout at={C.base + 2} to={C.rewind - 2} x={560} y={1150} dx={-240} dy={-300} label="الأساس" value="−3.50 m" color={BLUE} />
+    <Callout at={C.steel + 2} to={C.concrete - 2} x={660} y={1080} dx={-200} dy={-260} label="حديد التسليح" value="Ø 16 mm" color={BLUE} />
+    <Callout at={C.concrete + 2} to={C.base - 2} x={380} y={980} dx={200} dy={-240} label="الخرسانة" value="C30 · 300 kg/cm²" color={BLUE} />
+    <Callout at={C.base + 2} to={C.rewind - 2} x={660} y={1150} dx={-200} dy={-300} label="الأساس" value="−3.50 m" color={BLUE} />
     <Title from={C.rewind} to={C.brand - 4} text="تعالى أوريك" accent="أوريك" size={150} top={780} />
 
     {/* 01 Foundation */}
@@ -124,7 +124,7 @@ const Story: React.FC = () => (
     <Chapter num={3} label="الشدّة" from={section("formwork")} to={section("floors") - 4} />
     <Title from={section("formwork")} to={C.posts - 2} kicker="وعلى السطح" kickerAt={section("formwork")} text="الشدّة الخشب" accent="الخشب" sub="بتتركب حتّة حتّة" subAt={C.props} />
     <Title from={C.posts} to={cue("علشان") - 2} text="قوايم وعروق" accent="قوايم" sub="متظبطة بالميزان" subAt={cue("متظبطة")} />
-    <Callout at={C.level} to={cue("علشان") - 2} x={600} y={1100} dx={-260} dy={180} label="ميزان الليزر" value="± 2 mm" />
+    <Callout at={C.level} to={cue("علشان") - 2} x={700} y={1100} dx={-220} dy={180} label="ميزان الليزر" value="± 2 mm" />
     <Title from={cue("علشان")} to={cue("من", 3) - 2} text="السقف يتصب مستوي" accent="مستوي" />
     <Title from={cue("من", 3)} to={section("floors") - 4} text="من غير شرخ ولا ميل" accent="شرخ ميل" size={100} />
 
@@ -133,7 +133,7 @@ const Story: React.FC = () => (
     <Title from={section("floors")} to={C.team - 2} kicker="دور ورا دور" kickerAt={section("floors")} text="العمارة بتكبر" accent="بتكبر" />
     <Title from={C.team} to={C.heat - 4} text="فريقنا في الموقع" accent="فريقنا" sub="كل يوم" subAt={cue("كل", 2)} />
     <Title from={C.heat - 2} to={cue("وفي") - 2} text="في حر الصيف" accent="الصيف" />
-    <Callout at={cue("حر") + 2} to={cue("وفي") - 2} x={600} y={760} dx={-240} dy={260} label="حر الصيف" value="42 °C" color="#ffb36b" />
+    <Callout at={cue("حر") + 2} to={cue("وفي") - 2} x={700} y={760} dx={-220} dy={260} label="حر الصيف" value="42 °C" color="#ffb36b" />
     <Title from={cue("وفي")} to={section("finishing") - 4} text="وفي برد الشتا" accent="الشتا" />
 
     {/* 05 Finishing */}
