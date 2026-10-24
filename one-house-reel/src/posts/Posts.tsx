@@ -7,11 +7,18 @@ import { Hook, Pain } from "../ad/Open";
 import { bodyFont, headingFont, SHADOW } from "../theme";
 
 // Facebook feed posts (1080x1350, 4:5) built from frozen frames of the reel's drawings.
+// Each one stands alone. A "|" in a title is a line break.
 export const POST_W = 1080;
 export const POST_H = 1350;
 
 // A frame of one reel scene, with the part around (cx, cy) of the 1080x1920 canvas scaled into a box.
-type Art = { readonly scene: React.FC; readonly frame: number; readonly cx: number; readonly cy: number; readonly scale: number };
+type Art = {
+  readonly scene: React.FC;
+  readonly frame: number;
+  readonly cx: number;
+  readonly cy: number;
+  readonly scale: number;
+};
 
 type Post = {
   readonly kicker: string;
@@ -20,7 +27,7 @@ type Post = {
   readonly art?: Art;
   readonly grid?: readonly Art[];
   readonly chips?: readonly string[];
-  readonly step?: number;
+  readonly list?: readonly string[];
   readonly url?: string;
 };
 
@@ -34,14 +41,14 @@ const STEPS: readonly Art[] = [
 export const POSTS = {
   hook: {
     kicker: "قبل ما تشتري أو تبني… اسأل",
-    title: "شكلها حلو من بره… بس جوّه الحيطة فيه إيه؟",
+    title: "شكلها حلو من بره…|بس جوّه الحيطة فيه إيه؟",
     accent: "جوّه",
     art: { scene: Hook, frame: C.paint - 12, cx: 470, cy: 1060, scale: 0.6 },
     chips: ["الدهان بيداري", "الأساس مبيكدبش"],
   },
   pain: {
     kicker: "مشاكل بنسمعها كل يوم",
-    title: "حديد ناقص؟ أسمنت مغشوش؟ عندنا لأ.",
+    title: "مشاكل كل عمارة…|عندنا لأ.",
     accent: "لأ.",
     art: { scene: Pain, frame: C.notUs + 14, cx: 540, cy: 950, scale: 0.8 },
   },
@@ -51,19 +58,56 @@ export const POSTS = {
     accent: "4 خطوات",
     grid: STEPS,
   },
-  foundation: { step: 1, kicker: "الخطوة 1 من 4", title: "الأساس", art: STEPS[0], chips: ["جسّة تربة", "قواعد مسلحة على الرسومات"] },
-  columns: { step: 2, kicker: "الخطوة 2 من 4", title: "الأعمدة", art: STEPS[1], chips: ["حديد مطابق للمواصفات", "كانات بالمسطرة"] },
-  slab: { step: 3, kicker: "الخطوة 3 من 4", title: "السقف", art: STEPS[2], chips: ["شدّة بالميزان", "صبّة واحدة بالهزّاز"] },
-  concrete: { step: 4, kicker: "الخطوة 4 من 4", title: "الخرسانة", art: STEPS[3], chips: ["مكعبات للمعمل", "رشّ مية أسبوع"] },
+  foundation: {
+    kicker: "المسلّح صح · الأساس",
+    title: "البيت كله شايله الأساس",
+    accent: "الأساس",
+    art: STEPS[0],
+    chips: ["جسّة تربة", "قواعد مسلحة على الرسومات"],
+  },
+  columns: {
+    kicker: "المسلّح صح · الأعمدة",
+    title: "الكانة بالمسطرة…|مش بالعين",
+    accent: "بالمسطرة…",
+    art: STEPS[1],
+    chips: ["حديد مطابق للمواصفات", "كانات كل 15 سم"],
+  },
+  slab: {
+    kicker: "المسلّح صح · السقف",
+    title: "سقفك مش هينشّ…|لو اتصب صح",
+    accent: "صح",
+    art: STEPS[2],
+    chips: ["شدّة بالميزان", "صبّة واحدة بالهزّاز"],
+  },
+  concrete: {
+    kicker: "المسلّح صح · الخرسانة",
+    title: "الخرسانة القوية|محتاجة صبر",
+    accent: "صبر",
+    art: STEPS[3],
+    chips: ["مكعبات للمعمل", "رشّ مية أسبوع"],
+  },
+  checklist: {
+    kicker: "نصيحة من مهندس",
+    title: "قبل ما تصب السقف…|اتأكد من 5 حاجات",
+    accent: "5 حاجات",
+    list: [
+      "الشدّة مستوية بالميزان",
+      "الحديد مطابق للرسومات",
+      "الكانات متقاسة بالمسطرة",
+      "البسكوت تحت الحديد",
+      "المهندس راجع ومضى",
+    ],
+    chips: ["احفظ البوست ده لحد يوم الصبّة"],
+  },
   review: {
-    kicker: "وكل مرحلة…",
-    title: "مهندس يراجع ويمضي… وإنت متابع بالصور",
+    kicker: "في ون هاوس",
+    title: "مهندس يراجع ويمضي…|وإنت متابع بالصور",
     accent: "ويمضي…",
     art: { scene: Review, frame: C.studio - 8, cx: 540, cy: 1000, scale: 0.74 },
   },
   studio: {
     kicker: "استوديو ون هاوس 2D",
-    title: "ارسم شقتك بنفسك… ببلاش",
+    title: "ارسم شقتك بنفسك…|ببلاش",
     accent: "ببلاش",
     art: { scene: Studio, frame: cue("PDF") + 6, cx: 540, cy: 990, scale: 0.6 },
     chips: ["ضيف الغرف", "صدّرها PDF", "ابعتها للمهندس"],
@@ -77,11 +121,26 @@ export type PostId = keyof typeof POSTS;
 // The art box sits between the headline and the footer.
 const BOX = { top: 330, bottom: 1150 };
 
-const Frozen: React.FC<{ readonly art: Art; readonly x: number; readonly y: number; readonly scale?: number }> = ({ art, x, y, scale = 1 }) => {
+const Frozen: React.FC<{
+  readonly art: Art;
+  readonly x: number;
+  readonly y: number;
+  readonly scale?: number;
+}> = ({ art, x, y, scale = 1 }) => {
   const s = art.scale * scale;
   const Scene = art.scene;
   return (
-    <div style={{ position: "absolute", left: 0, top: 0, width: 1080, height: 1920, transformOrigin: "0 0", transform: `translate(${x - art.cx * s}px, ${y - art.cy * s}px) scale(${s})` }}>
+    <div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        width: 1080,
+        height: 1920,
+        transformOrigin: "0 0",
+        transform: `translate(${x - art.cx * s}px, ${y - art.cy * s}px) scale(${s})`,
+      }}
+    >
       <Freeze frame={art.frame}>
         <Scene />
       </Freeze>
@@ -89,86 +148,432 @@ const Frozen: React.FC<{ readonly art: Art; readonly x: number; readonly y: numb
   );
 };
 
-const Headline: React.FC<{ readonly text: string; readonly accent?: string; readonly size: number }> = ({ text, accent, size }) => (
-  <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: size, lineHeight: 1.25, color: "white", textShadow: SHADOW }}>
-    {text.split(" ").map((w, i) => {
-      const on = accent?.split(" ").includes(w);
-      return (
-        <span key={i} style={{ display: "inline-block", padding: "0 0.12em", position: "relative", color: on ? "#ff2a3d" : "white" }}>
-          {w}
-          {on && <span style={{ position: "absolute", left: "0.12em", right: "0.12em", bottom: "0.04em", height: size * 0.07, background: P.red, boxShadow: `0 0 20px ${P.red}` }} />}
-        </span>
-      );
-    })}
+const Headline: React.FC<{
+  readonly text: string;
+  readonly accent?: string;
+  readonly size: number;
+}> = ({ text, accent, size }) => (
+  <div
+    style={{
+      fontFamily: headingFont,
+      fontWeight: 800,
+      fontSize: size,
+      lineHeight: 1.25,
+      color: "white",
+      textShadow: SHADOW,
+    }}
+  >
+    {text.split("|").map((line, l) => (
+      <div key={l}>
+        {line.split(" ").map((w, i) => {
+          const on = accent?.split(" ").includes(w);
+          return (
+            <span
+              key={i}
+              style={{
+                display: "inline-block",
+                padding: "0 0.12em",
+                position: "relative",
+                color: on ? "#ff2a3d" : "white",
+              }}
+            >
+              {w}
+              {on && (
+                <span
+                  style={{
+                    position: "absolute",
+                    left: "0.12em",
+                    right: "0.12em",
+                    bottom: "0.04em",
+                    height: size * 0.07,
+                    background: P.red,
+                    boxShadow: `0 0 20px ${P.red}`,
+                  }}
+                />
+              )}
+            </span>
+          );
+        })}
+      </div>
+    ))}
   </div>
 );
 
 const Header: React.FC<{ readonly post: Post }> = ({ post }) => (
-  <div dir="rtl" style={{ position: "absolute", top: 60, left: 50, right: 50, display: "flex", flexDirection: "column", alignItems: "center", gap: 22, textAlign: "center" }}>
-    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "10px 28px", borderRadius: 999, border: "2px solid rgba(143,182,221,0.4)", background: "rgba(4,15,29,0.6)", fontFamily: bodyFont, fontWeight: 600, fontSize: 32, color: "rgba(255,255,255,0.9)" }}>
-      <span style={{ width: 14, height: 14, borderRadius: 7, background: P.red }} />
+  <div
+    dir="rtl"
+    style={{
+      position: "absolute",
+      top: 60,
+      left: 50,
+      right: 50,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 22,
+      textAlign: "center",
+    }}
+  >
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 14,
+        padding: "10px 28px",
+        borderRadius: 999,
+        border: "2px solid rgba(143,182,221,0.4)",
+        background: "rgba(4,15,29,0.6)",
+        fontFamily: bodyFont,
+        fontWeight: 600,
+        fontSize: 32,
+        color: "rgba(255,255,255,0.9)",
+      }}
+    >
+      <span
+        style={{ width: 14, height: 14, borderRadius: 7, background: P.red }}
+      />
       {post.kicker}
     </div>
-    {post.step ? (
-      <div style={{ display: "flex", alignItems: "center", gap: 26 }}>
-        <div style={{ width: 128, height: 128, borderRadius: 32, background: P.red, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: headingFont, fontWeight: 900, fontSize: 84, color: "white", boxShadow: "0 20px 50px rgba(227,30,36,0.45)" }}>
-          {post.step}
-        </div>
-        <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 116, color: "white", textShadow: SHADOW }}>{post.title}</div>
-      </div>
-    ) : (
-      <Headline text={post.title} accent={post.accent} size={post.title.length > 20 ? 70 : 80} />
-    )}
+    {
+      <Headline
+        text={post.title}
+        accent={post.accent}
+        size={70}
+      />
+    }
   </div>
 );
 
-const Chips: React.FC<{ readonly items: readonly string[]; readonly top: number }> = ({ items, top }) => (
-  <div dir="rtl" style={{ position: "absolute", top, left: 40, right: 40, display: "flex", justifyContent: "center", gap: 14 }}>
+const Chips: React.FC<{
+  readonly items: readonly string[];
+  readonly top: number;
+}> = ({ items, top }) => (
+  <div
+    dir="rtl"
+    style={{
+      position: "absolute",
+      top,
+      left: 40,
+      right: 40,
+      display: "flex",
+      justifyContent: "center",
+      gap: 14,
+    }}
+  >
     {items.map((t, i) => (
-      <div key={t} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 22px", borderRadius: 18, whiteSpace: "nowrap", background: i === items.length - 1 ? P.red : "rgba(4,15,29,0.85)", border: i === items.length - 1 ? "none" : "2px solid rgba(143,182,221,0.4)", boxShadow: "0 16px 36px rgba(0,0,0,0.4)", fontFamily: headingFont, fontWeight: 800, fontSize: items.length > 2 ? 34 : 38, color: "white" }}>
-        <span style={{ color: i === items.length - 1 ? "white" : P.ok }}>✓</span>
+      <div
+        key={t}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          padding: "12px 22px",
+          borderRadius: 18,
+          whiteSpace: "nowrap",
+          background: i === items.length - 1 ? P.red : "rgba(4,15,29,0.85)",
+          border:
+            i === items.length - 1 ? "none" : "2px solid rgba(143,182,221,0.4)",
+          boxShadow: "0 16px 36px rgba(0,0,0,0.4)",
+          fontFamily: headingFont,
+          fontWeight: 800,
+          fontSize: items.length > 2 ? 34 : 38,
+          color: "white",
+        }}
+      >
+        <span style={{ color: i === items.length - 1 ? "white" : P.ok }}>
+          ✓
+        </span>
         {t}
       </div>
     ))}
   </div>
 );
 
+// Numbered rows, for the tips post people save.
+const Checklist: React.FC<{ readonly items: readonly string[] }> = ({
+  items,
+}) => (
+  <div
+    dir="rtl"
+    style={{
+      position: "absolute",
+      top: BOX.top + 20,
+      left: 90,
+      right: 90,
+      display: "flex",
+      flexDirection: "column",
+      gap: 18,
+    }}
+  >
+    {items.map((t, i) => (
+      <div
+        key={t}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 26,
+          height: 116,
+          padding: "0 26px",
+          borderRadius: 26,
+          background: "rgba(15,44,76,0.9)",
+          border: "2px solid rgba(143,182,221,0.35)",
+          boxShadow: "0 18px 40px rgba(0,0,0,0.35)",
+        }}
+      >
+        <div
+          style={{
+            width: 76,
+            height: 76,
+            borderRadius: 20,
+            background: P.red,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: headingFont,
+            fontWeight: 900,
+            fontSize: 48,
+            color: "white",
+          }}
+        >
+          {i + 1}
+        </div>
+        <div
+          style={{
+            fontFamily: headingFont,
+            fontWeight: 800,
+            fontSize: 48,
+            color: "white",
+          }}
+        >
+          {t}
+        </div>
+        <div
+          style={{
+            marginRight: "auto",
+            width: 56,
+            height: 56,
+            borderRadius: 28,
+            border: `4px solid ${P.ok}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 32,
+            color: P.ok,
+            fontWeight: 900,
+          }}
+        >
+          ✓
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 // Logo on one side, the booking button and website on the other.
-const Footer: React.FC<{ readonly url?: string }> = ({ url = "onehouse-eg.web.app" }) => (
-  <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 190, background: "linear-gradient(180deg, rgba(4,15,29,0), rgba(4,15,29,0.92) 35%)" }}>
-    <div style={{ position: "absolute", left: 60, right: 60, top: 40, height: 3, background: `linear-gradient(90deg, transparent, ${P.red}, transparent)`, opacity: 0.8 }} />
-    <Img src={staticFile("brand/logo-white.png")} style={{ position: "absolute", left: 60, bottom: 34, height: 104 }} />
-    <div style={{ position: "absolute", right: 60, bottom: 30, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
-      <div dir="rtl" style={{ padding: "16px 40px", borderRadius: 999, background: P.red, boxShadow: "0 16px 40px rgba(227,30,36,0.45)", fontFamily: headingFont, fontWeight: 800, fontSize: 40, color: "white" }}>
+const Footer: React.FC<{ readonly url?: string }> = ({
+  url = "onehouse-eg.web.app",
+}) => (
+  <div
+    style={{
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: 190,
+      background:
+        "linear-gradient(180deg, rgba(4,15,29,0), rgba(4,15,29,0.92) 35%)",
+    }}
+  >
+    <div
+      style={{
+        position: "absolute",
+        left: 60,
+        right: 60,
+        top: 40,
+        height: 3,
+        background: `linear-gradient(90deg, transparent, ${P.red}, transparent)`,
+        opacity: 0.8,
+      }}
+    />
+    <Img
+      src={staticFile("brand/logo-white.png")}
+      style={{ position: "absolute", left: 60, bottom: 34, height: 104 }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        right: 60,
+        bottom: 30,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+        gap: 10,
+      }}
+    >
+      <div
+        dir="rtl"
+        style={{
+          padding: "16px 40px",
+          borderRadius: 999,
+          background: P.red,
+          boxShadow: "0 16px 40px rgba(227,30,36,0.45)",
+          fontFamily: headingFont,
+          fontWeight: 800,
+          fontSize: 40,
+          color: "white",
+        }}
+      >
         احجز معاينتك المجانية
       </div>
-      <div style={{ fontFamily: headingFont, fontWeight: 600, fontSize: 30, color: "rgba(255,255,255,0.85)", direction: "ltr" }}>{url}</div>
+      <div
+        style={{
+          fontFamily: headingFont,
+          fontWeight: 600,
+          fontSize: 30,
+          color: "rgba(255,255,255,0.85)",
+          direction: "ltr",
+        }}
+      >
+        {url}
+      </div>
     </div>
   </div>
 );
 
 const Cta: React.FC = () => (
   <>
-    <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 30%, rgba(227,30,36,0.28), transparent 55%)" }} />
-    <Img src={staticFile("brand/logo-white.png")} style={{ position: "absolute", left: 250, top: 90, width: 580 }} />
-    <div dir="rtl" style={{ position: "absolute", top: 470, left: 0, right: 0, textAlign: "center" }}>
+    <AbsoluteFill
+      style={{
+        background:
+          "radial-gradient(circle at 50% 30%, rgba(227,30,36,0.28), transparent 55%)",
+      }}
+    />
+    <Img
+      src={staticFile("brand/logo-white.png")}
+      style={{ position: "absolute", left: 250, top: 90, width: 580 }}
+    />
+    <div
+      dir="rtl"
+      style={{
+        position: "absolute",
+        top: 470,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+      }}
+    >
       <Headline text="بيت يعيش العمر كله" accent="العمر كله" size={92} />
-      <div style={{ marginTop: 18, fontFamily: headingFont, fontWeight: 700, fontSize: 46, color: "rgba(255,255,255,0.9)" }}>المسلّح صح… من أول طوبة</div>
+      <div
+        style={{
+          marginTop: 18,
+          fontFamily: headingFont,
+          fontWeight: 700,
+          fontSize: 46,
+          color: "rgba(255,255,255,0.9)",
+        }}
+      >
+        المسلّح صح… من أول طوبة
+      </div>
     </div>
-    <div dir="rtl" style={{ position: "absolute", top: 760, left: 90, right: 90, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
-      {["الأساس على الرسومات", "أعمدة بالمسطرة", "سقف بالميزان", "خرسانة بالمعمل", "مهندس بيمضي", "متابعة بالصور"].map((t) => (
-        <div key={t} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 22px", borderRadius: 18, background: "rgba(15,44,76,0.85)", border: "2px solid rgba(143,182,221,0.3)", fontFamily: headingFont, fontWeight: 700, fontSize: 34, color: "white", whiteSpace: "nowrap" }}>
-          <span style={{ width: 40, height: 40, borderRadius: 20, background: P.ok, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>✓</span>
+    <div
+      dir="rtl"
+      style={{
+        position: "absolute",
+        top: 760,
+        left: 90,
+        right: 90,
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 18,
+      }}
+    >
+      {[
+        "الأساس على الرسومات",
+        "أعمدة بالمسطرة",
+        "سقف بالميزان",
+        "خرسانة بالمعمل",
+        "مهندس بيمضي",
+        "متابعة بالصور",
+      ].map((t) => (
+        <div
+          key={t}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 14,
+            padding: "16px 22px",
+            borderRadius: 18,
+            background: "rgba(15,44,76,0.85)",
+            border: "2px solid rgba(143,182,221,0.3)",
+            fontFamily: headingFont,
+            fontWeight: 700,
+            fontSize: 34,
+            color: "white",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <span
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              background: P.ok,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 26,
+            }}
+          >
+            ✓
+          </span>
           {t}
         </div>
       ))}
     </div>
-    <div style={{ position: "absolute", top: 1080, left: 0, right: 0, display: "flex", justifyContent: "center" }}>
-      <div dir="rtl" style={{ padding: "28px 70px", borderRadius: 999, background: P.red, boxShadow: "0 24px 60px rgba(227,30,36,0.5)", outline: "4px solid rgba(227,30,36,0.35)", outlineOffset: 12, fontFamily: headingFont, fontWeight: 800, fontSize: 62, color: "white" }}>
+    <div
+      style={{
+        position: "absolute",
+        top: 1080,
+        left: 0,
+        right: 0,
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <div
+        dir="rtl"
+        style={{
+          padding: "28px 70px",
+          borderRadius: 999,
+          background: P.red,
+          boxShadow: "0 24px 60px rgba(227,30,36,0.5)",
+          outline: "4px solid rgba(227,30,36,0.35)",
+          outlineOffset: 12,
+          fontFamily: headingFont,
+          fontWeight: 800,
+          fontSize: 62,
+          color: "white",
+        }}
+      >
         احجز معاينتك المجانية
       </div>
     </div>
-    <div style={{ position: "absolute", top: 1240, left: 0, right: 0, textAlign: "center", fontFamily: headingFont, fontWeight: 600, fontSize: 42, color: "white", direction: "ltr" }}>onehouse-eg.web.app</div>
+    <div
+      style={{
+        position: "absolute",
+        top: 1240,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        fontFamily: headingFont,
+        fontWeight: 600,
+        fontSize: 42,
+        color: "white",
+        direction: "ltr",
+      }}
+    >
+      onehouse-eg.web.app
+    </div>
   </>
 );
 
@@ -184,14 +589,74 @@ export const FacebookPost: React.FC<{ readonly id: PostId }> = ({ id }) => {
         ) : (
           <>
             {post.art && <Frozen art={post.art} x={540} y={mid} />}
+            {post.list && <Checklist items={post.list} />}
             {post.grid && (
-              <div style={{ position: "absolute", left: 60, right: 60, top: BOX.top + 10, height: BOX.bottom - BOX.top - 20, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }} dir="rtl">
+              <div
+                style={{
+                  position: "absolute",
+                  left: 60,
+                  right: 60,
+                  top: BOX.top + 10,
+                  height: BOX.bottom - BOX.top - 20,
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: 20,
+                }}
+                dir="rtl"
+              >
                 {post.grid.map((a, i) => (
-                  <div key={i} style={{ position: "relative", borderRadius: 28, overflow: "hidden", background: "rgba(15,44,76,0.55)", border: "2px solid rgba(143,182,221,0.3)" }}>
+                  <div
+                    key={i}
+                    style={{
+                      position: "relative",
+                      borderRadius: 28,
+                      overflow: "hidden",
+                      background: "rgba(15,44,76,0.55)",
+                      border: "2px solid rgba(143,182,221,0.3)",
+                    }}
+                  >
                     <Frozen art={a} x={230} y={225} scale={0.5} />
-                    <div style={{ position: "absolute", top: 14, right: 14, display: "flex", alignItems: "center", gap: 10, padding: "6px 18px 6px 6px", borderRadius: 18, background: "rgba(4,15,29,0.85)" }}>
-                      <div style={{ width: 54, height: 54, borderRadius: 14, background: P.red, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: headingFont, fontWeight: 900, fontSize: 34, color: "white" }}>{i + 1}</div>
-                      <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 40, color: "white", textShadow: SHADOW }}>{POSTS[(["foundation", "columns", "slab", "concrete"] as const)[i]].title}</div>
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 14,
+                        right: 14,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        padding: "6px 18px 6px 6px",
+                        borderRadius: 18,
+                        background: "rgba(4,15,29,0.85)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 54,
+                          height: 54,
+                          borderRadius: 14,
+                          background: P.red,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontFamily: headingFont,
+                          fontWeight: 900,
+                          fontSize: 34,
+                          color: "white",
+                        }}
+                      >
+                        {i + 1}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: headingFont,
+                          fontWeight: 800,
+                          fontSize: 40,
+                          color: "white",
+                          textShadow: SHADOW,
+                        }}
+                      >
+                        {["الأساس", "الأعمدة", "السقف", "الخرسانة"][i]}
+                      </div>
                     </div>
                   </div>
                 ))}
