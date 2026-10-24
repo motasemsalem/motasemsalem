@@ -31,7 +31,7 @@ pip install torch numpy scipy                  # للتكبير والموسيق
 python3 scripts/prepare-footage.py             # بينزّل ويجهّز اللقطات (حوالي ساعة ونص على 4 أنوية)
 python3 scripts/music.py                       # الموسيقى
 npm run dev                                    # Remotion Studio
-npx remotion render OneHouseReel renders/one-house-reel.mp4
+npx remotion render OneHouseReel renders/one-house-reel.mp4   # حوالي 20 دقيقة على 4 أنوية
 ```
 
 أوزان Real-ESRGAN (`realesr-general-x4v3.pth`) بتتحط في `scripts/.cache/`، أو حدد مكانها بـ `SR_WEIGHTS`.
