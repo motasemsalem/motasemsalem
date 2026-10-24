@@ -148,7 +148,7 @@ const Story: React.FC = () => (
       [C.marble, C.paint, "رخام"],
       [C.paint, C.design, "دهانات"],
     ].map(([a, b, label], i) => (
-      <Title key={label} from={a as number} to={(b as number) - 2} kicker={`0${i + 1} / 06`} kickerAt={a as number} text={label as string} accent={label as string} size={150} top={320} />
+      <Title key={label} from={a as number} to={(b as number) - 2} kicker={`${i + 1} من 6`} kickerAt={a as number} text={label as string} accent={label as string} size={150} top={320} />
     ))}
     <Title from={C.design} to={C.see - 2} kicker="تصميم تلاتي الأبعاد" kickerAt={C.design} text="3D" accent="3D" size={190} top={300} />
     <Title from={C.see} to={section("bathroom") - 4} text="شوف بيتك" accent="بيتك" sub="قبل ما يتبني" subAt={cue("قبل", 1)} size={120} />
