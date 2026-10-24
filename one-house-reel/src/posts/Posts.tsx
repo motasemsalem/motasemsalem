@@ -7,7 +7,8 @@ import { Hook, Pain } from "../ad/Open";
 import { bodyFont, headingFont, SHADOW } from "../theme";
 
 // Facebook feed posts (1080x1350, 4:5) built from frozen frames of the reel's drawings.
-// Each one stands alone. A "|" in a title is a line break.
+// Each one stands alone (it is not read next to the reel), so every post says its point in a sub line.
+// A "|" in a title is a line break.
 export const POST_W = 1080;
 export const POST_H = 1350;
 
@@ -24,7 +25,9 @@ type Post = {
   readonly kicker: string;
   readonly title: string;
   readonly accent?: string;
+  readonly sub?: string;
   readonly art?: Art;
+  readonly notes?: readonly string[];
   readonly grid?: readonly Art[];
   readonly chips?: readonly string[];
   readonly list?: readonly string[];
@@ -32,7 +35,7 @@ type Post = {
 };
 
 const STEPS: readonly Art[] = [
-  { scene: Foundation, frame: C.columns - 8, cx: 540, cy: 960, scale: 0.72 },
+  { scene: Foundation, frame: C.columns - 8, cx: 540, cy: 940, scale: 0.66 },
   { scene: Columns, frame: C.slab - 8, cx: 560, cy: 1230, scale: 0.6 },
   { scene: Slab, frame: C.concrete - 8, cx: 540, cy: 1150, scale: 0.8 },
   { scene: Concrete, frame: C.review - 8, cx: 540, cy: 960, scale: 0.62 },
@@ -43,46 +46,55 @@ export const POSTS = {
     kicker: "قبل ما تشتري أو تبني… اسأل",
     title: "شكلها حلو من بره…|بس جوّه الحيطة فيه إيه؟",
     accent: "جوّه",
-    art: { scene: Hook, frame: C.paint - 12, cx: 470, cy: 1060, scale: 0.6 },
-    chips: ["الدهان بيداري", "الأساس مبيكدبش"],
+    sub: "الدهان بيداري أي عيب… لكن الحديد والأساس هما اللي بيحددوا عمر البيت",
+    art: { scene: Hook, frame: C.paint - 12, cx: 470, cy: 1060, scale: 0.56 },
+    chips: ["في ون هاوس… المسلّح صح من أول طوبة"],
   },
   pain: {
     kicker: "مشاكل بنسمعها كل يوم",
-    title: "مشاكل كل عمارة…|عندنا لأ.",
-    accent: "لأ.",
-    art: { scene: Pain, frame: C.notUs + 14, cx: 540, cy: 950, scale: 0.8 },
+    title: "4 مشاكل|بتظهر بعد التسليم",
+    accent: "بعد التسليم",
+    sub: "وسببها كلها مسلّح متنفذش صح… علشان كده في ون هاوس كل مرحلة بيراجعها مهندس",
+    art: { scene: Pain, frame: C.notUs - 3, cx: 540, cy: 950, scale: 0.58 },
+    chips: ["مش في بيوت ون هاوس"],
   },
   steps: {
     kicker: "ون هاوس · من أول طوبة",
     title: "المسلّح صح في 4 خطوات",
     accent: "4 خطوات",
+    sub: "اللي بنعمله في كل بيت بنبنيه… من الأساس لحد آخر صبّة",
     grid: STEPS,
+    notes: ["جسّة تربة وقواعد على الرسومات", "حديد مطابق وكانات بالمسطرة", "شدّة بالميزان وصبّة بالهزّاز", "مكعبات للمعمل ورشّ مية"],
   },
   foundation: {
-    kicker: "المسلّح صح · الأساس",
+    kicker: "ون هاوس · الأساس",
     title: "البيت كله شايله الأساس",
     accent: "الأساس",
-    art: STEPS[0],
+    sub: "قبل الحفر بنعمل جسّة تربة نعرف بيها الأرض… والقواعد بتتسلّح على الرسومات بالظبط",
+    art: { ...STEPS[0], cy: 1010 },
     chips: ["جسّة تربة", "قواعد مسلحة على الرسومات"],
   },
   columns: {
-    kicker: "المسلّح صح · الأعمدة",
+    kicker: "ون هاوس · الأعمدة",
     title: "الكانة بالمسطرة…|مش بالعين",
     accent: "بالمسطرة…",
+    sub: "مسافة الكانات هي اللي بتدّي العمود قوته… علشان كده بنقيسها بالمسطرة",
     art: STEPS[1],
     chips: ["حديد مطابق للمواصفات", "كانات كل 15 سم"],
   },
   slab: {
-    kicker: "المسلّح صح · السقف",
+    kicker: "ون هاوس · السقف",
     title: "سقفك مش هينشّ…|لو اتصب صح",
     accent: "صح",
+    sub: "شدّة مستوية، وصبّة واحدة من غير وقفات، وهزّاز يطلّع الهوا من الخرسانة",
     art: STEPS[2],
     chips: ["شدّة بالميزان", "صبّة واحدة بالهزّاز"],
   },
   concrete: {
-    kicker: "المسلّح صح · الخرسانة",
+    kicker: "ون هاوس · الخرسانة",
     title: "الخرسانة القوية|محتاجة صبر",
     accent: "صبر",
+    sub: "مكعبات من كل صبّة بتتكسر في المعمل… ورشّ مية أسبوع علشان متتشرخش",
     art: STEPS[3],
     chips: ["مكعبات للمعمل", "رشّ مية أسبوع"],
   },
@@ -90,6 +102,7 @@ export const POSTS = {
     kicker: "نصيحة من مهندس",
     title: "قبل ما تصب السقف…|اتأكد من 5 حاجات",
     accent: "5 حاجات",
+    sub: "البسكوت: المكعبات الصغيرة اللي بترفع الحديد عن الخشب علشان يتغطى بالخرسانة",
     list: [
       "الشدّة مستوية بالميزان",
       "الحديد مطابق للرسومات",
@@ -103,13 +116,15 @@ export const POSTS = {
     kicker: "في ون هاوس",
     title: "مهندس يراجع ويمضي…|وإنت متابع بالصور",
     accent: "ويمضي…",
-    art: { scene: Review, frame: C.studio - 8, cx: 540, cy: 1000, scale: 0.74 },
+    sub: "في ون هاوس كل مرحلة بتتراجع وتتمضي قبل اللي بعدها… وصور الموقع بتوصلك على الموبايل",
+    art: { scene: Review, frame: C.studio - 8, cx: 540, cy: 1000, scale: 0.66 },
   },
   studio: {
-    kicker: "استوديو ون هاوس 2D",
+    kicker: "أداة مجانية على موقع ون هاوس",
     title: "ارسم شقتك بنفسك…|ببلاش",
     accent: "ببلاش",
-    art: { scene: Studio, frame: cue("PDF") + 6, cx: 540, cy: 990, scale: 0.6 },
+    sub: "استوديو 2D: ضيف أوضك بالمقاسات، واعرف المساحة، وصدّر المخطط PDF من الموبايل",
+    art: { scene: Studio, frame: cue("PDF") + 6, cx: 540, cy: 990, scale: 0.54 },
     chips: ["ضيف الغرف", "صدّرها PDF", "ابعتها للمهندس"],
     url: "onehouse-eg.web.app/studio",
   },
@@ -119,7 +134,7 @@ export const POSTS = {
 export type PostId = keyof typeof POSTS;
 
 // The art box sits between the headline and the footer.
-const BOX = { top: 330, bottom: 1150 };
+const BOX = { top: 420, bottom: 1150 };
 
 const Frozen: React.FC<{
   readonly art: Art;
@@ -204,13 +219,13 @@ const Header: React.FC<{ readonly post: Post }> = ({ post }) => (
     dir="rtl"
     style={{
       position: "absolute",
-      top: 60,
+      top: 46,
       left: 50,
       right: 50,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: 22,
+      gap: 18,
       textAlign: "center",
     }}
   >
@@ -238,9 +253,24 @@ const Header: React.FC<{ readonly post: Post }> = ({ post }) => (
       <Headline
         text={post.title}
         accent={post.accent}
-        size={70}
+        size={post.title.includes("|") ? 64 : 70}
       />
     }
+    {post.sub && (
+      <div
+        style={{
+          marginTop: -8,
+          maxWidth: 900,
+          fontFamily: bodyFont,
+          fontWeight: 600,
+          fontSize: 33,
+          lineHeight: 1.45,
+          color: "rgba(255,255,255,0.88)",
+        }}
+      >
+        {post.sub}
+      </div>
+    )}
   </div>
 );
 
@@ -302,7 +332,7 @@ const Checklist: React.FC<{ readonly items: readonly string[] }> = ({
       right: 90,
       display: "flex",
       flexDirection: "column",
-      gap: 18,
+      gap: 14,
     }}
   >
     {items.map((t, i) => (
@@ -312,7 +342,7 @@ const Checklist: React.FC<{ readonly items: readonly string[] }> = ({
           display: "flex",
           alignItems: "center",
           gap: 26,
-          height: 116,
+          height: 100,
           padding: "0 26px",
           borderRadius: 26,
           background: "rgba(15,44,76,0.9)",
@@ -615,7 +645,7 @@ export const FacebookPost: React.FC<{ readonly id: PostId }> = ({ id }) => {
                       border: "2px solid rgba(143,182,221,0.3)",
                     }}
                   >
-                    <Frozen art={a} x={230} y={225} scale={0.5} />
+                    <Frozen art={a} x={230} y={190} scale={0.44} />
                     <div
                       style={{
                         position: "absolute",
@@ -658,6 +688,26 @@ export const FacebookPost: React.FC<{ readonly id: PostId }> = ({ id }) => {
                         {["الأساس", "الأعمدة", "السقف", "الخرسانة"][i]}
                       </div>
                     </div>
+                    {post.notes && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: 10,
+                          right: 10,
+                          bottom: 10,
+                          padding: "8px 10px",
+                          borderRadius: 14,
+                          background: "rgba(4,15,29,0.88)",
+                          textAlign: "center",
+                          fontFamily: headingFont,
+                          fontWeight: 700,
+                          fontSize: 25,
+                          color: "white",
+                        }}
+                      >
+                        {post.notes[i]}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
