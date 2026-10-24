@@ -13,7 +13,7 @@ export const POST_W = 1080;
 export const POST_H = 1350;
 
 // A frame of one reel scene, with the part around (cx, cy) of the 1080x1920 canvas scaled into a box.
-type Art = {
+export type Art = {
   readonly scene: React.FC;
   readonly frame: number;
   readonly cx: number;
@@ -136,7 +136,7 @@ export type PostId = keyof typeof POSTS;
 // The art box sits between the headline and the footer.
 const BOX = { top: 420, bottom: 1150 };
 
-const Frozen: React.FC<{
+export const Frozen: React.FC<{
   readonly art: Art;
   readonly x: number;
   readonly y: number;
@@ -163,7 +163,7 @@ const Frozen: React.FC<{
   );
 };
 
-const Headline: React.FC<{
+export const Headline: React.FC<{
   readonly text: string;
   readonly accent?: string;
   readonly size: number;

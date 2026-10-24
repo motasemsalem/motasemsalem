@@ -1,5 +1,6 @@
 import { Composition, Folder } from "remotion";
 import { OneHouseReel } from "./OneHouseReel";
+import { ADS, type AdId, FacebookAd } from "./posts/Ads";
 import { FacebookPost, POST_H, POST_W, POSTS, type PostId } from "./posts/Posts";
 import "./theme";
 import timeline from "./timeline.json";
@@ -23,6 +24,20 @@ export const RemotionRoot: React.FC = () => {
             key={id}
             id={`post-${String(i + 1).padStart(2, "0")}-${id}`}
             component={FacebookPost}
+            defaultProps={{ id }}
+            durationInFrames={timeline.total}
+            fps={timeline.fps}
+            width={POST_W}
+            height={POST_H}
+          />
+        ))}
+      </Folder>
+      <Folder name="FacebookAds">
+        {(Object.keys(ADS) as AdId[]).map((id, i) => (
+          <Composition
+            key={id}
+            id={`ad-${String(i + 1).padStart(2, "0")}-${id}`}
+            component={FacebookAd}
             defaultProps={{ id }}
             durationInFrames={timeline.total}
             fps={timeline.fps}

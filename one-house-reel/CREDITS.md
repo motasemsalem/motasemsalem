@@ -40,3 +40,14 @@ Fonts: Alexandria and IBM Plex Sans Arabic (SIL Open Font License, in `public/fo
 - `whoosh-fast.mp3`: https://assets.mixkit.co/active_storage/sfx/1490/1490-preview.mp3
 
 The remaining effects in `public/sfx/*.wav` are synthesized by `scripts/generate-audio.py`.
+
+## Photos (Facebook ads)
+
+Single-image ads in `renders/ads/` use these photos from Pixabay (Pixabay Content License: free for commercial use, no attribution required):
+
+- `public/photos/columns-sunset.jpg`: https://pixabay.com/photos/building-lot-construction-site-3391379/
+- `public/photos/crack.jpg`: https://pixabay.com/photos/texture-background-design-layer-1066878/
+- `public/photos/rebar.jpg`: https://pixabay.com/photos/iron-rods-reinforcing-bars-474792/
+- `public/photos/pour.jpg`: https://pixabay.com/photos/construction-concrete-filling-6378558/
+- `public/photos/site-columns.jpg`: https://pixabay.com/photos/construction-house-column-concrete-6811733/
+- `public/photos/building.jpg`: https://pixabay.com/photos/perspective-building-architecture-5135031/
