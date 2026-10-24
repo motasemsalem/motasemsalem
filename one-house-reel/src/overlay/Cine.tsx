@@ -1,4 +1,6 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
+import { useContext } from "react";
+import { ArtOnly } from "../ad/kit";
 import { clamp, easeInOut, easeOut, pop } from "../cues";
 import { bodyFont, BRAND, headingFont, SHADOW } from "../theme";
 
@@ -17,6 +19,7 @@ export const Title: React.FC<{
   readonly top?: number;
 }> = ({ from, to, text, accent, kicker, kickerAt, sub, subAt, size = 112, top = 300 }) => {
   const frame = useCurrentFrame();
+  if (useContext(ArtOnly)) return null;
   if (frame < Math.min(from, kickerAt ?? from) - 3 || frame > to + 8) return null;
   const out = pop(frame, to, 8, easeInOut);
   const words = text.split(" ");

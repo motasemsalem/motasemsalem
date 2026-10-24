@@ -2,7 +2,7 @@
 
 إعلان ريلز عمودي (1080×1920، 30 إطار/ث، 53 ثانية) لشركة One House. الإعلان كله موشن جرافيك مرسوم بالكود، من غير صور أو لقطات خارجية، وبهوية الشركة (الكحلي والأحمر). كل مشهد متظبط على كلمته في التعليق الصوتي المصري، والإعلان بيشرح نفسه حتى من غير صوت. معمول بـ [Remotion](https://www.remotion.dev/).
 
-النسخة المرندرة: [`renders/one-house-reel.mp4`](renders/one-house-reel.mp4) · السكريبت: [`SCRIPT.md`](SCRIPT.md) · مصادر الموسيقى والمؤثرات: [`CREDITS.md`](CREDITS.md)
+النسخة المرندرة: [`renders/one-house-reel.mp4`](renders/one-house-reel.mp4) · بوستات فيسبوك: [`POSTS.md`](POSTS.md) · السكريبت: [`SCRIPT.md`](SCRIPT.md) · مصادر الموسيقى والمؤثرات: [`CREDITS.md`](CREDITS.md)
 
 ## المشاهد
 

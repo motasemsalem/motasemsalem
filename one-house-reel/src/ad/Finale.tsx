@@ -1,9 +1,10 @@
 import { shine } from "@remotion/effects/shine";
+import { useContext } from "react";
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { backOut, C, clamp, cue, easeInOut, easeOut, pop, ramp, TOTAL } from "../cues";
 import { Title } from "../overlay/Cine";
 import { bodyFont, headingFont, SHADOW } from "../theme";
-import { P, Scene } from "./kit";
+import { ArtOnly, P, Scene } from "./kit";
 
 // ---------- Engineer review + photo updates ----------
 const STAGES = ["الأساس", "الأعمدة", "السقف", "الخرسانة"];
@@ -378,6 +379,7 @@ export const Studio: React.FC = () => {
 
 const UrlPill: React.FC<{ readonly from: number; readonly to: number; readonly top: number }> = ({ from, to, top }) => {
   const frame = useCurrentFrame();
+  if (useContext(ArtOnly)) return null;
   if (frame < from - 2 || frame > to + 6) return null;
   const p = pop(frame, from, 12, backOut) * (1 - pop(frame, to, 6));
   return (

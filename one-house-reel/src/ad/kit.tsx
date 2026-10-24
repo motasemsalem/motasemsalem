@@ -1,3 +1,4 @@
+import { createContext, useContext } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { clamp, easeInOut, easeOut, pop, rand } from "../cues";
 import { bodyFont, headingFont } from "../theme";
@@ -148,6 +149,9 @@ export const Dim: React.FC<{ readonly a: [number, number]; readonly b: [number, 
   );
 };
 
+// Set by the Facebook posts, which draw their own headlines: on-screen text of the reel stays hidden.
+export const ArtOnly = createContext(false);
+
 // ---------- Stage ----------
 
 // Deep navy studio backdrop: a soft spotlight, the studio's dotted grid, and slow drifting dust.
@@ -239,6 +243,7 @@ export const Wipe: React.FC<{ readonly at: number }> = ({ at }) => {
 // A numbered step badge used as the chapter header of the four construction steps.
 export const Step: React.FC<{ readonly n: number; readonly label: string; readonly from: number; readonly to: number }> = ({ n, label, from, to }) => {
   const frame = useCurrentFrame();
+  if (useContext(ArtOnly)) return null;
   if (frame < from - 2 || frame > to + 8) return null;
   const p = pop(frame, from - 2, 14, easeOut) * (1 - pop(frame, to, 8));
   const dots = [1, 2, 3, 4];
@@ -284,6 +289,7 @@ export const Line: React.FC<{ readonly at: number; readonly to: number; readonly
   size = 58,
 }) => {
   const frame = useCurrentFrame();
+  if (useContext(ArtOnly)) return null;
   if (frame < at - 3 || frame > to + 6) return null;
   const p = pop(frame, at - 3, 10, easeOut) * (1 - pop(frame, to, 6));
   return (
