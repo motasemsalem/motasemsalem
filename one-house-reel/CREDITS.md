@@ -51,3 +51,4 @@ Single-image ads in `renders/ads/` use these photos from Pixabay (Pixabay Conten
 - `public/photos/pour.jpg`: https://pixabay.com/photos/construction-concrete-filling-6378558/
 - `public/photos/site-columns.jpg`: https://pixabay.com/photos/construction-house-column-concrete-6811733/
 - `public/photos/building.jpg`: https://pixabay.com/photos/perspective-building-architecture-5135031/
+- `public/photos/skeleton.jpg`: https://pixabay.com/photos/construction-dangerous-1218349/

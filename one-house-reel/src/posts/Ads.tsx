@@ -24,6 +24,14 @@ type Ad = {
 };
 
 export const ADS = {
+  plot: {
+    photo: "skeleton",
+    focus: "70% 50%",
+    kicker: "ون هاوس للمقاولات",
+    title: "كل بيت بنبنيه…|بيبدأ من أساس صح",
+    accent: "صح",
+    sub: "من جسّة التربة والقواعد لحد آخر سقف. مهندس بيراجع كل مرحلة، وصاحب البيت متابع بالصور",
+  },
   inside: {
     photo: "columns-sunset",
     focus: "50% 60%",
