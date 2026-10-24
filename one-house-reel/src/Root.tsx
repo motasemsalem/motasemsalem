@@ -1,4 +1,6 @@
 import { Composition, Folder } from "remotion";
+import { FinishingReel } from "./finishing/FinishingReel";
+import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
 import { ADS, type AdId, FacebookAd } from "./posts/Ads";
 import { FacebookPost, POST_H, POST_W, POSTS, type PostId } from "./posts/Posts";
@@ -14,6 +16,15 @@ export const RemotionRoot: React.FC = () => {
         // The length comes from the voiceover; see scripts/generate-audio.py.
         durationInFrames={timeline.total}
         fps={timeline.fps}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="FinishingReel"
+        component={FinishingReel}
+        // The length comes from the voiceover; see scripts/finishing-timeline.py.
+        durationInFrames={finishing.total}
+        fps={finishing.fps}
         width={1080}
         height={1920}
       />

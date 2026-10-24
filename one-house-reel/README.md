@@ -18,6 +18,21 @@
 6. **استوديو 2D:** محاكاة لمصمم الشقق اللي على موقع ون هاوس، بنفس الألوان وأسماء الغرف ومقاساتها من الكود. الغرف بتتضاف وتترتب، وبعدين بيطلع ملف PDF وبيتبعت للمهندس، وفي الآخر «ببلاش!» وعنوان `onehouse-eg.web.app/studio`.
 7. **النهاية:** اللوجو، و«بيت يعيش العمر كله»، وزرار «احجز معاينتك المجانية».
 
+## ريل التشطيبات (`FinishingReel`)
+
+ريل عمودي (1080×1920، حوالي 80 ثانية) لتشطيب الشقق والفلل وتجديدها. الريل بيمشي مع العميل خطوة بخطوة، من المعاينة لحد ما يستلم المفتاح، وكل بنود التشطيب بصور وفيديوهات حقيقية ومتظبطة على كلام التعليق الصوتي. النسخة المرندرة: [`renders/finishing-reel.mp4`](renders/finishing-reel.mp4) · السكريبت: [`FINISHING-SCRIPT.md`](FINISHING-SCRIPT.md).
+
+```console
+PIXABAY_KEY=... python3 scripts/prepare-finishing.py              # الصور والفيديوهات في public/finishing (مكبّرة بـ Real-ESRGAN)
+python3 scripts/finishing-timeline.py path/to/recording.mp3      # التعليق الصوتي في public/finishing-vo وتوقيت كل كلمة
+python3 scripts/finishing-music.py                               # الموسيقى: الـ drop على «الشياكة»
+npx remotion render FinishingReel renders/finishing-reel.mp4
+```
+
+- `src/finishing/FinishingReel.tsx`: ترتيب اللقطات والكلام والمؤثرات على كلمات التعليق.
+- `src/finishing/kit.tsx`: الصور بحركة كاميرا، والفيديوهات، والألوان، والانتقالات.
+- `src/finishing/overlays.tsx`: العناوين، والبنود بعلامة ✓، وعرض السعر والعقد، وعداد الضغط، واختبار المية، والليزر، والموبايل، والنهاية.
+
 ## الملفات
 
 - `src/ad/kit.tsx`: الألوان، والإسقاط الأيزومتري (صناديق، حديد، كانات، خطوط مقاسات)، والخلفية، والانتقالات، وشارة الخطوة.

@@ -1,0 +1,182 @@
+{
+ "bare-room": {
+  "file": "finishing/bare-room.jpg",
+  "w": 1529,
+  "h": 2300
+ },
+ "sign-keys": {
+  "file": "finishing/sign-keys.jpg",
+  "w": 4349,
+  "h": 2300
+ },
+ "luxe-apartment": {
+  "file": "finishing/luxe-apartment.jpg",
+  "w": 1533,
+  "h": 2300
+ },
+ "plan-tape": {
+  "file": "finishing/plan-tape.jpg",
+  "w": 3459,
+  "h": 2300
+ },
+ "level-hands": {
+  "file": "finishing/level-hands.jpg",
+  "w": 3455,
+  "h": 2300
+ },
+ "render-lounge": {
+  "file": "finishing/render-lounge.jpg",
+  "w": 4089,
+  "h": 2300
+ },
+ "marble": {
+  "file": "finishing/marble.jpg",
+  "w": 1725,
+  "h": 2300
+ },
+ "porcelain": {
+  "file": "finishing/porcelain.jpg",
+  "w": 2223,
+  "h": 2300
+ },
+ "wood": {
+  "file": "finishing/wood.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "swatches": {
+  "file": "finishing/swatches.jpg",
+  "w": 1809,
+  "h": 2300
+ },
+ "handshake": {
+  "file": "finishing/handshake.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "wires-wall": {
+  "file": "finishing/wires-wall.jpg",
+  "w": 3435,
+  "h": 2300
+ },
+ "wall-hole": {
+  "file": "finishing/wall-hole.jpg",
+  "w": 1533,
+  "h": 2300
+ },
+ "chisel-tiles": {
+  "file": "finishing/chisel-tiles.jpg",
+  "w": 3447,
+  "h": 2300
+ },
+ "electrician": {
+  "file": "finishing/electrician.jpg",
+  "w": 3455,
+  "h": 2300
+ },
+ "panel-hands": {
+  "file": "finishing/panel-hands.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "hoses-plan": {
+  "file": "finishing/hoses-plan.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "bath-stripped": {
+  "file": "finishing/bath-stripped.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "ac-lounge": {
+  "file": "finishing/ac-lounge.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "cctv": {
+  "file": "finishing/cctv.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "smart-tablet": {
+  "file": "finishing/smart-tablet.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "linear-lights": {
+  "file": "finishing/linear-lights.jpg",
+  "w": 1533,
+  "h": 2300
+ },
+ "tv-wall": {
+  "file": "finishing/tv-wall.jpg",
+  "w": 3833,
+  "h": 2300
+ },
+ "tiler": {
+  "file": "finishing/tiler.jpg",
+  "w": 3459,
+  "h": 2300
+ },
+ "marble-bath": {
+  "file": "finishing/marble-bath.jpg",
+  "w": 3415,
+  "h": 2300
+ },
+ "herringbone": {
+  "file": "finishing/herringbone.jpg",
+  "w": 2300,
+  "h": 2300
+ },
+ "wood-bedroom": {
+  "file": "finishing/wood-bedroom.jpg",
+  "w": 1655,
+  "h": 2300
+ },
+ "kitchen": {
+  "file": "finishing/kitchen.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "walk-in": {
+  "file": "finishing/walk-in.jpg",
+  "w": 3648,
+  "h": 2300
+ },
+ "double-door": {
+  "file": "finishing/double-door.jpg",
+  "w": 1533,
+  "h": 2300
+ },
+ "big-windows": {
+  "file": "finishing/big-windows.jpg",
+  "w": 3427,
+  "h": 2300
+ },
+ "shower-dark": {
+  "file": "finishing/shower-dark.jpg",
+  "w": 1533,
+  "h": 2300
+ },
+ "villa-pool": {
+  "file": "finishing/villa-pool.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "villa-dusk": {
+  "file": "finishing/villa-dusk.jpg",
+  "w": 3392,
+  "h": 2300
+ },
+ "cleaning": {
+  "file": "finishing/cleaning.jpg",
+  "w": 3451,
+  "h": 2300
+ },
+ "keys-house": {
+  "file": "finishing/keys-house.jpg",
+  "w": 3063,
+  "h": 2300
+ }
+}
