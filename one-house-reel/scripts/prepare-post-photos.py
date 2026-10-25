@@ -1,4 +1,4 @@
-# Photos for the finishing Facebook posts (src/posts/Finishing.tsx): Pixabay ids, credited in CREDITS.md.
+# Photos for the finishing and structure Facebook posts (src/posts/Finishing.tsx): Pixabay ids, credited in CREDITS.md.
 # Downloads Pixabay's 1280px image into public/post-photos/<name>.jpg and writes src/posts/photos.json.
 # Needs a Pixabay API key: PIXABAY_KEY=... python3 scripts/prepare-post-photos.py
 import json, os, time, urllib.error, urllib.request
@@ -9,6 +9,10 @@ PHOTOS = {
     "wood": 2857073, "swatches": 1744624, "wires-wall": 1696757, "electrician": 1080554, "hoses-plan": 7689068,
     "ac-lounge": 4148894, "tv-wall": 998265, "tiler": 1080596, "marble-bath": 1737171, "herringbone": 7437972,
     "kitchen": 10508073, "double-door": 3117027, "big-windows": 10517295, "villa-dusk": 5102547,
+    # structure posts (SPOSTS)
+    "s-frame": 3433296, "s-slab-aerial": 1491693, "s-foundation": 2660502, "s-column": 253498, "s-pour": 6378558,
+    "s-chute": 2222450, "s-excavation": 1178241, "s-tying": 2682128, "s-formwork": 3038630, "s-slab-pour": 7226875,
+    "s-columns-inside": 4839276, "s-engineers": 2762319, "s-engineer-site": 2578410,
 }
 RAW = os.environ.get('RAW', '/tmp/claude-0/raw'); OUT = 'public/post-photos'
 os.makedirs(RAW, exist_ok=True); os.makedirs(OUT, exist_ok=True)

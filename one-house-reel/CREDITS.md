@@ -128,3 +128,21 @@ Photos are from [Pixabay](https://pixabay.com/) under the [Pixabay Content Licen
 | `double-door` | [Pixabay 3117027](https://pixabay.com/photos/doors-indoors-house-wood-window-3117027/) by sabinevanerp |
 | `big-windows` | [Pixabay 10517295](https://pixabay.com/photos/living-room-modern-design-10517295/) by amazing_designs |
 | `villa-dusk` | [Pixabay 5102547](https://pixabay.com/photos/villa-exterior-3dmax-night-view-5102547/) by 纹叶 |
+
+Structure posts (`SPOSTS`), same license:
+
+| Photo | Source |
+|---|---|
+| `s-frame` | [Pixabay 3433296](https://pixabay.com/photos/building-daniel-steel-design-3433296/) by Engin_Akyurt |
+| `s-slab-aerial` | [Pixabay 1491693](https://pixabay.com/photos/building-construction-site-to-build-1491693/) by 652234 |
+| `s-foundation` | [Pixabay 2660502](https://pixabay.com/photos/foundation-civil-engineering-2660502/) by dewikinanthi |
+| `s-column` | [Pixabay 253498](https://pixabay.com/photos/workers-builder-building-253498/) by sergioar |
+| `s-pour` | [Pixabay 6378558](https://pixabay.com/photos/construction-concrete-filling-6378558/) by agshotcreteservices |
+| `s-chute` | [Pixabay 2222450](https://pixabay.com/photos/concrete-pump-concrete-concrete-pour-2222450/) by annawaldl |
+| `s-excavation` | [Pixabay 1178241](https://pixabay.com/photos/excavator-construction-site-1178241/) by 652234 |
+| `s-tying` | [Pixabay 2682128](https://pixabay.com/photos/worker-work-employee-building-2682128/) by santosguerra |
+| `s-formwork` | [Pixabay 3038630](https://pixabay.com/photos/crane-industry-daniel-sky-steel-3038630/) by Engin_Akyurt |
+| `s-slab-pour` | [Pixabay 7226875](https://pixabay.com/photos/construction-cement-pouring-7226875/) by Nick_the_Photographer |
+| `s-columns-inside` | [Pixabay 4839276](https://pixabay.com/photos/buildings-concrete-construction-4839276/) by ds_30 |
+| `s-engineers` | [Pixabay 2762319](https://pixabay.com/photos/building-professional-employee-2762319/) by jarmoluk |
+| `s-engineer-site` | [Pixabay 2578410](https://pixabay.com/photos/construction-worker-safety-2578410/) by bridgesward |

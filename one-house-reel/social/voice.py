@@ -115,7 +115,7 @@ def tts(text, prev, nxt):
             errors.append(f"key {i}: {left} characters left")
             continue
         try:
-            return call(f"text-to-speech/{VOICE}?output_format=mp3_44100_192", k, body)
+            return call(f"text-to-speech/{VOICE}?output_format=mp3_44100_128", k, body)
         except RuntimeError as e:
             msg = str(e)
             if any(s in msg for s in ("quota_exceeded", "insufficient", "credits", "401")):

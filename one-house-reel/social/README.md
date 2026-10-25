@@ -33,11 +33,12 @@ The page should read like a big, confident brand. Never like a hard sell.
 - No hype words (خطير، نار، مبيخلصش), no strings of emojis, no "اكتب كلمة كذا".
 - At most one question per post, and not on every post. Three or four hashtags, always starting with `#ون_هاوس`.
 - The two lines of business alternate:
-  - Structure (المسلّح والصبّات: foundations, columns, slabs, concrete), in the navy and red motion-graphics style of `renders/posts/`.
+  - Structure (المسلّح والصبّات: foundations, columns, slabs, concrete), on real site photos (`SPOSTS`, `renders/structure-posts/`).
   - Finishing and renovation, on photos (`renders/finishing-posts/`).
   - Both close on «احجز معاينتك المجانية».
 - Bathroom units are paused by the owner: no unit posts until they say so (`UPOSTS` stays in the code).
 - Images keep the shared frame from `src/posts/Finishing.tsx`: full-bleed photo, logo, gold rule, footer.
+- Every post is designed as a post. Never use a frame or a drawing from one of the videos: on its own it explains nothing.
 
 **Never in a post or a reply:**
 - Warranties or guarantees.
@@ -76,7 +77,7 @@ Scheduled tasks clone this repository on branch `claude/company-motion-graphics-
 1. Run `python3 social/publish.py report` and write the week's numbers into a short report for the owner. Include what worked best and what you will do differently.
 2. Keep at least two weeks of posts queued:
    - Write new posts into `posts.py`, alternating structure and finishing.
-   - Build the images as new entries in `src/posts/Posts.tsx` (structure) or `src/posts/Finishing.tsx` (`FPOSTS`), and render them with `npx remotion still`.
+   - Build the images as new entries in `src/posts/Finishing.tsx` (`SPOSTS` for structure, `FPOSTS` for finishing), and render them with `npx remotion still`.
    - Reuse the drawings and photos the posts already use. New stock photos are fine (Pexels or Pixabay), but never commit an API key.
    - Look at each render before queuing it.
 3. Run `plan` and `run`, then commit and push.

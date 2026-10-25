@@ -105,83 +105,71 @@
   "instagram": null
  },
  {
-  "id": "structure-08-checklist",
+  "id": "structure-02-checklist",
   "at": "2026-10-27T21:57:23+03:00",
   "facebook": {
-   "id": "1127707846421195",
+   "id": "1127714609753852",
    "state": "scheduled"
   },
   "instagram": null
  },
  {
-  "id": "structure-01-hook",
-  "at": "2026-10-31T21:57:23+03:00",
+  "id": "structure-01-hero",
+  "at": "2026-10-31T21:57:23+02:00",
   "facebook": {
-   "id": "1127707896421190",
+   "id": "1127714639753849",
    "state": "scheduled"
   },
   "instagram": null
  },
  {
-  "id": "structure-03-steps",
-  "at": "2026-11-06T21:57:23+03:00",
+  "id": "structure-07-stages",
+  "at": "2026-11-06T21:57:23+02:00",
   "facebook": {
-   "id": "1127707953087851",
+   "id": "1127714693087177",
    "state": "scheduled"
   },
   "instagram": null
  },
  {
-  "id": "structure-06-slab",
-  "at": "2026-11-12T21:57:23+03:00",
+  "id": "structure-05-pour",
+  "at": "2026-11-12T21:57:23+02:00",
   "facebook": {
-   "id": "1127708023087844",
+   "id": "1127714729753840",
    "state": "scheduled"
   },
   "instagram": null
  },
  {
-  "id": "structure-04-foundation",
-  "at": "2026-11-18T21:57:23+03:00",
+  "id": "structure-03-foundation",
+  "at": "2026-11-18T21:57:23+02:00",
   "facebook": {
-   "id": "1127708073087839",
+   "id": "1127714769753836",
    "state": "scheduled"
   },
   "instagram": null
  },
  {
-  "id": "structure-05-columns",
+  "id": "structure-04-columns",
   "at": "2026-11-28T21:00:00+03:00",
   "facebook": null,
   "instagram": null
  },
  {
-  "id": "structure-07-concrete",
+  "id": "structure-06-concrete",
   "at": "2026-11-30T21:00:00+03:00",
   "facebook": null,
   "instagram": null
  },
  {
-  "id": "structure-09-review",
+  "id": "structure-08-review",
   "at": "2026-12-02T21:00:00+03:00",
   "facebook": null,
   "instagram": null
  },
  {
-  "id": "structure-02-pain",
+  "id": "structure-09-cta",
   "at": "2026-12-04T21:00:00+03:00",
-  "facebook": null,
-  "instagram": null
- },
- {
-  "id": "structure-10-studio",
-  "at": "2026-12-06T21:00:00+03:00",
-  "facebook": null,
-  "instagram": null
- },
- {
-  "id": "structure-11-cta",
-  "at": "2026-12-08T21:00:00+03:00",
   "facebook": null,
   "instagram": null
  }

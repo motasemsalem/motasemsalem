@@ -38,6 +38,7 @@ type FPost = {
 
 const FINISHING_FOOTER = ["ون هاوس · تشطيبات وتجديد", "احجز معاينتك المجانية"] as const;
 const UNIT_FOOTER = ["ون هاوس · وحدات حمام بورديوم", "ابعتلنا مقاس حمامك"] as const;
+const STRUCTURE_FOOTER = ["ون هاوس · مقاولات وإنشاءات", "احجز معاينتك المجانية"] as const;
 
 export const FPOSTS = {
   hero: {
@@ -225,6 +226,111 @@ export const UPOSTS = {
 
 export type UPostId = keyof typeof UPOSTS;
 
+// Structure (المسلّح والصبّات), on Pixabay site photos: one stage of the build per post.
+export const SPOSTS = {
+  hero: {
+    layout: "full",
+    photo: "s-frame",
+    pos: "50% 50%",
+    kicker: "ون هاوس للمقاولات",
+    title: "بنبني صح|من أول طوبة",
+    accent: "من أول طوبة",
+    sub: "أساسات، أعمدة، أسقف وخرسانة… ومهندس بيراجع ويمضي على كل مرحلة",
+  },
+  checklist: {
+    layout: "list",
+    photo: "s-slab-aerial",
+    pos: "50% 50%",
+    kicker: "نصيحة من مهندس",
+    title: "قبل ما تصب السقف…|اتأكد من 5 حاجات",
+    accent: "5 حاجات",
+    list: [
+      "الشدّة مستوية بالميزان",
+      "الحديد مطابق للرسومات… في العدد والقُطر",
+      "الكانات متقاسة بالمسطرة… مش بالعين",
+      "البسكوت تحت الحديد… علشان الخرسانة تغطّيه",
+      "المهندس راجع ومضى… قبل ما الصبّة تبدأ",
+    ],
+    chips: ["احفظ البوست لحد يوم الصبّة"],
+  },
+  foundation: {
+    layout: "full",
+    photo: "s-foundation",
+    pos: "50% 50%",
+    kicker: "الأساس",
+    title: "البيت كله|شايله الأساس",
+    accent: "الأساس",
+    sub: "جسّة تربة قبل الحفر نعرف بيها الأرض… والقواعد بتتسلّح على الرسومات بالظبط",
+    chips: ["جسّة تربة", "قواعد على الرسومات"],
+  },
+  columns: {
+    layout: "full",
+    photo: "s-column",
+    pos: "50% 40%",
+    kicker: "الأعمدة",
+    title: "الكانة بالمسطرة…|مش بالعين",
+    accent: "بالمسطرة…",
+    sub: "مسافة الكانات هي اللي بتدّي العمود قوته… ولو وسعت، العمود بيضعف",
+    chips: ["حديد مطابق للمواصفات", "كانات كل 15 سم"],
+  },
+  pour: {
+    layout: "full",
+    photo: "s-pour",
+    pos: "50% 50%",
+    kicker: "صبّة السقف",
+    title: "صبّة واحدة…|من غير وقفات",
+    accent: "من غير وقفات",
+    sub: "السقف بيتصب مرة واحدة، والهزّاز بيطلّع الهوا من الخرسانة… فميبقاش فيه نشع ولا شروخ",
+    chips: ["شدّة بالميزان", "هزّاز", "صبّة واحدة"],
+  },
+  concrete: {
+    layout: "full",
+    photo: "s-chute",
+    pos: "40% 50%",
+    kicker: "الخرسانة",
+    title: "الخرسانة القوية|محتاجة صبر",
+    accent: "صبر",
+    sub: "مكعبات من كل صبّة بتتكسر في المعمل… ورشّ مية أسبوع كامل علشان متتشرخش",
+    chips: ["مكعبات للمعمل", "رشّ مية 7 أيام"],
+  },
+  stages: {
+    layout: "grid",
+    tiles: [
+      { photo: "s-excavation", label: "الحفر" },
+      { photo: "s-foundation", label: "القواعد" },
+      { photo: "s-tying", label: "الأعمدة" },
+      { photo: "s-formwork", label: "الشدّات" },
+      { photo: "s-slab-pour", label: "الصبّ" },
+      { photo: "s-columns-inside", label: "الهيكل" },
+    ],
+    kicker: "مراحل المسلّح",
+    title: "من الحفر|لحد آخر سقف",
+    accent: "آخر سقف",
+    sub: "كل مرحلة بتتراجع وتتمضي… قبل ما اللي بعدها تبدأ",
+  },
+  review: {
+    layout: "full",
+    photo: "s-engineers",
+    pos: "50% 45%",
+    kicker: "المتابعة",
+    title: "مهندس يراجع ويمضي…|وإنت متابع بالصور",
+    accent: "متابع بالصور",
+    sub: "صور الموقع بتوصلك على الموبايل مع كل مرحلة… مش محتاج تقف في الموقع كل يوم",
+  },
+  cta: {
+    layout: "full",
+    photo: "s-engineer-site",
+    pos: "50% 45%",
+    kicker: "ون هاوس للمقاولات",
+    title: "عندك أرض؟|ابدأ صح",
+    accent: "ابدأ صح",
+    sub: "مهندس ينزل أرضك، يعاين، ويقولك تبدأ إزاي… وتاخد عرض سعر بالبند",
+    chips: ["معاينة مجانية", "ابعتلنا رسالة على الصفحة"],
+  },
+} satisfies Record<string, FPost>;
+
+export type SPostId = keyof typeof SPOSTS;
+
 const Photo: React.FC<{ readonly name: string; readonly pos?: string; readonly style?: React.CSSProperties }> = ({ name, pos = "50% 50%", style }) => {
   const m = MEDIA[name];
   if (!m) throw new Error(`No photo "${name}" in photos.json`);
@@ -387,6 +493,7 @@ const List: React.FC<{ readonly items: readonly string[] }> = ({ items }) => (
 
 export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) => <Post post={FPOSTS[id]} footer={FINISHING_FOOTER} />;
 export const UnitPost: React.FC<{ readonly id: UPostId }> = ({ id }) => <Post post={UPOSTS[id]} footer={UNIT_FOOTER} />;
+export const StructurePost: React.FC<{ readonly id: SPostId }> = ({ id }) => <Post post={SPOSTS[id]} footer={STRUCTURE_FOOTER} />;
 
 const Post: React.FC<{ readonly post: FPost; readonly footer: readonly [string, string] }> = ({ post, footer }) => {
   return (

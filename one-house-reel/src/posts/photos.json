@@ -93,5 +93,70 @@
   "file": "post-photos/villa-dusk.jpg",
   "w": 2396,
   "h": 1625
+ },
+ "s-frame": {
+  "file": "post-photos/s-frame.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "s-slab-aerial": {
+  "file": "post-photos/s-slab-aerial.jpg",
+  "w": 2436,
+  "h": 1625
+ },
+ "s-foundation": {
+  "file": "post-photos/s-foundation.jpg",
+  "w": 2889,
+  "h": 1625
+ },
+ "s-column": {
+  "file": "post-photos/s-column.jpg",
+  "w": 2444,
+  "h": 1625
+ },
+ "s-pour": {
+  "file": "post-photos/s-pour.jpg",
+  "w": 2436,
+  "h": 1625
+ },
+ "s-chute": {
+  "file": "post-photos/s-chute.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "s-excavation": {
+  "file": "post-photos/s-excavation.jpg",
+  "w": 2394,
+  "h": 1625
+ },
+ "s-tying": {
+  "file": "post-photos/s-tying.jpg",
+  "w": 2453,
+  "h": 1625
+ },
+ "s-formwork": {
+  "file": "post-photos/s-formwork.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "s-slab-pour": {
+  "file": "post-photos/s-slab-pour.jpg",
+  "w": 2438,
+  "h": 1625
+ },
+ "s-columns-inside": {
+  "file": "post-photos/s-columns-inside.jpg",
+  "w": 2430,
+  "h": 1625
+ },
+ "s-engineers": {
+  "file": "post-photos/s-engineers.jpg",
+  "w": 2453,
+  "h": 1625
+ },
+ "s-engineer-site": {
+  "file": "post-photos/s-engineer-site.jpg",
+  "w": 2436,
+  "h": 1625
  }
 }
