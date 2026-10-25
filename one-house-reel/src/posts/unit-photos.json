@@ -1,0 +1,57 @@
+{
+ "unit-cabinet-open": {
+  "file": "unit-photos/cabinet-open.jpg",
+  "w": 720,
+  "h": 1280
+ },
+ "unit-cream": {
+  "file": "unit-photos/cream.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-drawer-open": {
+  "file": "unit-photos/drawer-open.jpg",
+  "w": 720,
+  "h": 1280
+ },
+ "unit-hero-black": {
+  "file": "unit-photos/hero-black.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-navy-bath": {
+  "file": "unit-photos/navy-bath.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-navy-showroom": {
+  "file": "unit-photos/navy-showroom.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-render-black": {
+  "file": "unit-photos/render-black.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-render-charcoal": {
+  "file": "unit-photos/render-charcoal.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-render-white-close": {
+  "file": "unit-photos/render-white-close.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-render-white": {
+  "file": "unit-photos/render-white.jpg",
+  "w": 1080,
+  "h": 1920
+ },
+ "unit-white-drawers": {
+  "file": "unit-photos/white-drawers.jpg",
+  "w": 1080,
+  "h": 1920
+ }
+}

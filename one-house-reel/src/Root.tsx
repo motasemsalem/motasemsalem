@@ -3,7 +3,7 @@ import { FinishingReel } from "./finishing/FinishingReel";
 import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
 import { ADS, type AdId, FacebookAd } from "./posts/Ads";
-import { FinishingPost, FPOST_H, FPOST_W, FPOSTS, type FPostId } from "./posts/Finishing";
+import { FinishingPost, FPOST_H, FPOST_W, FPOSTS, type FPostId, UnitPost, UPOSTS, type UPostId } from "./posts/Finishing";
 import { FacebookPost, POST_H, POST_W, POSTS, type PostId } from "./posts/Posts";
 import "./theme";
 import timeline from "./timeline.json";
@@ -47,6 +47,11 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="FinishingPosts">
         {(Object.keys(FPOSTS) as FPostId[]).map((id, i) => (
           <Still key={id} id={`finishing-${String(i + 1).padStart(2, "0")}-${id}`} component={FinishingPost} defaultProps={{ id }} width={FPOST_W} height={FPOST_H} />
+        ))}
+      </Folder>
+      <Folder name="UnitPosts">
+        {(Object.keys(UPOSTS) as UPostId[]).map((id, i) => (
+          <Still key={id} id={`unit-${String(i + 1).padStart(2, "0")}-${id}`} component={UnitPost} defaultProps={{ id }} width={FPOST_W} height={FPOST_H} />
         ))}
       </Folder>
       <Folder name="FacebookAds">

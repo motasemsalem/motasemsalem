@@ -1,8 +1,10 @@
 import { AbsoluteFill, Img, staticFile } from "remotion";
 import { BRAND, bodyFont, headingFont } from "../theme";
 import media from "./photos.json";
+import unitMedia from "./unit-photos.json";
 
-// Facebook feed posts (1080x1350) for finishing and renovation, on Pixabay photos (scripts/prepare-post-photos.py).
+// Facebook feed posts (1080x1350) for finishing and renovation, on Pixabay photos (scripts/prepare-post-photos.py),
+// and for the bathroom units, on frames from the page's own product videos (public/unit-photos).
 // One frame for all of them, like a big brand's feed: full-bleed photo, logo, gold rule, and the same footer.
 // A "|" in a title is a line break; words in `accent` turn gold.
 export const FPOST_W = 1080;
@@ -12,7 +14,7 @@ const GOLD = "#e8c58a";
 const GRADE = "contrast(1.05) saturate(1.06) sepia(0.06) brightness(1.02)";
 
 type MediaInfo = { file: string; w: number; h: number };
-const MEDIA: Record<string, MediaInfo> = media;
+const MEDIA: Record<string, MediaInfo> = { ...media, ...unitMedia };
 
 type Tile = { readonly photo: string; readonly label: string; readonly pos?: string };
 
@@ -22,14 +24,20 @@ type FPost = {
   readonly accent?: string;
   readonly sub?: string;
   readonly chips?: readonly string[];
-  // full: one photo behind everything · split: before / after · grid: six trades · trio: three materials · list: tips
-  readonly layout: "full" | "split" | "grid" | "trio" | "list";
+  // full: one photo behind everything · split: before / after · grid: six trades · trio: three materials
+  // quad: four colours · list: tips
+  readonly layout: "full" | "split" | "grid" | "trio" | "quad" | "list";
   readonly photo?: string;
   // CSS object-position for the photo crop.
   readonly pos?: string;
   readonly tiles?: readonly Tile[];
   readonly list?: readonly string[];
+  // The footer's two sides: who we are, and what to do next.
+  readonly footer?: readonly [string, string];
 };
+
+const FINISHING_FOOTER = ["ون هاوس · تشطيبات وتجديد", "احجز معاينتك المجانية"] as const;
+const UNIT_FOOTER = ["ون هاوس · وحدات حمام بورديوم", "ابعتلنا مقاس حمامك"] as const;
 
 export const FPOSTS = {
   hero: {
@@ -157,6 +165,66 @@ export const FPOSTS = {
 
 export type FPostId = keyof typeof FPOSTS;
 
+// Bathroom units: the page's own product shots, no prices (offers change) and nothing about warranties.
+export const UPOSTS = {
+  hero: {
+    layout: "full",
+    photo: "unit-hero-black",
+    pos: "50% 62%",
+    kicker: "وحدات حمام ون هاوس",
+    title: "وحدة حمام|مصممة تعيش",
+    accent: "تعيش",
+    sub: "وحدات معلقة من البورديوم… شكل هادي ومودرن، وتنضيف أسهل تحتها",
+    chips: ["بورديوم", "تصميم معلق", "مقاس 60 سم"],
+  },
+  material: {
+    layout: "full",
+    photo: "unit-render-white-close",
+    pos: "50% 55%",
+    kicker: "الخامة",
+    title: "الخشب العادي بينفش…|البورديوم لأ",
+    accent: "البورديوم لأ",
+    sub: "مية الدش ورطوبة الحمام بتبوّظ الخشب مع الوقت. البورديوم خامة مقاومة للمية والرطوبة، فالوحدة تفضل زي يوم ما ركّبتها",
+  },
+  details: {
+    layout: "trio",
+    tiles: [
+      { photo: "unit-render-charcoal", label: "أدراج سوفت كلوز", pos: "50% 60%" },
+      { photo: "unit-cabinet-open", label: "مكان للصرف جوّه", pos: "50% 60%" },
+      { photo: "unit-render-black", label: "تصميم معلق", pos: "45% 55%" },
+    ],
+    kicker: "التفاصيل",
+    title: "التفاصيل اللي|بتفرق معاك كل يوم",
+    accent: "كل يوم",
+    sub: "أدراج بتتقفل بهدوء، ومكان محسوب لمواسير الصرف، ووحدة معلقة الأرض تحتها بتتمسح بسهولة",
+  },
+  colors: {
+    layout: "quad",
+    tiles: [
+      { photo: "unit-render-white", label: "أبيض ودهبي", pos: "50% 55%" },
+      { photo: "unit-render-charcoal", label: "فحمي", pos: "50% 55%" },
+      { photo: "unit-navy-bath", label: "كحلي", pos: "50% 92%" },
+      { photo: "unit-cream", label: "كريمي", pos: "50% 55%" },
+    ],
+    kicker: "الألوان",
+    title: "لون يناسب|حمامك",
+    accent: "حمامك",
+    sub: "أبيض، فحمي، كحلي، وكريمي… مع مقابض دهبي أو فضي",
+  },
+  cta: {
+    layout: "full",
+    photo: "unit-navy-showroom",
+    pos: "50% 55%",
+    kicker: "وحدات حمام ون هاوس",
+    title: "شوف الوحدة|بعينك",
+    accent: "بعينك",
+    sub: "ابعتلنا مقاس حمامك وصورته، ونرشحلك الموديل واللون اللي يناسبه",
+    chips: ["ابعتلنا رسالة على الصفحة"],
+  },
+} satisfies Record<string, FPost>;
+
+export type UPostId = keyof typeof UPOSTS;
+
 const Photo: React.FC<{ readonly name: string; readonly pos?: string; readonly style?: React.CSSProperties }> = ({ name, pos = "50% 50%", style }) => {
   const m = MEDIA[name];
   if (!m) throw new Error(`No photo "${name}" in photos.json`);
@@ -211,7 +279,7 @@ const Chips: React.FC<{ readonly items: readonly string[] }> = ({ items }) => (
 );
 
 // Name on the right, the offer on the left: the same strip closes every post.
-const Footer: React.FC = () => (
+const Footer: React.FC<{ readonly text: readonly [string, string] }> = ({ text }) => (
   <div
     dir="rtl"
     style={{
@@ -232,9 +300,9 @@ const Footer: React.FC = () => (
       color: "rgba(255,255,255,0.85)",
     }}
   >
-    <span>ون هاوس · تشطيبات وتجديد</span>
+    <span>{text[0]}</span>
     <span style={{ display: "flex", alignItems: "center", gap: 12, color: GOLD }}>
-      احجز معاينتك المجانية
+      {text[1]}
       <span style={{ width: 10, height: 10, borderRadius: 5, background: BRAND.red }} />
     </span>
   </div>
@@ -317,8 +385,10 @@ const List: React.FC<{ readonly items: readonly string[] }> = ({ items }) => (
   </div>
 );
 
-export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) => {
-  const post: FPost = FPOSTS[id];
+export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) => <Post post={FPOSTS[id]} footer={FINISHING_FOOTER} />;
+export const UnitPost: React.FC<{ readonly id: UPostId }> = ({ id }) => <Post post={UPOSTS[id]} footer={UNIT_FOOTER} />;
+
+const Post: React.FC<{ readonly post: FPost; readonly footer: readonly [string, string] }> = ({ post, footer }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND.deep }}>
       {post.layout === "full" && post.photo && <Photo name={post.photo} pos={post.pos} />}
@@ -332,6 +402,7 @@ export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) => {
       {(post.layout === "full" || post.layout === "split") && <Shade from={post.layout === "split" ? 46 : 38} />}
       {post.layout === "grid" && post.tiles && <Tiles tiles={post.tiles} cols={3} top={196} height={640} />}
       {post.layout === "trio" && post.tiles && <Tiles tiles={post.tiles} cols={3} top={196} height={680} />}
+      {post.layout === "quad" && post.tiles && <Tiles tiles={post.tiles} cols={2} top={196} height={660} />}
       <Logo />
       {post.layout === "list" && post.list ? (
         <>
@@ -347,9 +418,9 @@ export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) => {
           )}
         </>
       ) : (
-        <Text post={post} size={post.layout === "grid" || post.layout === "trio" ? 62 : undefined} />
+        <Text post={post} size={post.layout === "full" || post.layout === "split" ? undefined : 62} />
       )}
-      <Footer />
+      <Footer text={post.footer ?? footer} />
     </AbsoluteFill>
   );
 };

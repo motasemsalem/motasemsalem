@@ -1,0 +1,286 @@
+# Publishes the One House feed (social/posts.py) to the Facebook page and Instagram on its calendar
+# (social/calendar.json), and reads comments and numbers back.
+#
+#   python3 social/publish.py plan --start 2026-10-27 [--every 2] [--hour 20]   date the posts not on the calendar yet
+#   python3 social/publish.py run            publish what is due, and hand Facebook its posts for the next 4 weeks
+#   python3 social/publish.py now <post id>  publish one post right away, on both
+#   python3 social/publish.py status         the calendar, and where each post stands
+#   python3 social/publish.py inbox          comments from the last 7 days that the page hasn't answered
+#   python3 social/publish.py reply <comment id> <text> [--ig]
+#   python3 social/publish.py report         page numbers for the last 7 and 28 days, and each recent post
+#
+# Needs META_PAGE_TOKEN in the environment (a user token with the page permissions, or the page's own token).
+# Never write a token into this repo. Times are Cairo time. Run from one-house-reel/.
+import json, os, subprocess, sys, time
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+sys.path.insert(0, os.path.dirname(__file__))
+from posts import POSTS
+
+PAGE_ID = "111210318028466"
+IG_ID = "17841456046087917"
+API = "https://graph.facebook.com/v21.0"
+CAIRO = ZoneInfo("Africa/Cairo")
+CALENDAR = os.path.join(os.path.dirname(__file__), "calendar.json")
+# Facebook holds scheduled posts itself, so they go out even if no session runs; Instagram is posted when due.
+FB_AHEAD = timedelta(days=28)
+BY_ID = {p["id"]: p for p in POSTS}
+
+
+def graph(method, path, token=None, files=None, headers=None, data=None, **params):
+    """Calls the Graph API with curl and returns the JSON, raising on an error."""
+    cmd = ["curl", "-sS", "-X", method, "--retry", "3", path if path.startswith("http") else f"{API}/{path}"]
+    if token:
+        params["access_token"] = token
+    if method == "GET":
+        cmd[-1] += "?" + "&".join(f"{k}={v}" for k, v in params.items())
+    else:
+        for k, v in params.items():
+            cmd += ["--form-string", f"{k}={v}"]
+    for k, v in (files or {}).items():
+        cmd += ["-F", f"{k}=@{v}"]
+    for k, v in (headers or {}).items():
+        cmd += ["-H", f"{k}: {v}"]
+    if data:
+        cmd += ["--data-binary", f"@{data}"]
+    out = json.loads(subprocess.run(cmd, capture_output=True, text=True, check=True).stdout or "{}")
+    if "error" in out:
+        raise RuntimeError(f"{path}: {out['error'].get('message')}")
+    return out
+
+
+_token = None
+
+
+def page_token():
+    global _token
+    if _token:
+        return _token
+    t = os.environ.get("META_PAGE_TOKEN")
+    if not t:
+        raise SystemExit("META_PAGE_TOKEN is not set: add it in the environment's settings.")
+    try:
+        _token = graph("GET", PAGE_ID, t, fields="access_token")["access_token"]
+    except (RuntimeError, KeyError):
+        _token = t  # already the page's own token
+    return _token
+
+
+def load():
+    return json.load(open(CALENDAR)) if os.path.exists(CALENDAR) else []
+
+
+def save(cal):
+    json.dump(cal, open(CALENDAR, "w"), ensure_ascii=False, indent=1)
+
+
+def when(item):
+    return datetime.fromisoformat(item["at"])
+
+
+# --- Facebook ---------------------------------------------------------------------------------------------
+
+
+def fb_photo(post, at=None):
+    extra = {"published": "false", "scheduled_publish_time": int(at.timestamp())} if at else {}
+    r = graph("POST", f"{PAGE_ID}/photos", page_token(), files={"source": post["file"]}, message=post["caption"], **extra)
+    return r.get("post_id") or r["id"]
+
+
+def fb_reel(post, at=None):
+    t = page_token()
+    vid = graph("POST", f"{PAGE_ID}/video_reels", t, upload_phase="start")["video_id"]
+    size = os.path.getsize(post["file"])
+    graph("POST", f"https://rupload.facebook.com/video-upload/v21.0/{vid}", headers={"Authorization": f"OAuth {t}", "offset": "0", "file_size": str(size)}, data=post["file"])
+    state = {"video_state": "SCHEDULED", "scheduled_publish_time": int(at.timestamp())} if at else {"video_state": "PUBLISHED"}
+    graph("POST", f"{PAGE_ID}/video_reels", t, upload_phase="finish", video_id=vid, description=post["caption"], **state)
+    return vid
+
+
+# --- Instagram --------------------------------------------------------------------------------------------
+
+
+def ig_wait(container):
+    for _ in range(60):
+        s = graph("GET", container, page_token(), fields="status_code,status")
+        if s["status_code"] == "FINISHED":
+            return
+        if s["status_code"] in ("ERROR", "EXPIRED"):
+            raise RuntimeError(f"Instagram rejected the media: {s.get('status')}")
+        time.sleep(10)
+    raise RuntimeError("Instagram is still processing the media after 10 minutes")
+
+
+def ig_photo(post):
+    # Instagram fetches images from a public URL: park the image on the page as an unpublished photo,
+    # hand Instagram its CDN link, and remove it once Instagram has its copy.
+    t = page_token()
+    tmp = graph("POST", f"{PAGE_ID}/photos", t, files={"source": post["file"]}, published="false")["id"]
+    try:
+        url = graph("GET", tmp, t, fields="images")["images"][0]["source"]
+        c = graph("POST", f"{IG_ID}/media", t, image_url=url, caption=post["caption"])["id"]
+        ig_wait(c)
+        return graph("POST", f"{IG_ID}/media_publish", t, creation_id=c)["id"]
+    finally:
+        graph("DELETE", tmp, t)
+
+
+def ig_reel(post):
+    t = page_token()
+    c = graph("POST", f"{IG_ID}/media", t, media_type="REELS", upload_type="resumable", caption=post["caption"], share_to_feed="true")["id"]
+    size = os.path.getsize(post["file"])
+    graph("POST", f"https://rupload.facebook.com/ig-api-upload/v21.0/{c}", headers={"Authorization": f"OAuth {t}", "offset": "0", "file_size": str(size)}, data=post["file"])
+    ig_wait(c)
+    return graph("POST", f"{IG_ID}/media_publish", t, creation_id=c)["id"]
+
+
+# --- Commands ---------------------------------------------------------------------------------------------
+
+
+def plan(start, every=2, hour=20):
+    cal = load()
+    have = {i["id"] for i in cal}
+    day = datetime.fromisoformat(start).replace(hour=hour, minute=0, tzinfo=CAIRO)
+    if cal:
+        last = max(when(i) for i in cal) + timedelta(days=every)
+        day = max(day, last.replace(hour=hour, minute=0, second=0, microsecond=0))
+    for p in POSTS:
+        if p["id"] not in have:
+            cal.append({"id": p["id"], "at": day.isoformat(), "facebook": None, "instagram": None})
+            day += timedelta(days=every)
+    save(cal)
+    status()
+
+
+def publish(item, now):
+    post = BY_ID[item["id"]]
+    at = when(item)
+    if not item["facebook"]:
+        if at <= now + timedelta(minutes=15):
+            pid = (fb_reel if post.get("video") else fb_photo)(post)
+            item["facebook"] = {"id": pid, "state": "published"}
+        elif at <= now + FB_AHEAD:
+            pid = (fb_reel if post.get("video") else fb_photo)(post, at)
+            item["facebook"] = {"id": pid, "state": "scheduled"}
+        if item["facebook"]:
+            print("facebook", item["facebook"]["state"], item["id"], flush=True)
+    elif item["facebook"]["state"] == "scheduled" and at <= now:
+        item["facebook"]["state"] = "published"
+    if not item["instagram"] and at <= now + timedelta(minutes=15):
+        mid = (ig_reel if post.get("video") else ig_photo)(post)
+        item["instagram"] = {"id": mid, "state": "published"}
+        print("instagram published", item["id"], flush=True)
+
+
+def run():
+    cal = load()
+    now = datetime.now(CAIRO)
+    failed = []
+    for item in sorted(cal, key=when):
+        try:
+            publish(item, now)
+        except RuntimeError as e:
+            failed.append(f"{item['id']}: {e}")
+        save(cal)  # keep what went out even if a later post fails
+    for f in failed:
+        print("FAILED", f)
+    sys.exit(1 if failed else 0)
+
+
+def now_(pid):
+    cal = load()
+    item = next((i for i in cal if i["id"] == pid), None)
+    if not item:
+        item = {"id": pid, "facebook": None, "instagram": None}
+        cal.append(item)
+    if BY_ID.get(pid) is None:
+        raise SystemExit(f"No post {pid} in social/posts.py")
+    now = datetime.now(CAIRO).replace(microsecond=0)
+    item["at"] = now.isoformat()
+    publish(item, now)
+    save(cal)
+
+
+def status():
+    for i in sorted(load(), key=when):
+        fb = i["facebook"]["state"] if i["facebook"] else "-"
+        ig = i["instagram"]["state"] if i["instagram"] else "-"
+        print(f"{when(i):%a %d %b %H:%M}  fb:{fb:<9} ig:{ig:<9} {i['id']}")
+
+
+def inbox():
+    t = page_token()
+    since = datetime.now(CAIRO) - timedelta(days=7)
+    posts = graph("GET", f"{PAGE_ID}/posts", t, fields="id,message,comments.limit(50)%7Bid,from,message,created_time,comments%7Bfrom%7D%7D", since=int(since.timestamp()), limit=25)
+    for p in posts.get("data", []):
+        for c in p.get("comments", {}).get("data", []):
+            answered = any(r.get("from", {}).get("id") == PAGE_ID for r in c.get("comments", {}).get("data", []))
+            if c.get("from", {}).get("id") != PAGE_ID and not answered:
+                print(json.dumps({"platform": "facebook", "comment": c["id"], "post": (p.get("message") or "")[:60], "text": c["message"]}, ensure_ascii=False))
+    media = graph("GET", f"{IG_ID}/media", t, fields="id,caption,timestamp,comments%7Bid,text,username,replies%7Busername%7D%7D", limit=25)
+    me = graph("GET", IG_ID, t, fields="username")["username"]
+    for m in media.get("data", []):
+        if datetime.fromisoformat(m["timestamp"].replace("+0000", "+00:00")) < since:
+            continue
+        for c in m.get("comments", {}).get("data", []):
+            answered = any(r.get("username") == me for r in c.get("replies", {}).get("data", []))
+            if c.get("username") != me and not answered:
+                print(json.dumps({"platform": "instagram", "comment": c["id"], "post": (m.get("caption") or "")[:60], "text": c["text"]}, ensure_ascii=False))
+
+
+def reply(cid, text, ig=False):
+    if ig:
+        graph("POST", f"{cid}/replies", page_token(), message=text)
+    else:
+        graph("POST", f"{cid}/comments", page_token(), message=text)
+    print("replied", cid)
+
+
+def report():
+    t = page_token()
+    for period in ("week", "days_28"):
+        row = []
+        for m in ("page_media_view", "page_post_engagements", "page_views_total", "page_daily_follows_unique"):
+            try:
+                v = graph("GET", f"{PAGE_ID}/insights", t, metric=m, period=period)["data"][0]["values"][-1]["value"]
+            except (RuntimeError, IndexError, KeyError):
+                v = "?"
+            row.append(f"{m}={v}")
+        print(period, " ".join(row))
+    fans = graph("GET", PAGE_ID, t, fields="followers_count,fan_count")
+    ig = graph("GET", IG_ID, t, fields="followers_count,media_count")
+    print("facebook followers", fans.get("followers_count"), "· instagram followers", ig.get("followers_count"))
+    for i in sorted(load(), key=when):
+        fb = i.get("facebook") or {}
+        if fb.get("state") != "published":
+            continue
+        try:
+            p = graph("GET", fb["id"], t, fields="reactions.summary(true).limit(0),comments.summary(true).limit(0),shares")
+            print(f"{when(i):%d %b} {i['id']}: reactions {p['reactions']['summary']['total_count']}, comments {p['comments']['summary']['total_count']}, shares {p.get('shares', {}).get('count', 0)}")
+        except (RuntimeError, KeyError):
+            pass
+
+
+if __name__ == "__main__":
+    a = sys.argv[1:]
+    if not a:
+        raise SystemExit(__doc__ or "see the comment at the top of social/publish.py")
+    cmd = a[0]
+    if cmd == "plan":
+        opts = dict(zip(a[1::2], a[2::2]))
+        plan(opts["--start"], int(opts.get("--every", 2)), int(opts.get("--hour", 20)))
+    elif cmd == "run":
+        run()
+    elif cmd == "now":
+        now_(a[1])
+    elif cmd == "status":
+        status()
+    elif cmd == "inbox":
+        inbox()
+    elif cmd == "reply":
+        reply(a[1], a[2], "--ig" in a)
+    elif cmd == "report":
+        report()
+    else:
+        raise SystemExit(f"unknown command {cmd}")
