@@ -79,3 +79,19 @@ Scheduled tasks clone this repository on branch `claude/company-motion-graphics-
    - Look at each render before queuing it.
 3. Run `plan` and `run`, then commit and push.
 4. Never create or activate paid ads, and never spend money. The paid campaign drafts stay drafts until the owner says «انشر» for them.
+
+## Voiceover (ElevenLabs)
+
+`social/voice.py` makes the reels' narration. The voice is «Mostafa – Bold and Spirited» on model `eleven_v4`, the voice of the finishing reel. The keys are `ELEVENLABS_API_KEY`, `ELEVENLABS_API_KEY2` and onwards in the environment. When one key runs out, the next one is used.
+
+Credits are limited, so a voiceover is generated **once, when the script is final**:
+
+1. Write the script in `social/voice/<name>.txt`, one sentence per line. Get it right first: read it aloud in your head as an Egyptian announcer would say it, and keep it short.
+2. Add diacritics only where Egyptian pronunciation is at risk, never on every letter. Full tashkeel pushes the voice towards formal Arabic. Mark:
+   - brand and foreign words: وَن هاوْس، بورْدْيوم، سوفْت كْلوز، سْمارْت هوم
+   - words the model has misread before: نِتّ
+   - a shadda or vowel wherever a word could be read two ways.
+3. Run `python3 social/voice.py check <file>`. It is free, and it shows the cost, the credits left, and lines that still need diacritics.
+4. Run `say`. Lines already generated come from the cache and cost nothing.
+5. Run `verify`. Whisper listens back to every line.
+6. For any flagged line, fix only its text and run `redo <file> <line>`. Never regenerate the whole script to fix one word.
