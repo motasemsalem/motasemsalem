@@ -29,7 +29,9 @@ python3 social/publish.py report
 
 The page should read like a big, confident brand. Never like a hard sell.
 
-- One idea per post. Short lines, plain Egyptian Arabic, and concrete facts over adjectives.
+- One idea per post, and **a new idea every time**. Before writing, read every caption in `posts.py` and don't repeat an idea, an angle or a headline already used.
+- **Every post stands on its own.** Most people seeing it have never seen another One House post. So each post says what we do and what to do next (the closing line or the footer), and never leans on another post: no «زي ما قلنا», «الجزء التاني», «كمان».
+- Short lines, plain Egyptian Arabic, and concrete facts over adjectives.
 - No hype words (خطير، نار، مبيخلصش), no strings of emojis, no "اكتب كلمة كذا".
 - At most one question per post, and not on every post. Three or four hashtags, always starting with `#ون_هاوس`.
 - The two lines of business alternate:
@@ -84,6 +86,9 @@ Scheduled tasks clone this repository on branch `claude/company-motion-graphics-
 4. Never create or activate paid ads, and never spend money. The paid campaign drafts stay drafts until the owner says «انشر» for them.
 
 ## Voiceover (ElevenLabs)
+
+**For now the owner generates every voiceover himself on the ElevenLabs website.** The API keys are free accounts, which can't use library voices. So never call the API. Write the script in `social/voice/<name>.txt`, send him the text ready to paste, and wait for the file. When it arrives, `check` and `verify` still apply: Whisper listens to his file the same way.
+
 
 `social/voice.py` makes the reels' narration. The voice is «Mostafa – Bold and Spirited» on model `eleven_v4`, the voice of the finishing reel. The keys are `ELEVENLABS_API_KEY`, `ELEVENLABS_API_KEY2` and onwards in the environment. When one key runs out, the next one is used.
 
