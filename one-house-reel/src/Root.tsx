@@ -3,6 +3,8 @@ import { FinishingReel } from "./finishing/FinishingReel";
 import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
 import { SlabReel } from "./slab/SlabReel";
+import { REELS } from "./reels";
+import { ReelById } from "./reels/ReelById";
 import slab from "./slab/timeline.json";
 import { ADS, type AdId, FacebookAd } from "./posts/Ads";
 import { FinishingPost, FPOST_H, FPOST_W, FPOSTS, type FPostId, UnitPost, UPOSTS, type UPostId, StructurePost, SPOSTS, type SPostId } from "./posts/Finishing";
@@ -40,6 +42,11 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
+      <Folder name="Reels">
+        {REELS.map((r) => (
+          <Composition key={r.id} id={`reel-${r.id}`} component={ReelById} defaultProps={{ id: r.id }} durationInFrames={r.timeline.total} fps={r.timeline.fps} width={1080} height={1920} />
+        ))}
+      </Folder>
       <Folder name="FacebookPosts">
         {(Object.keys(POSTS) as PostId[]).map((id, i) => (
           // As long as the reel, so the frozen reel frames inside resolve (a 1-frame Still clamps them to 0). Render frame 0.

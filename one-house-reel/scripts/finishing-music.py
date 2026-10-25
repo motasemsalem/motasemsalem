@@ -3,7 +3,7 @@
 The track's beat drop is placed on «الشياكة», so the quiet breakdown sits under the hidden-work section and the
 full groove arrives with the finishes. It fades in after the hook line, dips under the narrator, and fades out.
 Usage: python3 scripts/finishing-music.py   (needs numpy, scipy, ffmpeg; downloads the track on first run)
-REEL=slab writes public/music/slab-score.mp3 for the slab-pour reel, with the drop on «ون» of «في ون هاوس».
+REEL=slab (or reels/<name>) writes public/music/<REEL>-score.mp3 for that reel, with the drop on «ون» of «في ون هاوس».
 """
 import importlib.util, json, os, subprocess
 import numpy as np
@@ -16,7 +16,9 @@ if not os.path.exists(SRC):
     subprocess.run(['curl', '-sf', '-o', SRC, 'https://assets.mixkit.co/music/623/623.mp3'], check=True)
 
 REEL = os.environ.get('REEL', 'finishing')
-DROP_WORD = {'finishing': 'الشياكة', 'slab': 'ون'}[REEL]
+# The drop lands on «الشياكة» in the finishing reel, and on «ون» of the closing «في ون هاوس» everywhere else.
+DROP_WORD = {'finishing': 'الشياكة'}.get(REEL, 'ون')
+os.makedirs(os.path.dirname(f'public/music/{REEL}-score.mp3'), exist_ok=True)
 tl = json.load(open(f'src/{REEL}/timeline.json'))
 fps, total = tl['fps'], tl['total'] / tl['fps']
 drop_at = next(w['start'] for w in tl['words'] if w['text'].startswith(DROP_WORD))

@@ -288,5 +288,70 @@
   "file": "finishing/slab-building.mp4",
   "w": 1080,
   "h": 1920
+ },
+ "str-excavator": {
+  "file": "finishing/str-excavator.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-dig-aerial": {
+  "file": "finishing/str-dig-aerial.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-footings": {
+  "file": "finishing/str-footings.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-footings2": {
+  "file": "finishing/str-footings2.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-site-aerial": {
+  "file": "finishing/str-site-aerial.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-crack": {
+  "file": "finishing/str-crack.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-rust": {
+  "file": "finishing/str-rust.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-cutting": {
+  "file": "finishing/str-cutting.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-coating": {
+  "file": "finishing/str-coating.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-pump2": {
+  "file": "finishing/str-pump2.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-night-mix": {
+  "file": "finishing/str-night-mix.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-form-worker": {
+  "file": "finishing/str-form-worker.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "str-breaking": {
+  "file": "finishing/str-breaking.mp4",
+  "w": 1080,
+  "h": 1920
  }
 }

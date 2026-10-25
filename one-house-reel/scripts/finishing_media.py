@@ -62,4 +62,18 @@ CLIPS = {
     "slab-curing": (39432610, 1.0),       # spraying water on fresh concrete
     "slab-aerial": (35631527, 0.5),       # aerial: big slab, crane
     "slab-building": (36515303, 0.0),     # finished concrete frame against the sky
+    # structure and finishing reels (src/reels)
+    "str-excavator": (34521511, 1.0),     # excavator digging the pit
+    "str-dig-aerial": (36052050, 0.5),    # excavation from above
+    "str-footings": (34199756, 1.0),      # rows of footings being formed
+    "str-footings2": (34199758, 1.0),     # footings and starter bars, wide
+    "str-site-aerial": (34199773, 0.5),   # foundation site from above
+    "str-crack": (7830152, 0.5),          # crack in a concrete wall
+    "str-rust": (7829485, 0.5),           # rusted steel, close-up
+    "str-cutting": (39909407, 1.0),       # cutting steel bars
+    "str-coating": (6473942, 1.0),        # rolling a coating onto concrete
+    "str-pump2": (34587146, 2.0),         # pouring from the pump over rebar
+    "str-night-mix": (35379337, 2.0),     # concrete mixer at night
+    "str-form-worker": (34664557, 1.0),   # worker setting formwork
+    "str-breaking": (37994475, 1.0),      # breaking into a finished wall
 }
