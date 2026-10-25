@@ -12,3 +12,4 @@ public/finishing
 public/post-photos
 scripts/.cache
 scripts/__pycache__
+__pycache__/
