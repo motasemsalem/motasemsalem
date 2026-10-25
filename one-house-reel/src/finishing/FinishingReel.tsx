@@ -192,7 +192,7 @@ export const FinishingReel: React.FC = () => (
     <Trade from={at("plumbing")} to={next("plumbing") - 2} n={3} of={5} name="سباكة" points={[{ at: at("plumbing", "بالضغط"), text: "اختبار ضغط قبل ما الحيطة تتقفل" }]} />
     <Trade from={at("insulation")} to={next("insulation") - 2} n={4} of={5} name="عزل الحمامات والمطابخ" points={[{ at: at("insulation", "ومية"), text: "مية تقعد يومين قبل البلاط" }]} />
     <Trade from={at("plaster")} to={next("plaster") - 2} n={5} of={5} name="محارة بالميزان" points={[{ at: at("plaster", "الحيطة"), text: "الحيطة مستقيمة" }]} />
-    <Laser from={at("plaster", "والميزان")} to={next("plaster") - 2} okAt={at("plaster", "المسطرة")} />
+    <Laser from={at("plaster", "بالميزان")} to={next("plaster") - 2} okAt={at("plaster", "المسطرة")} />
 
     <Title from={at("luxe", "تيجي")} to={next("luxe") - 2} kicker="وبعدين" kickerAt={at("luxe")} text="تيجي الشياكة" accent="الشياكة" size={130} top={1180} />
     <Title from={at("gypsum")} to={next("gypsum") - 2} text="جبس بورد وإضاءة مخفية" accent="مخفية" size={96} top={1240} />
