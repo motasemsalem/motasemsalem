@@ -70,7 +70,7 @@ The page should read like a big, confident brand. Never like a hard sell.
 Scheduled tasks clone this repository on branch `claude/company-motion-graphics-video-fp6kq7`, work in `one-house-reel/`, and commit `social/calendar.json` (and any new posts) back to that branch. Messages to the owner are in Egyptian Arabic.
 
 **Daily run (several times a day):**
-- `python3 social/publish.py run` publishes what is due.
+- `python3 social/publish.py sync`, then `python3 social/publish.py run`: publishes what is due, and re-queues anything that dropped out of Facebook's queue.
 - `python3 social/publish.py inbox` lists new comments; reply to each per the rules above.
 - Commit and push `social/calendar.json` if it changed.
 - Stay silent unless something failed or needs the owner.

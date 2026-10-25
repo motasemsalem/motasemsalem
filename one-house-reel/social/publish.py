@@ -5,6 +5,7 @@
 #   python3 social/publish.py run            publish what is due, and hand Facebook its posts for the next 4 weeks
 #   python3 social/publish.py now <post id>  publish one post right away, on both
 #   python3 social/publish.py cancel <post id>   take a post off the calendar (and Facebook's queue)
+#   python3 social/publish.py sync           forget Facebook ids that left the page's queue (then `run` re-queues them)
 #   python3 social/publish.py status         the calendar, and where each post stands
 #   python3 social/publish.py inbox          comments from the last 7 days that the page hasn't answered
 #   python3 social/publish.py reply <comment id> <text> [--ig]
@@ -224,6 +225,35 @@ def cancel(pid):
     print("cancelled", pid)
 
 
+def sync():
+    """Drops Facebook ids that no longer exist in the page's queue, so `run` schedules those posts again."""
+    t = page_token()
+    queued = set()
+    after = ""
+    while True:
+        r = graph("GET", f"{PAGE_ID}/scheduled_posts", t, fields="id", limit=100, **({"after": after} if after else {}))
+        queued |= {p["id"] for p in r.get("data", [])}
+        after = r.get("paging", {}).get("cursors", {}).get("after") if r.get("paging", {}).get("next") else ""
+        if not after:
+            break
+    cal = load()
+    for item in cal:
+        fb = item.get("facebook")
+        if not fb or fb["state"] != "scheduled":
+            continue
+        if BY_ID[item["id"]].get("video"):
+            try:
+                ok = graph("GET", fb["id"], t, fields="status")["status"]["publishing_phase"].get("publish_status") == "scheduled"
+            except RuntimeError:
+                ok = False
+        else:
+            ok = fb["id"] in queued or fb["id"].split("_")[-1] in {q.split("_")[-1] for q in queued}
+        if not ok:
+            print("not in Facebook's queue any more:", item["id"])
+            item["facebook"] = None
+    save(cal)
+
+
 def status():
     for i in sorted(load(), key=when):
         fb = i["facebook"]["state"] if i["facebook"] else "-"
@@ -298,6 +328,8 @@ if __name__ == "__main__":
         now_(a[1])
     elif cmd == "cancel":
         cancel(a[1])
+    elif cmd == "sync":
+        sync()
     elif cmd == "status":
         status()
     elif cmd == "inbox":
