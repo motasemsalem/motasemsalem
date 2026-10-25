@@ -111,11 +111,12 @@ export type PanelDef = { readonly media: string; readonly at: number; readonly l
 // word with its own clip and label, so every item gets a picture and the screen stays calm.
 export const Panels: React.FC<{ readonly from: number; readonly to: number; readonly heading: string; readonly rows: readonly PanelDef[] }> = ({ from, to, heading, rows }) => {
   const f = useCurrentFrame();
-  if (f < from - 2 || f > to + FADE) return null;
+  if (f < from - 2 || f > to + 2) return null;
   const top = 300;
   const gap = 8;
   const bandH = (1920 - top - gap * (rows.length - 1)) / rows.length;
-  const out = interpolate(f, [to, to + FADE], [1, 0], clamp);
+  // Gone by the time the next section's title comes in.
+  const out = interpolate(f, [to - 6, to + 2], [1, 0], clamp);
   return (
     <AbsoluteFill style={{ opacity: out }}>
       <AbsoluteFill style={{ background: BRAND.deep, opacity: pop(f, from - 2, 10) }} />
