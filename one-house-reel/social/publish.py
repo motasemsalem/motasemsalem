@@ -194,10 +194,14 @@ def respace(start):
     for item in pending:
         fb = item["facebook"]
         if fb and fb["state"] == "scheduled":
+            # Facebook won't move a scheduled photo post, so it is dropped and `run` schedules it again.
+            # A reel can be moved in place.
             try:
+                if not BY_ID[item["id"]].get("video"):
+                    raise RuntimeError("photo posts can't be rescheduled")
                 graph("POST", fb["id"], t, scheduled_publish_time=int(when(item).timestamp()))
             except RuntimeError:
-                graph("DELETE", fb["id"], t)  # couldn't move it: drop it, and `run` schedules it again
+                graph("DELETE", fb["id"], t)
                 item["facebook"] = None
         save(cal)
     status()

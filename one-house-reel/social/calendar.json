@@ -14,7 +14,10 @@
  {
   "id": "finishing-04-hidden",
   "at": "2026-10-26T14:00:00+03:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776153081031",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
@@ -29,32 +32,44 @@
  {
   "id": "finishing-03-services",
   "at": "2026-10-28T14:00:00+03:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776219747691",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "finishing-06-quote",
   "at": "2026-10-29T14:00:00+03:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776309747682",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "finishing-10-checklist",
   "at": "2026-10-29T21:00:00+03:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776346414345",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "finishing-07-bath",
   "at": "2026-10-30T21:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776426414337",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "finishing-05-materials",
   "at": "2026-10-31T14:00:00+02:00",
   "facebook": {
-   "id": "1127718573086789",
+   "id": "1127776473080999",
    "state": "scheduled"
   },
   "instagram": null
@@ -63,7 +78,7 @@
   "id": "finishing-02-before",
   "at": "2026-11-01T14:00:00+02:00",
   "facebook": {
-   "id": "1127718693086777",
+   "id": "1127776546414325",
    "state": "scheduled"
   },
   "instagram": null
@@ -72,7 +87,7 @@
   "id": "finishing-08-kitchen",
   "at": "2026-11-01T21:00:00+02:00",
   "facebook": {
-   "id": "1127718749753438",
+   "id": "1127776609747652",
    "state": "scheduled"
   },
   "instagram": null
@@ -80,38 +95,53 @@
  {
   "id": "finishing-09-smart",
   "at": "2026-11-02T14:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776656414314",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "finishing-11-cta",
   "at": "2026-11-02T21:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776696414310",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-01-hero",
   "at": "2026-10-27T14:00:00+03:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776179747695",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-07-stages",
   "at": "2026-10-28T21:00:00+03:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776266414353",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-05-pour",
   "at": "2026-10-30T14:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776379747675",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-03-foundation",
   "at": "2026-10-31T21:00:00+02:00",
   "facebook": {
-   "id": "1127718633086783",
+   "id": "1127776513080995",
    "state": "scheduled"
   },
   "instagram": null
@@ -119,25 +149,37 @@
  {
   "id": "structure-04-columns",
   "at": "2026-11-03T14:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776749747638",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-06-concrete",
   "at": "2026-11-03T21:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776796414300",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-08-review",
   "at": "2026-11-04T14:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776833080963",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
   "id": "structure-09-cta",
   "at": "2026-11-04T21:00:00+02:00",
-  "facebook": null,
+  "facebook": {
+   "id": "1127776899747623",
+   "state": "scheduled"
+  },
   "instagram": null
  },
  {
