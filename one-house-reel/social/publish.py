@@ -1,7 +1,8 @@
 # Publishes the One House feed (social/posts.py) to the Facebook page and Instagram on its calendar
 # (social/calendar.json), and reads comments and numbers back.
 #
-#   python3 social/publish.py plan --start 2026-10-27 [--every 2] [--hour 20]   date the posts not on the calendar yet
+#   python3 social/publish.py plan --start 2026-10-27      date the posts not on the calendar yet (two a day, 14:00 and 21:00)
+#   python3 social/publish.py respace --start 2026-10-26   move every post not yet out onto the two-a-day slots
 #   python3 social/publish.py run            publish what is due, and hand Facebook its posts for the next 4 weeks
 #   python3 social/publish.py now <post id>  publish one post right away, on both
 #   python3 social/publish.py cancel <post id>   take a post off the calendar (and Facebook's queue)
@@ -141,18 +142,64 @@ def ig_reel(post):
 # --- Commands ---------------------------------------------------------------------------------------------
 
 
-def plan(start, every=2, hour=20):
+# Two posts a day: lunch break and the evening peak (Cairo). Reels always take the evening slot.
+SLOTS = (14, 21)
+
+
+def slots(start):
+    day = datetime.fromisoformat(start).replace(tzinfo=None).replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=CAIRO)
+    while True:
+        for h in SLOTS:
+            yield day.replace(hour=h)
+        day += timedelta(days=1)
+
+
+def fill(items, start):
+    """Gives `items` (in order) consecutive slots from `start`, moving a reel to the next evening slot."""
+    queue = list(items)
+    first = datetime.fromisoformat(start)
+    first = first if first.tzinfo else first.replace(tzinfo=CAIRO)
+    for slot in slots(start):
+        if not queue:
+            return
+        if slot < first:
+            continue
+        pick = next((x for x in queue if slot.hour == SLOTS[-1] or not BY_ID[x["id"]].get("video")), queue[0])
+        queue.remove(pick)
+        pick["at"] = slot.isoformat()
+
+
+def plan(start):
+    """Dates the posts in posts.py that aren't on the calendar yet, after the last one already there."""
     cal = load()
     have = {i["id"] for i in cal}
-    day = datetime.fromisoformat(start).replace(hour=hour, minute=0, tzinfo=CAIRO)
+    new = [{"id": p["id"], "facebook": None, "instagram": None} for p in POSTS if p["id"] not in have]
     if cal:
-        last = max(when(i) for i in cal) + timedelta(days=every)
-        day = max(day, last.replace(hour=hour, minute=0, second=0, microsecond=0))
-    for p in POSTS:
-        if p["id"] not in have:
-            cal.append({"id": p["id"], "at": day.isoformat(), "facebook": None, "instagram": None})
-            day += timedelta(days=every)
+        last = max(when(i) for i in cal) + timedelta(hours=1)
+        start = max(datetime.fromisoformat(start).replace(tzinfo=None).replace(tzinfo=CAIRO), last).isoformat()
+    fill(new, start)
+    cal += new
     save(cal)
+    status()
+
+
+def respace(start):
+    """Re-dates every post that hasn't gone out yet onto the two-a-day slots from `start`, moving Facebook's copies."""
+    cal = load()
+    now = datetime.now(CAIRO)
+    pending = sorted((i for i in cal if not (i["facebook"] or {}).get("state") == "published" and not i["instagram"]), key=when)
+    fill(pending, start)
+    pending = [i for i in pending if when(i) > now]
+    t = page_token()
+    for item in pending:
+        fb = item["facebook"]
+        if fb and fb["state"] == "scheduled":
+            try:
+                graph("POST", fb["id"], t, scheduled_publish_time=int(when(item).timestamp()))
+            except RuntimeError:
+                graph("DELETE", fb["id"], t)  # couldn't move it: drop it, and `run` schedules it again
+                item["facebook"] = None
+        save(cal)
     status()
 
 
@@ -320,8 +367,9 @@ if __name__ == "__main__":
         raise SystemExit(__doc__ or "see the comment at the top of social/publish.py")
     cmd = a[0]
     if cmd == "plan":
-        opts = dict(zip(a[1::2], a[2::2]))
-        plan(opts["--start"], int(opts.get("--every", 2)), int(opts.get("--hour", 20)))
+        plan(dict(zip(a[1::2], a[2::2]))["--start"])
+    elif cmd == "respace":
+        respace(dict(zip(a[1::2], a[2::2]))["--start"])
     elif cmd == "run":
         run()
     elif cmd == "now":

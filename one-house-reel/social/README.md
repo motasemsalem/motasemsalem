@@ -13,7 +13,8 @@ The images come from Remotion stills (`src/posts/Finishing.tsx`, rendered into `
 ```console
 cd one-house-reel
 python3 social/publish.py status
-python3 social/publish.py plan --start 2026-12-01   # dates new posts in posts.py, one every 2 days at 20:00
+python3 social/publish.py plan --start 2026-12-01   # dates new posts in posts.py: two a day, 14:00 and 21:00 (reels in the evening)
+python3 social/publish.py respace --start 2026-12-01  # moves everything not out yet onto the two-a-day slots
 python3 social/publish.py run                       # posts what is due on Instagram, schedules Facebook 4 weeks ahead
 python3 social/publish.py inbox                     # unanswered comments from the last 7 days
 python3 social/publish.py reply <comment id> "<text>" [--ig]
@@ -24,6 +25,10 @@ python3 social/publish.py report
 - `META_PAGE_TOKEN` comes from the environment's settings. It is never written to the repo, a log or a commit.
 - Page: One House (`111210318028466`). Instagram: `@onehouse_eg` (`17841456046087917`).
 - Facebook holds scheduled posts itself, so they go out on time with no session running. Instagram has no scheduling in the API, so `run` posts it when the time comes.
+
+## Cadence
+
+Two posts a day, every day: **14:00 and 21:00 Cairo** (lunch break and the evening peak). Reels take the evening slot. The content runs (Sunday and Wednesday) keep at least 8 days queued.
 
 ## House style
 
@@ -80,7 +85,7 @@ Scheduled tasks clone this repository on branch `claude/company-motion-graphics-
 2. Keep at least two weeks of posts queued:
    - Write new posts into `posts.py`, alternating structure and finishing.
    - Build the images as new entries in `src/posts/Finishing.tsx` (`SPOSTS` for structure, `FPOSTS` for finishing), and render them with `npx remotion still`.
-   - Reuse the drawings and photos the posts already use. New stock photos are fine (Pexels or Pixabay), but never commit an API key.
+   - Photos: the posts' own photos come from Pixabay (`scripts/prepare-post-photos.py`, needs `PIXABAY_KEY`). Without that key, use Pexels: find photos with a web fetch of `https://www.pexels.com/search/<query>/?orientation=portrait`, then download `https://images.pexels.com/photos/<id>/pexels-photo-<id>.jpeg` into `public/post-photos/` and add it to `src/posts/photos.json`. Credit new photos in `CREDITS.md`. New stock photos are fine (Pexels or Pixabay), but never commit an API key.
    - Look at each render before queuing it.
 3. Run `plan` and `run`, then commit and push.
 4. Never create or activate paid ads, and never spend money. The paid campaign drafts stay drafts until the owner says «انشر» for them.
