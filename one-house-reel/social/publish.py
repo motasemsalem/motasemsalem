@@ -4,6 +4,7 @@
 #   python3 social/publish.py plan --start 2026-10-27 [--every 2] [--hour 20]   date the posts not on the calendar yet
 #   python3 social/publish.py run            publish what is due, and hand Facebook its posts for the next 4 weeks
 #   python3 social/publish.py now <post id>  publish one post right away, on both
+#   python3 social/publish.py cancel <post id>   take a post off the calendar (and Facebook's queue)
 #   python3 social/publish.py status         the calendar, and where each post stands
 #   python3 social/publish.py inbox          comments from the last 7 days that the page hasn't answered
 #   python3 social/publish.py reply <comment id> <text> [--ig]
@@ -167,6 +168,10 @@ def publish(item, now):
             print("facebook", item["facebook"]["state"], item["id"], flush=True)
     elif item["facebook"]["state"] == "scheduled" and at <= now:
         item["facebook"]["state"] = "published"
+    # A link goes in the first comment, not the caption, so the post keeps its reach.
+    if post.get("comment") and item["facebook"] and item["facebook"]["state"] == "published" and not item.get("commented"):
+        graph("POST", f"{item['facebook']['id']}/comments", page_token(), message=post["comment"])
+        item["commented"] = True
     if not item["instagram"] and at <= now + timedelta(minutes=15):
         mid = (ig_reel if post.get("video") else ig_photo)(post)
         item["instagram"] = {"id": mid, "state": "published"}
@@ -200,6 +205,22 @@ def now_(pid):
     item["at"] = now.isoformat()
     publish(item, now)
     save(cal)
+
+
+def cancel(pid):
+    """Takes a post off the calendar, and out of Facebook's scheduled queue if it is waiting there."""
+    cal = load()
+    item = next((i for i in cal if i["id"] == pid), None)
+    if not item:
+        raise SystemExit(f"{pid} is not on the calendar")
+    for side in ("facebook", "instagram"):
+        if item[side] and item[side]["state"] == "published":
+            raise SystemExit(f"{pid} is already live on {side}; delete it there by hand if you mean to")
+    if item["facebook"]:
+        graph("DELETE", item["facebook"]["id"], page_token())
+    cal.remove(item)
+    save(cal)
+    print("cancelled", pid)
 
 
 def status():
@@ -274,6 +295,8 @@ if __name__ == "__main__":
         run()
     elif cmd == "now":
         now_(a[1])
+    elif cmd == "cancel":
+        cancel(a[1])
     elif cmd == "status":
         status()
     elif cmd == "inbox":
