@@ -46,6 +46,7 @@ The page should read like a big, confident brand. Never like a hard sell.
 - Bathroom units are paused by the owner: no unit posts until they say so (`UPOSTS` stays in the code).
 - Images keep the shared frame from `src/posts/Finishing.tsx`: full-bleed photo, logo, gold rule, footer.
 - Every post is designed as a post. Never use a frame or a drawing from one of the videos: on its own it explains nothing.
+- **Every video is unique.** A clip appears in one video only: add new clips to `scripts/finishing_media.py` under the reel's own prefix, and run `python3 scripts/check-media.py` (it fails on any shared clip) before rendering. Each voiced reel also gets its own signature graphic (`src/reels/signatures.tsx`: scan, stamp, depth, stages, chat); a new reel gets a new one rather than a repeat.
 
 **Never in a post or a reply:**
 - Warranties or guarantees.

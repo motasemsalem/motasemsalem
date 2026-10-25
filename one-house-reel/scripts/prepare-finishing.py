@@ -1,6 +1,8 @@
 # Downloads the finishing reel's media (scripts/finishing_media.py) into public/finishing/:
 #   clips:  each Pexels video at its highest resolution, cut from its in-point and scaled so it covers a
 #           1080x1920 frame (portrait) or 1920x1080 (landscape, so split panels keep the whole width); <name>.mp4.
+#           An entry with a third value is a landscape clip cut to portrait at full resolution, centred on that
+#           fraction of its width (0 = left edge, 1 = right edge).
 # Also writes src/finishing/media.json with each file's size.
 # Usage: python3 scripts/prepare-finishing.py [name ...]   (needs ffmpeg and curl)
 import json, os, subprocess, sys
@@ -17,7 +19,7 @@ def probe(path):
     w, h = map(int, o[0].split(',')); return w, h, float(o[1])
 
 manifest = {}
-for name, (pid, start) in CLIPS.items():
+for name, (pid, start, *crop) in CLIPS.items():
     dst = f'{OUT}/{name}.mp4'
     if (only and name in only) or (not only and not os.path.exists(dst)):
         src = f'{RAW}/pexels-{pid}.mp4'
@@ -26,8 +28,11 @@ for name, (pid, start) in CLIPS.items():
             subprocess.run(['curl', '-sfL', '-A', 'Mozilla/5.0', '-o', src + '.part', f'https://www.pexels.com/download/video/{pid}/'], check=True)
             os.replace(src + '.part', src)
         w, h, dur = probe(src)
-        size = (1080, 1920) if h > w else (1920, 1080)
+        size = (1080, 1920) if h > w or crop else (1920, 1080)
         vf = f'scale={size[0]}:{size[1]}:force_original_aspect_ratio=increase:flags=lanczos,crop={size[0]}:{size[1]},fps={FPS}'
+        if crop and w > h:
+            cw = h * 9 // 16
+            vf = f'crop={cw}:{h}:{int((w - cw) * crop[0])}:0,' + vf
         length = min(CLIP_SECONDS, dur - start)
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', str(start), '-t', str(length), '-i', src, '-vf', vf, '-an', '-c:v', 'libx264', '-crf', '17', '-preset', 'medium', '-pix_fmt', 'yuv420p', dst], check=True)
         print('clip', name, f'{w}x{h}', flush=True)

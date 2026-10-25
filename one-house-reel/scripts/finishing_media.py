@@ -76,4 +76,57 @@ CLIPS = {
     "str-night-mix": (35379337, 2.0),     # concrete mixer at night
     "str-form-worker": (34664557, 1.0),   # worker setting formwork
     "str-breaking": (37994475, 1.0),      # breaking into a finished wall
+    # Every clip below belongs to one reel only (scripts/check-media.py checks it). A third value cuts a
+    # landscape clip to portrait around that fraction of its width.
+    # reel: rebar-check
+    "rc-slab": (32244802, 1.0, 0.45),     # worker checking rebar on the slab
+    "rc-mesh": (34831845, 1.0, 0.5),      # workers on a wide rebar mat
+    "rc-cut": (9084346, 1.0, 0.45),       # cutting bars, sparks
+    "rc-bars": (16106453, 1.0, 0.4),      # bars stacked by size
+    "rc-cage": (10294764, 1.0, 0.3),      # two men inside a column cage
+    "rc-beam": (39924273, 0.5, 0.5),      # beam cage, close-up
+    "rc-rust": (39924242, 0.5, 0.5),      # rusty bars, close-up
+    "rc-tie": (39933087, 0.5, 0.6),       # tying an overlap with pliers
+    "rc-eng": (8487108, 1.0),             # engineer in a yellow helmet
+    "rc-pour": (39924258, 0.5, 0.4),      # concrete going onto the rebar
+    "rc-aerial": (35631525, 0.5),         # slab and crane from above
+    "rc-end": (31018605, 0.5),            # building site from above
+    # reel: slab-mistakes
+    "sm-hook": (33388930, 0.5),           # slab under way, from above
+    "sm-joint": (39924271, 0.5, 0.5),     # edge of a pour beside open rebar
+    "sm-truck": (34587143, 1.0),          # mixer truck on site
+    "sm-props": (36601732, 1.0),          # worker among the slab props
+    "sm-pump": (35039427, 0.5),           # pump pouring, from above
+    "sm-pour": (39924276, 0.5, 0.5),      # fresh concrete going in
+    "sm-spray": (2887457, 1.0, 0.5),      # spraying a slab
+    "sm-trucks": (35039422, 0.5),         # mixer trucks from above
+    "sm-end": (30911707, 0.5),            # tower going up, from above
+    # reel: foundation
+    "fd-soil": (37786216, 1.0),           # digging into the soil
+    "fd-spacer": (11478662, 0.5, 0.5),    # spacer block under the rebar
+    "fd-house": (20743390, 0.5),          # house frame from above
+    "fd-end": (34199774, 0.5),            # excavator from above
+    # reel: finishing-order
+    "fo-room": (36516358, 0.0),           # finished minimalist living room
+    "fo-wires": (5090783, 1.0),           # electrical work
+    "fo-drain": (8293298, 1.0),           # checking the drainage
+    "fo-insul": (37538325, 1.0),          # applying a waterproof coat
+    "fo-skim": (6474186, 1.0),            # skimming a wall
+    "fo-ceiling": (6473925, 1.0),         # working on the ceiling
+    "fo-floor": (40187011, 0.0),          # stone-tiled bathroom
+    "fo-paint": (7216718, 1.0),           # painting at home
+    "fo-tour": (8482300, 1.0),            # showing the work to the clients
+    "fo-luxe": (36030664, 0.0),           # living room, finished
+    "fo-end": (34231477, 0.0),            # dark kitchen and dining
+    # reel: choose-company
+    "cc-plans": (10375455, 1.0),          # client over the floor plans
+    "cc-couple": (7646760, 1.0),          # couple with the floor plan
+    "cc-engineer": (7817164, 1.0),        # engineer holding the drawings
+    "cc-quote": (7841623, 1.0, 0.5),      # going through a contract line by line
+    "cc-3d": (40397833, 0.0),             # finished staircase, like a 3D render
+    "cc-sign": (8471105, 1.0, 0.4),       # signing
+    "cc-site": (6473961, 1.0),            # engineer on site with the plan
+    "cc-think": (7491315, 1.0),           # client thinking it over
+    "cc-luxe": (38413518, 0.0),           # bright living room
+    "cc-end": (7646456, 1.0),             # family in their new home
 }
