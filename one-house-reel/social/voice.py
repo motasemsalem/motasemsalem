@@ -16,7 +16,8 @@ Credits are only spent by `say` and `redo`:
 """
 import hashlib, json, os, re, subprocess, sys, urllib.error, urllib.request
 
-VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "")  # "Mostafa – Bold and Spirited", the voice of the finishing reel
+# "Mostafa – Bold and Spirited", the voice of the finishing reel.
+VOICE = os.environ.get("ELEVENLABS_VOICE_ID") or os.environ.get("voic_id") or "QvNF0qyyt1Tuy1YAmnzH"
 MODEL = os.environ.get("ELEVENLABS_MODEL", "eleven_v4")
 SETTINGS = {"stability": 0.5, "similarity_boost": 0.75, "speed": 1.0}
 CACHE = os.path.join(os.path.dirname(__file__), "voice", "cache")
