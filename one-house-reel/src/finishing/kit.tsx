@@ -192,14 +192,15 @@ export const LightLeak: React.FC<{ readonly at: number; readonly length?: number
 const DUCK = 0.7;
 
 // A one-shot sound effect at an absolute frame ("mk/…" are Mixkit recordings, the rest synthesized).
-export const Sfx: React.FC<{ readonly name: string; readonly at: number; readonly volume?: number }> = ({ name, at, volume = 0.4 }) => {
+// `voice` is the reel's narrator envelope (the finishing reel's by default).
+export const Sfx: React.FC<{ readonly name: string; readonly at: number; readonly volume?: number; readonly voice?: readonly number[] }> = ({ name, at, volume = 0.4, voice = VOICE }) => {
   const from = Math.max(0, Math.round(at));
   return (
     <Audio
       name={`مؤثر: ${name}`}
       src={staticFile(name.startsWith("mk/") ? `sfx/${name}.mp3` : `sfx/${name}.wav`)}
       from={from}
-      volume={(f) => volume * (1 - DUCK * (VOICE[from + f] ?? 0))}
+      volume={(f) => volume * (1 - DUCK * (voice[from + f] ?? 0))}
     />
   );
 };

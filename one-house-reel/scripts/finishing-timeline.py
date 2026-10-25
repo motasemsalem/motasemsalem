@@ -8,6 +8,7 @@ The recording goes to public/finishing-vo/voiceover.mp3 and its Whisper word tim
 public/finishing-vo/whisper.json (same steps as scripts/transcribe.py). The script words in
 src/finishing/narration.ts are aligned to them with the aligner from scripts/generate-audio.py.
 Needs numpy + scipy and ffmpeg; transcribing also needs faster-whisper.
+REEL=slab times the slab-pour reel the same way (public/slab-vo, src/slab/narration.ts, src/slab/timeline.json).
 """
 import importlib.util
 import json
@@ -25,8 +26,10 @@ spec.loader.exec_module(ga)
 FPS = 30
 SR = 44100
 END_HOLD_SECONDS = 2.2  # the end card stays up after the last word
-VO = 'public/finishing-vo'
-narration = open('src/finishing/narration.ts', encoding='utf-8').read()
+REEL = os.environ.get('REEL', 'finishing')
+VO = f'public/{REEL}-vo'
+SRC = f'src/{REEL}'
+narration = open(f'{SRC}/narration.ts', encoding='utf-8').read()
 WORDS = re.search(r'SCRIPT = `(.*?)`', narration, re.S).group(1).split()
 SCENES = re.findall(r'\{ id: "(\w+)", from: "([^"]+)" \}', narration)
 
@@ -100,5 +103,5 @@ if __name__ == '__main__':
         sections[scene] = 0 if not sections else int(words[at]['start'] * FPS)
     timeline = {'fps': FPS, 'total': total, 'estimated': args == ['--estimate'], 'sections': sections,
                 'voice': voice_activity(total), 'words': words}
-    json.dump(timeline, open('src/finishing/timeline.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    json.dump(timeline, open(f'{SRC}/timeline.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print(f'timeline {total / FPS:.1f}s', {s: round(f / FPS, 1) for s, f in sections.items()})

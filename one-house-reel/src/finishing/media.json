@@ -213,5 +213,80 @@
   "file": "finishing/move-in.mp4",
   "w": 1080,
   "h": 1920
+ },
+ "slab-pump": {
+  "file": "finishing/slab-pump.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-mesh-wide": {
+  "file": "finishing/slab-mesh-wide.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-formwork": {
+  "file": "finishing/slab-formwork.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-level": {
+  "file": "finishing/slab-level.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-tying": {
+  "file": "finishing/slab-tying.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-grid": {
+  "file": "finishing/slab-grid.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-ruler": {
+  "file": "finishing/slab-ruler.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-stirrups": {
+  "file": "finishing/slab-stirrups.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-beam": {
+  "file": "finishing/slab-beam.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-plans": {
+  "file": "finishing/slab-plans.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-pour": {
+  "file": "finishing/slab-pour.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-mixer": {
+  "file": "finishing/slab-mixer.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-curing": {
+  "file": "finishing/slab-curing.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-aerial": {
+  "file": "finishing/slab-aerial.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "slab-building": {
+  "file": "finishing/slab-building.mp4",
+  "w": 1080,
+  "h": 1920
  }
 }

@@ -2,6 +2,8 @@ import { Composition, Folder, Still } from "remotion";
 import { FinishingReel } from "./finishing/FinishingReel";
 import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
+import { SlabReel } from "./slab/SlabReel";
+import slab from "./slab/timeline.json";
 import { ADS, type AdId, FacebookAd } from "./posts/Ads";
 import { FinishingPost, FPOST_H, FPOST_W, FPOSTS, type FPostId, UnitPost, UPOSTS, type UPostId, StructurePost, SPOSTS, type SPostId } from "./posts/Finishing";
 import { FacebookPost, POST_H, POST_W, POSTS, type PostId } from "./posts/Posts";
@@ -26,6 +28,15 @@ export const RemotionRoot: React.FC = () => {
         // The length comes from the voiceover; see scripts/finishing-timeline.py.
         durationInFrames={finishing.total}
         fps={finishing.fps}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="SlabReel"
+        component={SlabReel}
+        // The length comes from the voiceover; see REEL=slab scripts/finishing-timeline.py.
+        durationInFrames={slab.total}
+        fps={slab.fps}
         width={1080}
         height={1920}
       />

@@ -366,7 +366,7 @@ export const InsideOut: React.FC<{ readonly from: number; readonly to: number; r
 };
 
 // The end card: logo, line, and the free-inspection button.
-export const EndCard: React.FC<{ readonly from: number }> = ({ from }) => {
+export const EndCard: React.FC<{ readonly from: number; readonly media?: string; readonly line?: string }> = ({ from, media = "kitchen", line = "تشطيب على أصوله" }) => {
   const f = useCurrentFrame();
   if (f < from - 2) return null;
   const p = pop(f, from, 16, easeOut);
@@ -375,13 +375,13 @@ export const EndCard: React.FC<{ readonly from: number }> = ({ from }) => {
     <AbsoluteFill style={{ opacity: p }}>
       <AbsoluteFill style={{ filter: "blur(14px) brightness(0.45)", transform: "scale(1.1)" }}>
         <Sequence from={from} layout="none">
-          <Media name="kitchen" move="in" look="warm" t={(f - from) / 130} />
+          <Media name={media} move="in" look="warm" t={(f - from) / 130} />
         </Sequence>
       </AbsoluteFill>
       <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 42%, rgba(6,36,72,0.35), rgba(2,13,28,0.92) 75%)" }} />
       <div dir="rtl" style={{ position: "absolute", top: 470, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 34 }}>
         <Img src={staticFile("brand/logo-white.png")} style={{ width: 560, transform: `scale(${0.9 + 0.1 * p})` }} />
-        <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 70, color: "white", textShadow: SHADOW, opacity: pop(f, from + 8, 12) }}>تشطيب على أصوله</div>
+        <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 70, color: "white", textShadow: SHADOW, opacity: pop(f, from + 8, 12) }}>{line}</div>
         <div style={{ width: 120 * pop(f, from + 10, 14), height: 4, background: GOLD }} />
         <div style={{ marginTop: 40, padding: "30px 64px", borderRadius: 999, background: BRAND.red, boxShadow: "0 24px 60px rgba(224,7,26,0.55)", fontFamily: headingFont, fontWeight: 800, fontSize: 60, color: "white", transform: `scale(${pop(f, from + 12, 14, backOut) * pulse})` }}>
           احجز معاينتك المجانية

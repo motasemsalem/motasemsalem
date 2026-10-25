@@ -46,5 +46,20 @@ CLIPS = {
     "skim": (6474181, 1.0),             # skimming a wall, behind the phone
     "cleaning": (6195527, 1.0),         # cleaning the finished kitchen
     "move-in": (7579428, 1.0),          # couple opening the door of their new home
+    # slab-pour reel (src/slab)
+    "slab-pump": (33407985, 1.0),         # concrete pump boom over a rebar slab
+    "slab-mesh-wide": (34587145, 0.5),    # rebar slab framework, wide
+    "slab-formwork": (34199757, 6.0),     # slab formwork and starter bars, wide
+    "slab-level": (8482308, 6.0),         # spirit level bubble, close-up
+    "slab-tying": (34528813, 0.0),        # worker tying a rebar cage
+    "slab-grid": (39924250, 0.5),         # rebar grid on the slab, close-up
+    "slab-ruler": (8853467, 2.0),         # measuring with a ruler, close-up
+    "slab-stirrups": (39924255, 0.5),     # column stirrups, close-up
+    "slab-beam": (34701532, 2.0),         # beam cage on spacers, concrete going in
+    "slab-plans": (35168473, 1.0),        # engineers checking the drawings on site
+    "slab-pour": (34587229, 2.0),         # pouring the slab from the pump
+    "slab-mixer": (26288499, 1.0),        # concrete from the mixer
+    "slab-curing": (39432610, 1.0),       # spraying water on fresh concrete
+    "slab-aerial": (35631527, 0.5),       # aerial: big slab, crane
+    "slab-building": (36515303, 0.0),     # finished concrete frame against the sky
 }
-
