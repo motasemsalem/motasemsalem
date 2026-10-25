@@ -77,7 +77,8 @@ def save(cal):
 
 
 def when(item):
-    return datetime.fromisoformat(item["at"])
+    # Stored times are Cairo wall-clock times; re-attach the zone so the offset follows daylight saving.
+    return datetime.fromisoformat(item["at"]).replace(tzinfo=None).replace(tzinfo=CAIRO)
 
 
 # --- Facebook ---------------------------------------------------------------------------------------------
