@@ -39,6 +39,12 @@ The page should read like a big, confident brand. Never like a hard sell.
 - Short lines, plain Egyptian Arabic, and concrete facts over adjectives.
 - No hype words (خطير، نار، مبيخلصش), no strings of emojis, no "اكتب كلمة كذا".
 - At most one question per post, and not on every post. Three or four hashtags, always starting with `#ون_هاوس`.
+- **Reach.** The page has ~5,800 followers but organic reach is tiny, so:
+  - Reels are what Facebook and Instagram show to non-followers. Keep at least one reel every two days, and more when there is footage.
+  - The first line of a caption is the hook: a concrete problem or number the reader recognises («السقف بينشّع؟»), never the brand name.
+  - Posts people save (checklists, «قبل ما…» tips) travel furthest. Keep one of those every few days.
+  - On Instagram, add three local tags after the brand tags: `#تشطيبات_القاهرة #مقاولات_مصر #التجمع_الخامس`.
+  - Every caption ends with what to do next: message the page for a free inspection.
 - The two lines of business alternate:
   - Structure (المسلّح والصبّات: foundations, columns, slabs, concrete), on real site photos (`SPOSTS`, `renders/structure-posts/`).
   - Finishing and renovation, on photos (`renders/finishing-posts/`).
@@ -80,6 +86,7 @@ Scheduled tasks clone this repository on branch `claude/company-motion-graphics-
 **Daily run (several times a day):**
 - `python3 social/publish.py sync`, then `python3 social/publish.py run`: publishes what is due, and re-queues anything that dropped out of Facebook's queue.
 - `python3 social/publish.py inbox` lists new comments; reply to each per the rules above.
+- `python3 social/publish.py messages` lists Messenger chats where the customer wrote last. These are leads, and the owner answers them himself (prices, sizes, visits). Don't reply in Messenger. Send the owner one push notification listing each new one (name and message), only for chats not already reported in an earlier run today.
 - Commit and push `social/calendar.json` if it changed.
 - Stay silent unless something failed or needs the owner.
 

@@ -332,6 +332,19 @@ def inbox():
                 print(json.dumps({"platform": "instagram", "comment": c["id"], "post": (m.get("caption") or "")[:60], "text": c["text"]}, ensure_ascii=False))
 
 
+def messages():
+    """Messenger chats waiting on the page: the customer wrote last, in the last 3 days. These are leads for the owner."""
+    t = page_token()
+    since = datetime.now(CAIRO) - timedelta(days=3)
+    chats = graph("GET", f"{PAGE_ID}/conversations", t, fields="updated_time,participants", limit=25)
+    for c in chats.get("data", []):
+        if datetime.fromisoformat(c["updated_time"].replace("+0000", "+00:00")) < since:
+            continue
+        last = graph("GET", f"{c['id']}/messages", t, fields="message,from,created_time", limit=1).get("data", [])
+        if last and last[0].get("from", {}).get("id") != PAGE_ID:
+            print(json.dumps({"chat": c["id"], "from": last[0]["from"].get("name"), "at": last[0]["created_time"], "text": last[0].get("message", "")}, ensure_ascii=False))
+
+
 def reply(cid, text, ig=False):
     if ig:
         graph("POST", f"{cid}/replies", page_token(), message=text)
@@ -386,6 +399,8 @@ if __name__ == "__main__":
         status()
     elif cmd == "inbox":
         inbox()
+    elif cmd == "messages":
+        messages()
     elif cmd == "reply":
         reply(a[1], a[2], "--ig" in a)
     elif cmd == "report":
