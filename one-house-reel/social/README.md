@@ -67,7 +67,7 @@ The page should read like a big, confident brand. Never like a hard sell.
 
 ## Replying to comments and messages
 
-Every interested person gets an answer fast, so no lead goes cold. The replies run (every 15 minutes) does this:
+Every interested person gets an answer fast, so no lead goes cold. The replies run (every hour, 8:00 to 00:00 Cairo) does this:
 
 **Comments** (`inbox`), in short, warm Egyptian Arabic, one or two sentences, from "ون هاوس", one emoji at most:
 - Interest of any kind (a question about price, size, area, a visit, «بكام», «مهتم», «تفاصيل»):
