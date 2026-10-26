@@ -47,8 +47,8 @@ CLIPS = {
     "cleaning": (6195527, 1.0),         # cleaning the finished kitchen
     "move-in": (7579428, 1.0),          # couple opening the door of their new home
     # slab-pour reel (src/slab)
-    "slab-pump": (33407985, 1.0),         # concrete pump boom over a rebar slab
-    "slab-mesh-wide": (34587145, 0.5),    # rebar slab framework, wide
+    "slab-pump": (34521512, 1.0),          # columns rising on a sandy site
+    "slab-mesh-wide": (14346212, 1.0),     # unloading rebar on sand
     "slab-formwork": (34199757, 6.0),     # slab formwork and starter bars, wide
     "slab-level": (8482308, 6.0),         # spirit level bubble, close-up
     "slab-tying": (34528813, 0.0),        # worker tying a rebar cage
@@ -67,7 +67,7 @@ CLIPS = {
     "str-dig-aerial": (36052050, 0.5),    # excavation from above
     "str-footings": (34199756, 1.0),      # rows of footings being formed
     "str-footings2": (34199758, 1.0),     # footings and starter bars, wide
-    "str-site-aerial": (34199773, 0.5),   # foundation site from above
+    "str-site-aerial": (34521515, 1.0),    # crew carrying materials on a dusty site
     "str-crack": (7830152, 0.5),          # crack in a concrete wall
     "str-rust": (7829485, 0.5),           # rusted steel, close-up
     "str-cutting": (39909407, 1.0),       # cutting steel bars
@@ -87,25 +87,25 @@ CLIPS = {
     "rc-beam": (39924273, 0.5, 0.5),      # beam cage, close-up
     "rc-rust": (39924242, 0.5, 0.5),      # rusty bars, close-up
     "rc-tie": (39933087, 0.5, 0.6),       # tying an overlap with pliers
-    "rc-eng": (8487108, 1.0),             # engineer in a yellow helmet
+    "rc-eng": (8965526, 1.0),              # engineers walking a sandy site
     "rc-pour": (39924258, 0.5, 0.4),      # concrete going onto the rebar
-    "rc-aerial": (35631525, 0.5),         # slab and crane from above
-    "rc-end": (31018605, 0.5),            # building site from above
+    "rc-aerial": (26288496, 1.0),          # crew at work on a sandy site
+    "rc-end": (34945428, 1.0),             # machine on sand, from above
     # reel: slab-mistakes
     "sm-hook": (33388930, 0.5),           # slab under way, from above
     "sm-joint": (39924271, 0.5, 0.5),     # edge of a pour beside open rebar
-    "sm-truck": (34587143, 1.0),          # mixer truck on site
+    "sm-truck": (26288495, 1.0),           # concrete mixer on site
     "sm-props": (36601732, 1.0),          # worker among the slab props
-    "sm-pump": (35039427, 0.5),           # pump pouring, from above
+    "sm-pump": (36601739, 1.0),            # column forms going up
     "sm-pour": (39924276, 0.5, 0.5),      # fresh concrete going in
     "sm-spray": (2887457, 1.0, 0.5),      # spraying a slab
-    "sm-trucks": (35039422, 0.5),         # mixer trucks from above
-    "sm-end": (30911707, 0.5),            # tower going up, from above
+    "sm-trucks": (39721964, 1.0),          # brick walls and starter bars
+    "sm-end": (34811611, 1.0),             # crane platform against the sky
     # reel: foundation
-    "fd-soil": (37786216, 1.0),           # digging into the soil
+    "fd-soil": (35352625, 1.0),            # excavator in the desert
     "fd-spacer": (11478662, 0.5, 0.5),    # spacer block under the rebar
     "fd-house": (20743390, 0.5),          # house frame from above
-    "fd-end": (34199774, 0.5),            # excavator from above
+    "fd-end": (37618646, 1.0),             # new desert city from above
     # reel: finishing-order
     "fo-room": (36516358, 0.0),           # finished minimalist living room
     "fo-wires": (5090783, 1.0),           # electrical work
@@ -119,14 +119,14 @@ CLIPS = {
     "fo-luxe": (36030664, 0.0),           # living room, finished
     "fo-end": (34231477, 0.0),            # dark kitchen and dining
     # reel: choose-company
-    "cc-plans": (10375455, 1.0),          # client over the floor plans
-    "cc-couple": (7646760, 1.0),          # couple with the floor plan
-    "cc-engineer": (7817164, 1.0),        # engineer holding the drawings
+    "cc-plans": (8688105, 1.0),            # client in a headscarf going over the plans
+    "cc-couple": (8034844, 1.0),           # Arab couple talking it over
+    "cc-engineer": (34939769, 1.0),        # engineers in hi-vis on a desert site
     "cc-quote": (7841623, 1.0, 0.5),      # going through a contract line by line
     "cc-3d": (40397833, 0.0),             # finished staircase, like a 3D render
     "cc-sign": (8471105, 1.0, 0.4),       # signing
-    "cc-site": (6473961, 1.0),            # engineer on site with the plan
-    "cc-think": (7491315, 1.0),           # client thinking it over
+    "cc-site": (32980276, 1.0),            # worker in a turban drilling a wall
+    "cc-think": (4620943, 1.0),            # client in a headscarf thinking it over
     "cc-luxe": (38413518, 0.0),           # bright living room
-    "cc-end": (7646456, 1.0),             # family in their new home
+    "cc-end": (9115986, 1.0),              # father and son at home
 }
