@@ -288,9 +288,14 @@ def sync():
         if not after:
             break
     cal = load()
+    now = datetime.now(CAIRO)
     for item in cal:
         fb = item.get("facebook")
         if not fb or fb["state"] != "scheduled":
+            continue
+        if when(item) <= now:
+            # Its time has come, so it left the queue by going out: it is live, not lost.
+            fb["state"] = "published"
             continue
         if BY_ID[item["id"]].get("video"):
             try:

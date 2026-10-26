@@ -16,9 +16,12 @@
   "at": "2026-10-26T14:00:00+03:00",
   "facebook": {
    "id": "1128012883057358",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18119436734075566",
+   "state": "published"
+  }
  },
  {
   "id": "finishing-reel",
