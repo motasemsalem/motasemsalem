@@ -1,4 +1,5 @@
 import { Composition, Folder, Still } from "remotion";
+import { SAMPLES, StudioPost } from "./posts/Studio";
 import { FinishingReel } from "./finishing/FinishingReel";
 import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
@@ -65,6 +66,11 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="FinishingPosts">
         {(Object.keys(FPOSTS) as FPostId[]).map((id, i) => (
           <Still key={id} id={`finishing-${String(i + 1).padStart(2, "0")}-${id}`} component={FinishingPost} defaultProps={{ id }} width={FPOST_W} height={FPOST_H} />
+        ))}
+      </Folder>
+      <Folder name="StudioPosts">
+        {Object.entries(SAMPLES).map(([id, post]) => (
+          <Still key={id} id={`studio-${id}`} component={StudioPost} defaultProps={{ post }} width={FPOST_W} height={FPOST_H} />
         ))}
       </Folder>
       <Folder name="StructurePosts">
