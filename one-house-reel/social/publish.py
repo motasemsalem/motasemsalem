@@ -133,13 +133,32 @@ def ig_photo(post):
         graph("DELETE", tmp, t)
 
 
-def ig_reel(post):
+def ig_file(path):
+    """A lighter copy of a reel for Instagram (its upload processing stalls on big files): H.264 at about 6 Mbit/s."""
+    if os.path.getsize(path) < 20_000_000:
+        return path
+    out = os.path.join("/tmp", "ig-" + os.path.basename(path))
+    if not os.path.exists(out):
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", path, "-c:v", "libx264", "-preset", "medium", "-crf", "21", "-maxrate", "6M", "-bufsize", "12M",
+                        "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", out], check=True)
+    return out
+
+
+def ig_reel(post, container=None):
+    """Uploads and publishes a reel. Returns the media id, or ("processing", container) if Instagram is still on it:
+    the next run picks it up from there instead of uploading again."""
     t = page_token()
-    c = graph("POST", f"{IG_ID}/media", t, media_type="REELS", upload_type="resumable", caption=post["caption"], share_to_feed="true")["id"]
-    size = os.path.getsize(post["file"])
-    graph("POST", f"https://rupload.facebook.com/ig-api-upload/v21.0/{c}", headers={"Authorization": f"OAuth {t}", "offset": "0", "file_size": str(size)}, data=post["file"])
-    ig_wait(c)
-    return graph("POST", f"{IG_ID}/media_publish", t, creation_id=c)["id"]
+    if not container:
+        f = ig_file(post["file"])
+        container = graph("POST", f"{IG_ID}/media", t, media_type="REELS", upload_type="resumable", caption=post["caption"], share_to_feed="true")["id"]
+        graph("POST", f"https://rupload.facebook.com/ig-api-upload/v21.0/{container}", headers={"Authorization": f"OAuth {t}", "offset": "0", "file_size": str(os.path.getsize(f))}, data=f)
+    try:
+        ig_wait(container)
+    except RuntimeError as e:
+        if "still processing" in str(e):
+            return ("processing", container)
+        raise
+    return graph("POST", f"{IG_ID}/media_publish", t, creation_id=container)["id"]
 
 
 # --- Commands ---------------------------------------------------------------------------------------------
@@ -210,9 +229,50 @@ def respace(start):
     status()
 
 
+_live = None
+
+
+def key(text):
+    return " ".join((text or "").split())[:80]
+
+
+def live():
+    """What is already on the page and the account, by caption: {"facebook": {key: (id, state)}, "instagram": {key: id}}.
+    The calendar can miss a post (a run that published but couldn't save), so nothing goes out twice."""
+    global _live
+    if _live is None:
+        t = page_token()
+        fb, ig = {}, {}
+        for x in graph("GET", f"{PAGE_ID}/published_posts", t, fields="id,message", limit=50).get("data", []):
+            fb[key(x.get("message"))] = (x["id"], "published")
+        after = ""
+        while True:
+            r = graph("GET", f"{PAGE_ID}/scheduled_posts", t, fields="id,message", limit=100, **({"after": after} if after else {}))
+            for x in r.get("data", []):
+                fb.setdefault(key(x.get("message")), (x["id"], "scheduled"))
+            after = r.get("paging", {}).get("cursors", {}).get("after") if r.get("paging", {}).get("next") else ""
+            if not after:
+                break
+        for x in graph("GET", f"{PAGE_ID}/video_reels", t, fields="id,description,status", limit=50).get("data", []):
+            st = x.get("status", {}).get("publishing_phase", {}).get("publish_status")
+            if st in ("published", "scheduled"):
+                fb.setdefault(key(x.get("description")), (x["id"], st))
+        for x in graph("GET", f"{IG_ID}/media", t, fields="id,caption", limit=50).get("data", []):
+            ig[key(x.get("caption"))] = x["id"]
+        _live = {"facebook": fb, "instagram": ig}
+    return _live
+
+
 def publish(item, now):
     post = BY_ID[item["id"]]
     at = when(item)
+    if not item["facebook"] and key(post["caption"]) in live()["facebook"]:
+        pid, state = live()["facebook"][key(post["caption"])]
+        item["facebook"] = {"id": pid, "state": state}
+        print("facebook already has", item["id"], flush=True)
+    if not item["instagram"] and key(post["caption"]) in live()["instagram"]:
+        item["instagram"] = {"id": live()["instagram"][key(post["caption"])], "state": "published"}
+        print("instagram already has", item["id"], flush=True)
     if not item["facebook"]:
         if at <= now + timedelta(minutes=15):
             pid = (fb_reel if post.get("video") else fb_photo)(post)
@@ -228,10 +288,18 @@ def publish(item, now):
     if post.get("comment") and item["facebook"] and item["facebook"]["state"] == "published" and not item.get("commented"):
         graph("POST", f"{item['facebook']['id']}/comments", page_token(), message=post["comment"])
         item["commented"] = True
-    if not item["instagram"] and at <= now + timedelta(minutes=15):
-        mid = (ig_reel if post.get("video") else ig_photo)(post)
-        item["instagram"] = {"id": mid, "state": "published"}
-        print("instagram published", item["id"], flush=True)
+    ig = item["instagram"]
+    if (not ig or ig.get("state") == "processing") and at <= now + timedelta(minutes=15):
+        if post.get("video"):
+            mid = ig_reel(post, ig.get("container") if ig else None)
+        else:
+            mid = ig_photo(post)
+        if isinstance(mid, tuple):
+            item["instagram"] = {"container": mid[1], "state": "processing"}
+            print("instagram still processing", item["id"], flush=True)
+        else:
+            item["instagram"] = {"id": mid, "state": "published"}
+            print("instagram published", item["id"], flush=True)
 
 
 def run():
