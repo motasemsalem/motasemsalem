@@ -65,19 +65,30 @@ The page should read like a big, confident brand. Never like a hard sell.
 - Prices. Offers change; prices go by message.
 - Anything about competitors.
 
-## Replying to comments
+## Replying to comments and messages
 
-- Reply to every genuine comment within the day, in short, warm Egyptian Arabic. One or two sentences, from "ون هاوس". No emojis beyond one.
-- Questions about price, sizes, availability, location or a visit:
-  - Thank them and invite them to message the page. For example: «أهلاً بيك 🙏 ابعتلنا رسالة على الصفحة بمقاس حمامك وهنبعتلك كل التفاصيل».
-  - For finishing, invite them to book the free inspection.
-- Compliments: a short thank-you.
-- A complaint or an angry comment:
-  - Don't argue and don't promise anything.
-  - Apologise for the trouble and ask them to message the page so the team can follow up.
-  - Then tell the owner. Send a push notification quoting the comment.
+Every interested person gets an answer fast, so no lead goes cold. The replies run (every 15 minutes) does this:
+
+**Comments** (`inbox`), in short, warm Egyptian Arabic, one or two sentences, from "ون هاوس", one emoji at most:
+- Interest of any kind (a question about price, size, area, a visit, «بكام», «مهتم», «تفاصيل»):
+  1. A public reply under the comment, e.g. «أهلاً بيك 🙏 بعتنالك رسالة على الماسنجر بكل التفاصيل» (`reply`).
+  2. Then a private message to the commenter (`dm`, the same comment id), opening the conversation: a greeting, one line on what we do, and the intake questions below.
+- Compliments: a short thank-you, no message.
+- A complaint or an angry comment: don't argue, don't promise anything. Apologise publicly and say we've sent them a message, send a `dm` asking what happened, and tell the owner (push notification quoting the comment).
 - Spam, ads, links or abuse: don't reply.
 - Anything you are unsure about: don't reply, and list it for the owner.
+
+**Messenger and Instagram messages** (`messages`, then `send <to> "<text>"`, add `--ig` for Instagram):
+- Reply to every chat where the customer wrote last, reading the thread first so the reply follows it.
+- If `owner_recent` is true, the owner is talking to them right now: don't reply, leave it to him.
+- First reply in a chat: welcome them and ask the intake questions, all in one message:
+  «أهلاً بيك في ون هاوس 🙏 علشان نرتّبلك معاينة مجانية مع مهندس، قولنا: المنطقة فين؟ شقة ولا فيلا ولا أرض؟ المساحة تقريباً؟ ومحتاج إيه بالظبط (تشطيب، تجديد، مقاولات)؟ ولو تحب سيبلنا رقم نتواصل معاك عليه.»
+- Later replies: answer what they asked from what this README says we do (services, the free inspection, how the work goes: معاينة، عرض سعر بالبند، تصميم 3D، متابعة بالصور), and keep collecting the intake answers.
+- Prices, sizes, dates, availability and anything about the bathroom units: never give a number or a promise. Say the engineer will send the details shortly («المهندس هيتواصل معاك بالتفاصيل في أقرب وقت»), and tell the owner.
+- Once they leave a phone number or ask for a visit, tell the owner straight away with everything collected (name, area, type, size, what they need, number).
+- Never argue, never send a link, never send our phone or WhatsApp number, never make up a fact.
+
+**Telling the owner:** one push notification per run, at the top of the summary, listing each new lead (name, platform, what they want, any number they left) and each complaint. Don't repeat a lead already reported unless they wrote something new.
 
 ## Scheduled runs
 
@@ -85,8 +96,7 @@ Scheduled tasks clone this repository on branch `claude/company-motion-graphics-
 
 **Daily run (several times a day):**
 - `python3 social/publish.py sync`, then `python3 social/publish.py run`: publishes what is due, and re-queues anything that dropped out of Facebook's queue.
-- `python3 social/publish.py inbox` lists new comments; reply to each per the rules above.
-- `python3 social/publish.py messages` lists Messenger chats where the customer wrote last. These are leads, and the owner answers them himself (prices, sizes, visits). Don't reply in Messenger. Send the owner one push notification listing each new one (name and message), only for chats not already reported in an earlier run today.
+- Comments and messages are handled by the replies run, per "Replying to comments and messages" above.
 - Commit and push `social/calendar.json` if it changed.
 - Stay silent unless something failed or needs the owner.
 

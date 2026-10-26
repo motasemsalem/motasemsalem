@@ -9,13 +9,16 @@
 #   python3 social/publish.py sync           forget Facebook ids that left the page's queue (then `run` re-queues them)
 #   python3 social/publish.py status         the calendar, and where each post stands
 #   python3 social/publish.py inbox          comments from the last 7 days that the page hasn't answered
-#   python3 social/publish.py reply <comment id> <text> [--ig]
+#   python3 social/publish.py reply <comment id> <text> [--ig]   public reply under a comment
+#   python3 social/publish.py dm <comment id> <text> [--ig]      private reply: a message to the commenter's inbox
+#   python3 social/publish.py messages       Messenger / Instagram chats where the customer wrote last
+#   python3 social/publish.py send <to> <text> [--ig]            reply in one of those chats
 #   python3 social/publish.py report         page numbers for the last 7 and 28 days, and each recent post
 #
 # Needs META_PAGE_TOKEN in the environment (a user token with the page permissions, or the page's own token).
 # Never write a token into this repo. Times are Cairo time. Run from one-house-reel/.
 import json, os, subprocess, sys, time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -338,16 +341,44 @@ def inbox():
 
 
 def messages():
-    """Messenger chats waiting on the page: the customer wrote last, in the last 3 days. These are leads for the owner."""
+    """Chats waiting on the page, on Messenger and Instagram: the customer wrote last, in the last 3 days.
+    Prints each with its recent messages, so a reply can follow the conversation, and whether the owner
+    wrote in it in the last 2 hours (then he is handling it: leave it to him)."""
     t = page_token()
-    since = datetime.now(CAIRO) - timedelta(days=3)
-    chats = graph("GET", f"{PAGE_ID}/conversations", t, fields="updated_time,participants", limit=25)
-    for c in chats.get("data", []):
-        if datetime.fromisoformat(c["updated_time"].replace("+0000", "+00:00")) < since:
+    now = datetime.now(timezone.utc)
+    for platform in ("messenger", "instagram"):
+        try:
+            chats = graph("GET", f"{PAGE_ID}/conversations", t, platform=platform, fields="updated_time,participants", limit=25)
+        except RuntimeError as e:
+            print(json.dumps({"platform": platform, "error": str(e)[:200]}))
             continue
-        last = graph("GET", f"{c['id']}/messages", t, fields="message,from,created_time", limit=1).get("data", [])
-        if last and last[0].get("from", {}).get("id") != PAGE_ID:
-            print(json.dumps({"chat": c["id"], "from": last[0]["from"].get("name"), "at": last[0]["created_time"], "text": last[0].get("message", "")}, ensure_ascii=False))
+        me = {PAGE_ID, IG_ID}
+        for c in chats.get("data", []):
+            if datetime.fromisoformat(c["updated_time"].replace("+0000", "+00:00")) < now - timedelta(days=3):
+                continue
+            msgs = graph("GET", f"{c['id']}/messages", t, fields="message,from,created_time", limit=8).get("data", [])
+            if not msgs or msgs[0].get("from", {}).get("id") in me:
+                continue
+            owner_recent = any(m.get("from", {}).get("id") in me and datetime.fromisoformat(m["created_time"].replace("+0000", "+00:00")) > now - timedelta(hours=2) for m in msgs)
+            print(json.dumps({
+                "platform": platform,
+                "to": msgs[0]["from"]["id"],
+                "name": msgs[0]["from"].get("name") or msgs[0]["from"].get("username"),
+                "owner_recent": owner_recent,
+                "thread": [f"{'ون هاوس' if m.get('from', {}).get('id') in me else 'العميل'}: {m.get('message', '')}" for m in reversed(msgs)],
+            }, ensure_ascii=False))
+
+
+def send(to, text, ig=False):
+    """Replies in a Messenger or Instagram chat (within 24 hours of the customer's last message)."""
+    graph("POST", f"{IG_ID if ig else PAGE_ID}/messages", page_token(), recipient=json.dumps({"id": to}), message=json.dumps({"text": text}, ensure_ascii=False), messaging_type="RESPONSE")
+    print("sent", to)
+
+
+def dm(cid, text, ig=False):
+    """Private reply: one message to the inbox of whoever wrote the comment (once per comment, within 7 days)."""
+    graph("POST", f"{IG_ID if ig else PAGE_ID}/messages", page_token(), recipient=json.dumps({"comment_id": cid}), message=json.dumps({"text": text}, ensure_ascii=False))
+    print("messaged", cid)
 
 
 def reply(cid, text, ig=False):
@@ -406,6 +437,10 @@ if __name__ == "__main__":
         inbox()
     elif cmd == "messages":
         messages()
+    elif cmd == "send":
+        send(a[1], a[2], "--ig" in a)
+    elif cmd == "dm":
+        dm(a[1], a[2], "--ig" in a)
     elif cmd == "reply":
         reply(a[1], a[2], "--ig" in a)
     elif cmd == "report":
