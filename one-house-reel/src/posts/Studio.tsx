@@ -11,7 +11,7 @@ import media from "./photos.json";
 // · frame: before / after, two photos under a light header with slanted corner flags.
 // A "|" in a title is a line break; words in `accent` turn red.
 
-type Look = "diagonal" | "circle" | "type" | "facts" | "panel" | "card" | "frame";
+export type Look = "diagonal" | "circle" | "type" | "facts" | "panel" | "card" | "frame";
 export type SPost = {
   readonly look: Look;
   readonly photo: string;
@@ -172,7 +172,7 @@ const Panel: React.FC<{ readonly post: SPost }> = ({ post }) => {
       <div style={{ position: "absolute", inset: 0, background: "rgba(224,7,26,0.55)", clipPath: "polygon(54.5% 0, 54.9% 0, 42.9% 100%, 42.5% 100%)" }} />
       <div dir="rtl" style={{ position: "absolute", right: 60, width: list ? 600 : 470, top: list ? 110 : 230, display: "flex", flexDirection: "column", gap: 24 }}>
         <Kicker text={post.kicker} dark />
-        <Title text={post.title} accent={post.accent} size={list ? 56 : 80} color="white" />
+        <Title text={post.title} accent={post.accent} size={list ? 56 : post.title.length > 26 ? 62 : 80} color="white" />
         <div style={{ width: 380, height: 2, background: "linear-gradient(270deg, rgba(224,7,26,0.9), rgba(224,7,26,0))" }} />
         {post.sub && <div style={{ fontFamily: bodyFont, fontSize: 32, lineHeight: 1.55, color: "rgba(255,255,255,0.88)" }}>{post.sub}</div>}
         {list && (

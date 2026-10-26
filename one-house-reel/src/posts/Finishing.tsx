@@ -2,6 +2,7 @@ import { AbsoluteFill, Img, staticFile } from "remotion";
 import { BRAND, bodyFont, headingFont } from "../theme";
 import media from "./photos.json";
 import unitMedia from "./unit-photos.json";
+import { type Look, StudioPost } from "./Studio";
 
 // Facebook feed posts (1080x1350) for finishing and renovation, on Pixabay photos (scripts/prepare-post-photos.py),
 // and for the bathroom units, on frames from the page's own product videos (public/unit-photos).
@@ -491,9 +492,48 @@ const List: React.FC<{ readonly items: readonly string[] }> = ({ items }) => (
   </div>
 );
 
-export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) => <Post post={FPOSTS[id]} footer={FINISHING_FOOTER} />;
+// The looks from ./Studio.tsx, per post, alternating so the feed never repeats a frame. Posts left out (the grids
+// and the trio) keep the frame above.
+const LOOKS: Record<string, Look> = {
+  "f:hidden": "card",
+  "f:quote": "circle",
+  "f:checklist": "panel",
+  "f:before": "frame",
+  "f:smart": "type",
+  "f:cta": "diagonal",
+  "f:bath": "type",
+  "f:kitchen": "panel",
+  "s:hero": "diagonal",
+  "s:columns": "panel",
+  "s:review": "card",
+  "s:cta": "circle",
+  "s:concrete": "diagonal",
+};
+
+const restyled = (post: FPost, look: Look, line: string) => (
+  <StudioPost
+    post={{
+      look,
+      photo: post.layout === "split" && post.tiles ? post.tiles[0].photo : (post.photo ?? ""),
+      pos: post.layout === "split" && post.tiles ? post.tiles[0].pos : post.pos,
+      after: post.layout === "split" && post.tiles ? post.tiles[1].photo : undefined,
+      afterPos: post.layout === "split" && post.tiles ? post.tiles[1].pos : undefined,
+      kicker: post.kicker,
+      title: post.title,
+      accent: post.accent,
+      sub: post.layout === "list" ? undefined : post.sub,
+      points: post.list,
+      tags: post.chips,
+      line,
+    }}
+  />
+);
+
+export const FinishingPost: React.FC<{ readonly id: FPostId }> = ({ id }) =>
+  LOOKS[`f:${id}`] ? restyled(FPOSTS[id], LOOKS[`f:${id}`], "تشطيبات|وتجديد") : <Post post={FPOSTS[id]} footer={FINISHING_FOOTER} />;
 export const UnitPost: React.FC<{ readonly id: UPostId }> = ({ id }) => <Post post={UPOSTS[id]} footer={UNIT_FOOTER} />;
-export const StructurePost: React.FC<{ readonly id: SPostId }> = ({ id }) => <Post post={SPOSTS[id]} footer={STRUCTURE_FOOTER} />;
+export const StructurePost: React.FC<{ readonly id: SPostId }> = ({ id }) =>
+  LOOKS[`s:${id}`] ? restyled(SPOSTS[id], LOOKS[`s:${id}`], "مقاولات|وإنشاءات") : <Post post={SPOSTS[id]} footer={STRUCTURE_FOOTER} />;
 
 const Post: React.FC<{ readonly post: FPost; readonly footer: readonly [string, string] }> = ({ post, footer }) => {
   return (
