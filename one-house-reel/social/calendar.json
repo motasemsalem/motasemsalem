@@ -28,7 +28,7 @@
   "at": "2026-10-27T21:00:00+03:00",
   "facebook": {
    "id": "2396946407706497",
-   "state": "scheduled"
+   "state": "published"
   },
   "instagram": null
  },
@@ -118,9 +118,12 @@
   "at": "2026-10-27T14:00:00+03:00",
   "facebook": {
    "id": "1128014239723889",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18117757454320918",
+   "state": "published"
+  }
  },
  {
   "id": "structure-07-stages",
