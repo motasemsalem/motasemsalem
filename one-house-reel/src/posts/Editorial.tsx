@@ -1,4 +1,5 @@
-import { AbsoluteFill, Img, staticFile } from "remotion";
+import { useLayoutEffect, useRef, useState } from "react";
+import { AbsoluteFill, Img, continueRender, delayRender, staticFile } from "remotion";
 import { BRAND, bodyFont, headingFont } from "../theme";
 import media from "./photos.json";
 
@@ -227,7 +228,7 @@ const Measure: React.FC<{ readonly post: EPost }> = ({ post }) => {
       {top ? <Dim length={box.width} label={top} color={BRAND.navy} style={{ left: box.left, top: box.top - 74 }} /> : null}
       {side ? <Dim vertical length={box.height} label={side} color={BRAND.navy} style={{ left: box.left + box.width + 34, top: box.top }} /> : null}
       {post.sub ? (
-        <div dir="rtl" style={{ position: "absolute", left: 110, right: 110, top: box.top + box.height + 36, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.ink }}>
+        <div dir="rtl" style={{ position: "absolute", left: 110, right: 110, top: box.top + box.height + 70, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.ink }}>
           {post.sub}
         </div>
       ) : null}
@@ -255,7 +256,7 @@ const Report: React.FC<{ readonly post: EPost }> = ({ post }) => {
         </div>
         <div style={{ position: "absolute", right: 40, left: 40, top: 470 }}>
           {points.map((p, i) => (
-            <div key={p} style={{ display: "flex", alignItems: "center", gap: 24, padding: "18px 0", borderBottom: "2px dashed rgba(6,36,72,0.18)" }}>
+            <div key={p} style={{ display: "flex", alignItems: "center", gap: 24, padding: "15px 0", borderBottom: "2px dashed rgba(6,36,72,0.18)" }}>
               <div style={{ width: 48, height: 48, flex: "none", border: `3px solid ${BRAND.navy}`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: headingFont, fontWeight: 900, fontSize: 40, color: BRAND.red, lineHeight: 1 }}>✓</div>
               <div style={{ flex: 1, fontFamily: bodyFont, fontWeight: 600, fontSize: 32, color: BRAND.ink }}>{p}</div>
               <div style={{ fontFamily: headingFont, fontWeight: 600, fontSize: 22, color: BRAND.dim, direction: "ltr" }}>{String(i + 1).padStart(2, "0")}</div>
@@ -265,10 +266,10 @@ const Report: React.FC<{ readonly post: EPost }> = ({ post }) => {
         <div
           style={{
             position: "absolute",
-            left: 56,
-            bottom: 40,
-            width: 210,
-            height: 210,
+            left: 44,
+            bottom: 22,
+            width: 176,
+            height: 176,
             borderRadius: 999,
             border: `6px solid ${BRAND.red}`,
             color: BRAND.red,
@@ -282,8 +283,8 @@ const Report: React.FC<{ readonly post: EPost }> = ({ post }) => {
           }}
         >
           <div style={{ position: "absolute", inset: 10, borderRadius: 999, border: `2px solid ${BRAND.red}` }} />
-          <div style={{ fontWeight: 900, fontSize: 34 }}>تمت</div>
-          <div style={{ fontWeight: 900, fontSize: 34 }}>المراجعة</div>
+          <div style={{ fontWeight: 900, fontSize: 29 }}>تمت</div>
+          <div style={{ fontWeight: 900, fontSize: 29 }}>المراجعة</div>
           <div style={{ fontWeight: 600, fontSize: 18, direction: "ltr", marginTop: 4 }}>ONE HOUSE</div>
         </div>
         {post.sub ? <div style={{ position: "absolute", right: 40, left: 320, bottom: 56, fontFamily: bodyFont, fontWeight: 600, fontSize: 28, lineHeight: 1.45, color: BRAND.dim }}>{post.sub}</div> : null}
@@ -296,11 +297,11 @@ const Report: React.FC<{ readonly post: EPost }> = ({ post }) => {
 // bignum: one fact, one huge number.
 const BigNum: React.FC<{ readonly post: EPost }> = ({ post }) => (
   <AbsoluteFill style={{ background: BRAND.deep }}>
-    <div style={{ position: "absolute", left: 0, top: 0, width: 640, height: 1350, overflow: "hidden" }}>
+    <div style={{ position: "absolute", left: 0, top: 0, width: 480, height: 1350, overflow: "hidden" }}>
       <Photo name={post.photo} pos={post.pos} />
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(270deg, rgba(2,13,28,1) 0%, rgba(2,13,28,0.2) 45%, rgba(2,13,28,0.1) 100%)" }} />
     </div>
-    <Grid color="rgba(95,168,255,0.08)" style={{ left: 640 }} />
+    <Grid color="rgba(95,168,255,0.08)" style={{ left: 480 }} />
     <div
       style={{
         position: "absolute",
@@ -319,7 +320,7 @@ const BigNum: React.FC<{ readonly post: EPost }> = ({ post }) => (
       {post.num}
     </div>
     {post.unit ? <div dir="rtl" style={{ position: "absolute", right: 64, top: 590, fontFamily: headingFont, fontWeight: 800, fontSize: 54, color: "white", padding: "6px 26px", background: BRAND.red }}>{post.unit}</div> : null}
-    <div dir="rtl" style={{ position: "absolute", right: 60, width: 560, top: 720 }}>
+    <div dir="rtl" style={{ position: "absolute", right: 60, width: 500, top: 720 }}>
       <Kicker text={post.kicker} color={BRAND.steel} />
       <div style={{ marginTop: 18 }}>
         <Title text={post.title} accent={post.accent} size={post.title.length > 24 ? 58 : 68} color="white" />
@@ -331,8 +332,24 @@ const BigNum: React.FC<{ readonly post: EPost }> = ({ post }) => (
 );
 
 // cutout: a big word filled with the photo.
-const Cutout: React.FC<{ readonly post: EPost }> = ({ post }) => (
+// The word is set at 420px and scaled down until it fits 960px wide, whatever its letters.
+const WORD = 420;
+const Cutout: React.FC<{ readonly post: EPost }> = ({ post }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [size, setSize] = useState<number | null>(null);
+  const [handle] = useState(() => delayRender("Fitting the cutout word"));
+  useLayoutEffect(() => {
+    document.fonts.ready.then(() => {
+      const w = ref.current?.getBoundingClientRect().width ?? 960;
+      setSize(Math.min(WORD, Math.floor((WORD * 960) / w)));
+      continueRender(handle);
+    });
+  }, [handle]);
+  return (
   <AbsoluteFill style={{ background: BRAND.navy }}>
+    <span ref={ref} style={{ position: "absolute", visibility: "hidden", whiteSpace: "nowrap", fontFamily: headingFont, fontWeight: 900, fontSize: WORD }}>
+      {post.word}
+    </span>
     {/* A CSS background isn't waited for, so the same photo as an <Img> holds the render until it has loaded. */}
     <Img src={photoUrl(post.photo)} style={{ position: "absolute", width: 1, height: 1, opacity: 0 }} />
     <Grid color="rgba(95,168,255,0.1)" />
@@ -345,11 +362,15 @@ const Cutout: React.FC<{ readonly post: EPost }> = ({ post }) => (
         position: "absolute",
         left: 0,
         right: 0,
-        top: 110,
-        textAlign: "center",
+        top: 130,
+        height: 540,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         fontFamily: headingFont,
         fontWeight: 900,
-        fontSize: (post.word?.length ?? 5) > 5 ? 340 : 420,
+        fontSize: size ?? WORD,
+        whiteSpace: "nowrap",
         lineHeight: 1.25,
         backgroundImage: `url(${photoUrl(post.photo)})`,
         backgroundSize: "cover",
@@ -369,7 +390,8 @@ const Cutout: React.FC<{ readonly post: EPost }> = ({ post }) => (
     </div>
     <TitleBlock line={post.line} dark />
   </AbsoluteFill>
-);
+  );
+};
 
 export const EditorialPost: React.FC<{ readonly post: EPost }> = ({ post }) =>
   post.look === "spec" ? <Spec post={post} /> : post.look === "measure" ? <Measure post={post} /> : post.look === "report" ? <Report post={post} /> : post.look === "bignum" ? <BigNum post={post} /> : <Cutout post={post} />;
@@ -425,7 +447,7 @@ export const ESAMPLES: Record<string, EPost> = {
     look: "cutout",
     photo: "villa-dusk",
     pos: "50% 55%",
-    word: "بيتك",
+    word: "حلمك",
     kicker: "ون هاوس",
     title: "اتبنى صح|من أول طوبة",
     accent: "صح",
