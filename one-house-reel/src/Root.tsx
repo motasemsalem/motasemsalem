@@ -1,6 +1,8 @@
 import { Composition, Folder, Still } from "remotion";
 import { SAMPLES, StudioPost } from "./posts/Studio";
 import { EditorialPost, EPOST_H, EPOST_W, ESAMPLES } from "./posts/Editorial";
+import { Avatar, Cover, COVER_H, COVER_W, Highlight, HIGHLIGHTS } from "./brand/Identity";
+import { PAGE_H, PAGE_W, PROFILE_PAGES, ProfilePage } from "./brand/Profile";
 import { FinishingReel } from "./finishing/FinishingReel";
 import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
@@ -72,6 +74,18 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="StudioPosts">
         {Object.entries(SAMPLES).map(([id, post]) => (
           <Still key={id} id={`studio-${id}`} component={StudioPost} defaultProps={{ post }} width={FPOST_W} height={FPOST_H} />
+        ))}
+      </Folder>
+      <Folder name="PageIdentity">
+        <Still id="page-cover" component={Cover} width={COVER_W} height={COVER_H} />
+        <Still id="page-avatar" component={Avatar} width={1080} height={1080} />
+        {Object.keys(HIGHLIGHTS).map((id) => (
+          <Still key={id} id={`highlight-${id}`} component={Highlight} defaultProps={{ id }} width={1080} height={1920} />
+        ))}
+      </Folder>
+      <Folder name="CompanyProfile">
+        {PROFILE_PAGES.map((_, i) => (
+          <Still key={i} id={`profile-${i + 1}`} component={ProfilePage} defaultProps={{ n: i + 1 }} width={PAGE_W} height={PAGE_H} />
         ))}
       </Folder>
       <Folder name="EditorialPosts">
