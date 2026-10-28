@@ -1,6 +1,6 @@
 import { Composition, Folder, Still } from "remotion";
 import { SAMPLES, StudioPost } from "./posts/Studio";
-import { EditorialPost, EPOST_H, EPOST_W, ESAMPLES } from "./posts/Editorial";
+import { EditorialPost, EPOST_H, EPOST_W, EPOSTS, ESAMPLES } from "./posts/Editorial";
 import { Avatar, Cover, COVER_H, COVER_W, Highlight, HIGHLIGHTS } from "./brand/Identity";
 import { PAGE_H, PAGE_W, PROFILE_PAGES, ProfilePage } from "./brand/Profile";
 import { FinishingReel } from "./finishing/FinishingReel";
@@ -91,6 +91,11 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="EditorialPosts">
         {Object.entries(ESAMPLES).map(([id, post]) => (
           <Still key={id} id={`editorial-${id}`} component={EditorialPost} defaultProps={{ post }} width={EPOST_W} height={EPOST_H} />
+        ))}
+      </Folder>
+      <Folder name="EditorialFeed">
+        {Object.entries(EPOSTS).map(([id, post]) => (
+          <Still key={id} id={id} component={EditorialPost} defaultProps={{ post }} width={EPOST_W} height={EPOST_H} />
         ))}
       </Folder>
       <Folder name="StructurePosts">

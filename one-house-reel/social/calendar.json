@@ -229,5 +229,47 @@
    "state": "scheduled"
   },
   "instagram": null
+ },
+ {
+  "id": "ed-cover",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-07T21:00:00+02:00"
+ },
+ {
+  "id": "ed-lighting",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-08T14:00:00+02:00"
+ },
+ {
+  "id": "ed-masonry",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-08T21:00:00+02:00"
+ },
+ {
+  "id": "ed-doors",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-09T14:00:00+02:00"
+ },
+ {
+  "id": "ed-frame",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-09T21:00:00+02:00"
+ },
+ {
+  "id": "ed-paint",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-10T14:00:00+02:00"
+ },
+ {
+  "id": "ed-formwork",
+  "facebook": null,
+  "instagram": null,
+  "at": "2026-11-10T21:00:00+02:00"
  }
 ]
