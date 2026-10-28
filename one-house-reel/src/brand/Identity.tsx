@@ -35,10 +35,7 @@ export const Cover: React.FC = () => (
         <br />
         من أول طوبة
       </div>
-      <div style={{ marginTop: 34, display: "flex", alignItems: "center", gap: 26 }}>
-        <div style={{ padding: "18px 38px", background: BRAND.red, fontFamily: headingFont, fontWeight: 800, fontSize: 34, color: "white", whiteSpace: "nowrap" }}>احجز معاينتك المجانية</div>
-        <div style={{ fontFamily: bodyFont, fontWeight: 600, fontSize: 28, color: "rgba(255,255,255,0.85)", whiteSpace: "nowrap" }}>مع مهندس، برسالة على الصفحة</div>
-      </div>
+      <div style={{ marginTop: 30, fontFamily: bodyFont, fontWeight: 600, fontSize: 34, color: "rgba(255,255,255,0.85)", whiteSpace: "nowrap" }}>بعين المهندس، من الأساس لآخر لمبة</div>
     </div>
     {/* A dimension line along the top edge of the text block. */}
     <div style={{ position: "absolute", right: 120, top: 190, width: 840, height: 2, background: BRAND.blueprint, opacity: 0.55 }} />

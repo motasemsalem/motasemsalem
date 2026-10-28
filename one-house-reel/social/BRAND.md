@@ -7,7 +7,7 @@ Everything the page posts follows this file and `README.md`. Where they disagree
 **One House is the engineer's eye on your home.** Most people can't see what goes into the walls or the slab, and that is what they worry about. So the brand **shows the work the way an engineer sees it**: measured, checked, annotated, on real sites and real rooms.
 
 - Tagline: **«اتبنى صح من أول طوبة»** (used on hero posts and reel end cards, not on every post).
-- Promise in every post: a free inspection with an engineer (**«احجز معاينتك المجانية»**).
+- Promise in every post: a free inspection with an engineer (**«احجز معاينتك المجانية»**). Posts and ads only: the company profile, the page cover and other introductory material stay informative, with no call to action.
 - What we never promise: warranties, prices, payment plans, after-handover maintenance (see `README.md`).
 
 ## Voice

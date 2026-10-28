@@ -220,15 +220,15 @@ const Contact: React.FC = () => (
     </div>
     <Grid color="rgba(95,168,255,0.06)" />
     <div style={{ position: "absolute", right: 90, left: 90, top: 760 }}>
-      <Kicker text="الخطوة الجاية" color={BRAND.steel} />
+      <Kicker text="تواصل معانا" color={BRAND.steel} />
       <div style={{ marginTop: 26 }}>
         <H color="white" size={96}>
-          احجز معاينتك
+          ون هاوس
           <br />
-          <span style={{ color: BRAND.red }}>المجانية</span>
+          <span style={{ color: BRAND.red }}>قريبة منك</span>
         </H>
       </div>
-      <div style={{ marginTop: 30, fontFamily: bodyFont, fontWeight: 400, fontSize: 34, lineHeight: 1.6, color: BRAND.steel }}>ابعتلنا رسالة بالمنطقة، ونوع الوحدة، ومساحتها، ومحتاج إيه. ومهندس هيتواصل معاك يحدد معاد المعاينة.</div>
+      <div style={{ marginTop: 30, fontFamily: bodyFont, fontWeight: 400, fontSize: 34, lineHeight: 1.6, color: BRAND.steel }}>لأي استفسار عن شغلنا أو مشروعك، تقدر توصلنا على صفحاتنا وموقعنا.</div>
       <div style={{ marginTop: 50, display: "flex", flexDirection: "column", gap: 22 }}>
         {[
           ["فيسبوك", "One House"],
