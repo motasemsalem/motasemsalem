@@ -232,43 +232,64 @@
  },
  {
   "id": "ed-cover",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124579512855",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-07T21:00:00+02:00"
  },
  {
   "id": "ed-lighting",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124636179516",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-08T14:00:00+02:00"
  },
  {
   "id": "ed-masonry",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124692846177",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-08T21:00:00+02:00"
  },
  {
   "id": "ed-doors",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124732846173",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-09T14:00:00+02:00"
  },
  {
   "id": "ed-frame",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124802846166",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-09T21:00:00+02:00"
  },
  {
   "id": "ed-paint",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124862846160",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-10T14:00:00+02:00"
  },
  {
   "id": "ed-formwork",
-  "facebook": null,
+  "facebook": {
+   "id": "1130124912846155",
+   "state": "scheduled"
+  },
   "instagram": null,
   "at": "2026-11-10T21:00:00+02:00"
  }
