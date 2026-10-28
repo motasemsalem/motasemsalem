@@ -1,5 +1,6 @@
 import { Composition, Folder, Still } from "remotion";
 import { SAMPLES, StudioPost } from "./posts/Studio";
+import { EditorialPost, EPOST_H, EPOST_W, ESAMPLES } from "./posts/Editorial";
 import { FinishingReel } from "./finishing/FinishingReel";
 import finishing from "./finishing/timeline.json";
 import { OneHouseReel } from "./OneHouseReel";
@@ -71,6 +72,11 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="StudioPosts">
         {Object.entries(SAMPLES).map(([id, post]) => (
           <Still key={id} id={`studio-${id}`} component={StudioPost} defaultProps={{ post }} width={FPOST_W} height={FPOST_H} />
+        ))}
+      </Folder>
+      <Folder name="EditorialPosts">
+        {Object.entries(ESAMPLES).map(([id, post]) => (
+          <Still key={id} id={`editorial-${id}`} component={EditorialPost} defaultProps={{ post }} width={EPOST_W} height={EPOST_H} />
         ))}
       </Folder>
       <Folder name="StructurePosts">

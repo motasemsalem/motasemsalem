@@ -50,6 +50,7 @@ The page should read like a big, confident brand. Never like a hard sell.
   - Finishing and renovation, on photos (`renders/finishing-posts/`).
   - Both close on «احجز معاينتك المجانية».
 - Bathroom units are paused by the owner: no unit posts until they say so (`UPOSTS` stays in the code).
+- **New posts use the "engineer's eye" looks in `src/posts/Editorial.tsx` (spec, measure, report, bignum, cutout) and follow `social/BRAND.md`.** Older posts keep their look.
 - Images keep the shared frame from `src/posts/Finishing.tsx`: full-bleed photo, logo, gold rule, footer. Most posts now use one of the looks in `src/posts/Studio.tsx` (diagonal, circle, type, facts, panel, card, frame), chosen per post in `LOOKS` in `src/posts/Finishing.tsx`. Give every new post a look there, and never the same look as the post right before it.
 - Canva (connected) is for layout ideas only: look at its designs for structure and graphic touches, then build the post here. Never post a Canva-generated image, and never use its AI pictures: every photo is a real one (Pexels / Pixabay or the owner's own).
 - Every post is designed as a post. Never use a frame or a drawing from one of the videos: on its own it explains nothing.
