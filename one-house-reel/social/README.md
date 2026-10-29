@@ -64,7 +64,7 @@ The page should read like a big, confident brand. Never like a hard sell.
 - Payment in instalments.
 - Maintenance after handover.
 - Client testimonials or made-up reviews.
-- Phone or WhatsApp numbers.
+- Phone or WhatsApp numbers (in a post or a public comment reply; private messages may carry them, see below).
 - Prices. Offers change; prices go by message.
 - Anything about competitors.
 
@@ -89,7 +89,12 @@ Every interested person gets an answer fast, so no lead goes cold. The replies r
 - Later replies: answer what they asked from what this README says we do (services, the free inspection, how the work goes: معاينة، عرض سعر بالبند، تصميم 3D، متابعة بالصور), and keep collecting the intake answers.
 - Prices, sizes, dates, availability and anything about the bathroom units: never give a number or a promise. Say the engineer will send the details shortly («المهندس هيتواصل معاك بالتفاصيل في أقرب وقت»), and tell the owner.
 - Once they leave a phone number or ask for a visit, tell the owner straight away with everything collected (name, area, type, size, what they need, number).
-- Never argue, never send a link, never send our phone or WhatsApp number, never make up a fact.
+- Company facts to answer with:
+  - We work all over Egypt, not only Cairo.
+  - The engineer's free inspection is within 48 hours of booking.
+  - Office location (send only when they ask where we are or want to visit): https://maps.app.goo.gl/5soZunP5r9jRPXgFA
+  - Company numbers: 01062606098 and 01065846500. Give them only in a private message, when the customer asks how to call us, asks for a number, or wants to talk to someone now. Never in a post or a public comment reply.
+- Never argue, never send any other link, never make up a fact.
 
 **Telling the owner:** one push notification per run, at the top of the summary, listing each new lead (name, platform, what they want, any number they left) and each complaint. Don't repeat a lead already reported unless they wrote something new.
 
