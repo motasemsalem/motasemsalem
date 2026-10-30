@@ -2,7 +2,7 @@
  {
   "id": "finishing-01-hero",
   "facebook": {
-   "id": "111210318028466_1127694223089224",
+   "id": "111210318028466_1132440602614586",
    "state": "published"
   },
   "instagram": {
@@ -14,10 +14,7 @@
  {
   "id": "finishing-04-hidden",
   "at": "2026-10-26T14:00:00+03:00",
-  "facebook": {
-   "id": "1128012883057358",
-   "state": "published"
-  },
+  "facebook": null,
   "instagram": {
    "id": "18119436734075566",
    "state": "published"
@@ -26,10 +23,7 @@
  {
   "id": "finishing-reel",
   "at": "2026-10-27T21:00:00+03:00",
-  "facebook": {
-   "id": "2396946407706497",
-   "state": "published"
-  },
+  "facebook": null,
   "instagram": {
    "container": "18027279401868203",
    "state": "processing"
@@ -38,89 +32,62 @@
  {
   "id": "finishing-03-services",
   "at": "2026-10-28T14:00:00+03:00",
-  "facebook": {
-   "id": "1128014279723885",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-06-quote",
   "at": "2026-10-29T14:00:00+03:00",
-  "facebook": {
-   "id": "1128013006390679",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-10-checklist",
   "at": "2026-10-29T21:00:00+03:00",
-  "facebook": {
-   "id": "1128013049724008",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-07-bath",
   "at": "2026-11-05T14:00:00+02:00",
-  "facebook": {
-   "id": "1128013359723977",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-05-materials",
   "at": "2026-10-31T14:00:00+02:00",
-  "facebook": {
-   "id": "1128014309723882",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-02-before",
   "at": "2026-11-01T14:00:00+02:00",
-  "facebook": {
-   "id": "1128013089724004",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-08-kitchen",
   "at": "2026-11-06T21:00:00+02:00",
-  "facebook": {
-   "id": "1128014483057198",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-09-smart",
   "at": "2026-11-02T14:00:00+02:00",
-  "facebook": {
-   "id": "1128014356390544",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "finishing-11-cta",
   "at": "2026-11-02T21:00:00+02:00",
-  "facebook": {
-   "id": "1128014406390539",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "structure-01-hero",
   "at": "2026-10-27T14:00:00+03:00",
   "facebook": {
-   "id": "1128014239723889",
+   "id": "111210318028466_1132435912615055",
    "state": "published"
   },
   "instagram": {
@@ -131,55 +98,37 @@
  {
   "id": "structure-07-stages",
   "at": "2026-11-06T14:00:00+02:00",
-  "facebook": {
-   "id": "1128014453057201",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "structure-04-columns",
   "at": "2026-11-03T14:00:00+02:00",
-  "facebook": {
-   "id": "1128013209723992",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "structure-06-concrete",
   "at": "2026-11-07T14:00:00+02:00",
-  "facebook": {
-   "id": "1128013456390634",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "structure-08-review",
   "at": "2026-11-04T14:00:00+02:00",
-  "facebook": {
-   "id": "1128013273057319",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "structure-09-cta",
   "at": "2026-11-04T21:00:00+02:00",
-  "facebook": {
-   "id": "1128013316390648",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "slab-reel",
   "at": "2026-10-26T21:00:00+03:00",
-  "facebook": {
-   "id": "1681335600094577",
-   "state": "published"
-  },
+  "facebook": null,
   "instagram": {
    "id": "17864823576695670",
    "state": "published"
@@ -188,108 +137,72 @@
  {
   "id": "reel-rebar-check",
   "at": "2026-10-28T21:00:00+03:00",
-  "facebook": {
-   "id": "2313715649378400",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "reel-finishing-order",
   "at": "2026-10-30T21:00:00+02:00",
-  "facebook": {
-   "id": "1624123602745525",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "reel-slab-mistakes",
   "at": "2026-11-01T21:00:00+02:00",
-  "facebook": {
-   "id": "2913767022327393",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "reel-choose-company",
   "at": "2026-11-03T21:00:00+02:00",
-  "facebook": {
-   "id": "1671125187862393",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "reel-foundation",
   "at": "2026-11-05T21:00:00+02:00",
-  "facebook": {
-   "id": "979685238542623",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null
  },
  {
   "id": "ed-cover",
-  "facebook": {
-   "id": "1130124579512855",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-07T21:00:00+02:00"
  },
  {
   "id": "ed-lighting",
-  "facebook": {
-   "id": "1130124636179516",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-08T14:00:00+02:00"
  },
  {
   "id": "ed-masonry",
-  "facebook": {
-   "id": "1130124692846177",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-08T21:00:00+02:00"
  },
  {
   "id": "ed-doors",
-  "facebook": {
-   "id": "1130124732846173",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-09T14:00:00+02:00"
  },
  {
   "id": "ed-frame",
-  "facebook": {
-   "id": "1130124802846166",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-09T21:00:00+02:00"
  },
  {
   "id": "ed-paint",
-  "facebook": {
-   "id": "1130124862846160",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-10T14:00:00+02:00"
  },
  {
   "id": "ed-formwork",
-  "facebook": {
-   "id": "1130124912846155",
-   "state": "scheduled"
-  },
+  "facebook": null,
   "instagram": null,
   "at": "2026-11-10T21:00:00+02:00"
  }
