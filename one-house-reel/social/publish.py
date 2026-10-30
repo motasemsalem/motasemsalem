@@ -16,6 +16,8 @@
 #   python3 social/publish.py report         page numbers for the last 7 and 28 days, and each recent post
 #
 # Needs META_PAGE_TOKEN in the environment (a user token with the page permissions, or the page's own token).
+# Its app must be Live: posts made by an app in development mode are visible only to the app's own people.
+# META_IG_TOKEN, if set, is used for every Instagram call instead.
 # Never write a token into this repo. Times are Cairo time. Run from one-house-reel/.
 import json, os, subprocess, sys, time
 from datetime import datetime, timedelta, timezone
@@ -56,21 +58,25 @@ def graph(method, path, token=None, files=None, headers=None, data=None, **param
     return out
 
 
-_token = None
+_tokens = {}
 
 
-def page_token():
-    global _token
-    if _token:
-        return _token
-    t = os.environ.get("META_PAGE_TOKEN")
+def page_token(var="META_PAGE_TOKEN"):
+    if var in _tokens:
+        return _tokens[var]
+    t = os.environ.get(var)
     if not t:
-        raise SystemExit("META_PAGE_TOKEN is not set: add it in the environment's settings.")
+        raise SystemExit(f"{var} is not set: add it in the environment's settings.")
     try:
-        _token = graph("GET", PAGE_ID, t, fields="access_token")["access_token"]
+        _tokens[var] = graph("GET", PAGE_ID, t, fields="access_token")["access_token"]
     except (RuntimeError, KeyError):
-        _token = t  # already the page's own token
-    return _token
+        _tokens[var] = t  # already the page's own token
+    return _tokens[var]
+
+
+def ig_token():
+    """Instagram calls can use their own token (META_IG_TOKEN), for when the page token's app has no Instagram permissions."""
+    return page_token("META_IG_TOKEN" if os.environ.get("META_IG_TOKEN") else "META_PAGE_TOKEN")
 
 
 def load():
@@ -110,7 +116,7 @@ def fb_reel(post, at=None):
 
 def ig_wait(container):
     for _ in range(60):
-        s = graph("GET", container, page_token(), fields="status_code,status")
+        s = graph("GET", container, ig_token(), fields="status_code,status")
         if s["status_code"] == "FINISHED":
             return
         if s["status_code"] in ("ERROR", "EXPIRED"):
@@ -122,7 +128,7 @@ def ig_wait(container):
 def ig_photo(post):
     # Instagram fetches images from a public URL: park the image on the page as an unpublished photo,
     # hand Instagram its CDN link, and remove it once Instagram has its copy.
-    t = page_token()
+    t = ig_token()
     tmp = graph("POST", f"{PAGE_ID}/photos", t, files={"source": post["file"]}, published="false")["id"]
     try:
         url = graph("GET", tmp, t, fields="images")["images"][0]["source"]
@@ -147,7 +153,7 @@ def ig_file(path):
 def ig_reel(post, container=None):
     """Uploads and publishes a reel. Returns the media id, or ("processing", container) if Instagram is still on it:
     the next run picks it up from there instead of uploading again."""
-    t = page_token()
+    t = ig_token()
     if not container:
         f = ig_file(post["file"])
         container = graph("POST", f"{IG_ID}/media", t, media_type="REELS", upload_type="resumable", caption=post["caption"], share_to_feed="true")["id"]
@@ -257,7 +263,7 @@ def live():
             st = x.get("status", {}).get("publishing_phase", {}).get("publish_status")
             if st in ("published", "scheduled"):
                 fb.setdefault(key(x.get("description")), (x["id"], st))
-        for x in graph("GET", f"{IG_ID}/media", t, fields="id,caption", limit=50).get("data", []):
+        for x in graph("GET", f"{IG_ID}/media", ig_token(), fields="id,caption", limit=50).get("data", []):
             ig[key(x.get("caption"))] = x["id"]
         _live = {"facebook": fb, "instagram": ig}
     return _live
@@ -397,8 +403,8 @@ def inbox():
             answered = any(r.get("from", {}).get("id") == PAGE_ID for r in c.get("comments", {}).get("data", []))
             if c.get("from", {}).get("id") != PAGE_ID and not answered:
                 print(json.dumps({"platform": "facebook", "comment": c["id"], "post": (p.get("message") or "")[:60], "text": c["message"]}, ensure_ascii=False))
-    media = graph("GET", f"{IG_ID}/media", t, fields="id,caption,timestamp,comments%7Bid,text,username,replies%7Busername%7D%7D", limit=25)
-    me = graph("GET", IG_ID, t, fields="username")["username"]
+    media = graph("GET", f"{IG_ID}/media", ig_token(), fields="id,caption,timestamp,comments%7Bid,text,username,replies%7Busername%7D%7D", limit=25)
+    me = graph("GET", IG_ID, ig_token(), fields="username")["username"]
     for m in media.get("data", []):
         if datetime.fromisoformat(m["timestamp"].replace("+0000", "+00:00")) < since:
             continue
@@ -412,9 +418,9 @@ def messages():
     """Chats waiting on the page, on Messenger and Instagram: the customer wrote last, in the last 3 days.
     Prints each with its recent messages, so a reply can follow the conversation, and whether the owner
     wrote in it in the last 2 hours (then he is handling it: leave it to him)."""
-    t = page_token()
     now = datetime.now(timezone.utc)
     for platform in ("messenger", "instagram"):
+        t = ig_token() if platform == "instagram" else page_token()
         try:
             chats = graph("GET", f"{PAGE_ID}/conversations", t, platform=platform, fields="updated_time,participants", limit=25)
         except RuntimeError as e:
@@ -439,19 +445,19 @@ def messages():
 
 def send(to, text, ig=False):
     """Replies in a Messenger or Instagram chat (within 24 hours of the customer's last message)."""
-    graph("POST", f"{IG_ID if ig else PAGE_ID}/messages", page_token(), recipient=json.dumps({"id": to}), message=json.dumps({"text": text}, ensure_ascii=False), messaging_type="RESPONSE")
+    graph("POST", f"{IG_ID if ig else PAGE_ID}/messages", ig_token() if ig else page_token(), recipient=json.dumps({"id": to}), message=json.dumps({"text": text}, ensure_ascii=False), messaging_type="RESPONSE")
     print("sent", to)
 
 
 def dm(cid, text, ig=False):
     """Private reply: one message to the inbox of whoever wrote the comment (once per comment, within 7 days)."""
-    graph("POST", f"{IG_ID if ig else PAGE_ID}/messages", page_token(), recipient=json.dumps({"comment_id": cid}), message=json.dumps({"text": text}, ensure_ascii=False))
+    graph("POST", f"{IG_ID if ig else PAGE_ID}/messages", ig_token() if ig else page_token(), recipient=json.dumps({"comment_id": cid}), message=json.dumps({"text": text}, ensure_ascii=False))
     print("messaged", cid)
 
 
 def reply(cid, text, ig=False):
     if ig:
-        graph("POST", f"{cid}/replies", page_token(), message=text)
+        graph("POST", f"{cid}/replies", ig_token(), message=text)
     else:
         graph("POST", f"{cid}/comments", page_token(), message=text)
     print("replied", cid)
@@ -469,7 +475,7 @@ def report():
             row.append(f"{m}={v}")
         print(period, " ".join(row))
     fans = graph("GET", PAGE_ID, t, fields="followers_count,fan_count")
-    ig = graph("GET", IG_ID, t, fields="followers_count,media_count")
+    ig = graph("GET", IG_ID, ig_token(), fields="followers_count,media_count")
     print("facebook followers", fans.get("followers_count"), "· instagram followers", ig.get("followers_count"))
     for i in sorted(load(), key=when):
         fb = i.get("facebook") or {}
