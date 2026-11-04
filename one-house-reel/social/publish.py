@@ -482,7 +482,11 @@ def report():
         if fb.get("state") != "published":
             continue
         try:
-            p = graph("GET", fb["id"], t, fields="reactions.summary(true).limit(0),comments.summary(true).limit(0),shares")
+            post = fb["id"]
+            if "_" not in post:  # a photo or video id: its counts live on the feed post it made
+                o = graph("GET", post, t, fields="post_id" if BY_ID[i["id"]].get("video") else "page_story_id")
+                post = o.get("page_story_id") or f"{PAGE_ID}_{o['post_id']}"
+            p = graph("GET", post, t, fields="reactions.summary(true).limit(0),comments.summary(true).limit(0),shares")
             print(f"{when(i):%d %b} {i['id']}: reactions {p['reactions']['summary']['total_count']}, comments {p['comments']['summary']['total_count']}, shares {p.get('shares', {}).get('count', 0)}")
         except (RuntimeError, KeyError):
             pass

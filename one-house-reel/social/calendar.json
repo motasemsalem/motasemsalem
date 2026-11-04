@@ -97,9 +97,12 @@
   "at": "2026-11-01T14:00:00+02:00",
   "facebook": {
    "id": "1132442119281101",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18121386769951589",
+   "state": "published"
+  }
  },
  {
   "id": "finishing-08-kitchen",
@@ -115,18 +118,24 @@
   "at": "2026-11-02T14:00:00+02:00",
   "facebook": {
    "id": "1132442335947746",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18120380914959773",
+   "state": "published"
+  }
  },
  {
   "id": "finishing-11-cta",
   "at": "2026-11-02T21:00:00+02:00",
   "facebook": {
    "id": "1132442372614409",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "17955133383313221",
+   "state": "published"
+  }
  },
  {
   "id": "structure-01-hero",
@@ -154,9 +163,12 @@
   "at": "2026-11-03T14:00:00+02:00",
   "facebook": {
    "id": "1132442425947737",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18229606270334740",
+   "state": "published"
+  }
  },
  {
   "id": "structure-06-concrete",
@@ -226,18 +238,24 @@
   "at": "2026-11-01T21:00:00+02:00",
   "facebook": {
    "id": "1444338047859759",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18000209844032499",
+   "state": "published"
+  }
  },
  {
   "id": "reel-choose-company",
   "at": "2026-11-03T21:00:00+02:00",
   "facebook": {
    "id": "1501398785157052",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18116176238127864",
+   "state": "published"
+  }
  },
  {
   "id": "reel-foundation",
@@ -310,5 +328,41 @@
   },
   "instagram": null,
   "at": "2026-11-10T21:00:00+02:00"
+ },
+ {
+  "id": "ed-tiles",
+  "facebook": {
+   "id": "1137114855480494",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-11T14:00:00+02:00"
+ },
+ {
+  "id": "ed-curing",
+  "facebook": {
+   "id": "1137114898813823",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-11T21:00:00+02:00"
+ },
+ {
+  "id": "ed-windows",
+  "facebook": {
+   "id": "1137114962147150",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-12T14:00:00+02:00"
+ },
+ {
+  "id": "ed-drawings",
+  "facebook": {
+   "id": "1137115002147146",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-12T21:00:00+02:00"
  }
 ]
