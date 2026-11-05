@@ -159,7 +159,7 @@ CLIPS = {
     "gy-eng": (6474252, 0.5),              # engineer with a tablet in a hard hat
     "gy-end": (7578553, 0.5, 0.5),         # living room with a lit ceiling
     # reel: bathroom-test
-    "bt-dark": (6474389, 0.5, 0.3),        # dark bare room
+    "bt-dark": (6474389, 0.5, 1.0),        # dark bare room
     "bt-mix": (6474078, 0.5, 0.5),         # mixing the coating in a bucket
     "bt-coat": (6474077, 0.5, 0.5),        # coating going on the wall
     "bt-water": (856403, 0.5, 0.6),        # tap dripping
