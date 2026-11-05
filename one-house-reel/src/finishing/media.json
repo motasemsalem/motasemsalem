@@ -643,5 +643,180 @@
   "file": "finishing/oe-end.mp4",
   "w": 1080,
   "h": 1920
+ },
+ "ac-plug": {
+  "file": "finishing/ac-plug.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-cables": {
+  "file": "finishing/ac-cables.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-hands": {
+  "file": "finishing/ac-hands.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-bench": {
+  "file": "finishing/ac-bench.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-shop": {
+  "file": "finishing/ac-shop.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-plaster": {
+  "file": "finishing/ac-plaster.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-eng": {
+  "file": "finishing/ac-eng.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ac-end": {
+  "file": "finishing/ac-end.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "gy-sand": {
+  "file": "finishing/gy-sand.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "gy-tape": {
+  "file": "finishing/gy-tape.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "gy-board": {
+  "file": "finishing/gy-board.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "gy-bath": {
+  "file": "finishing/gy-bath.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "gy-eng": {
+  "file": "finishing/gy-eng.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "gy-end": {
+  "file": "finishing/gy-end.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-dark": {
+  "file": "finishing/bt-dark.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-mix": {
+  "file": "finishing/bt-mix.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-coat": {
+  "file": "finishing/bt-coat.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-water": {
+  "file": "finishing/bt-water.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-floor": {
+  "file": "finishing/bt-floor.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-eng": {
+  "file": "finishing/bt-eng.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "bt-end": {
+  "file": "finishing/bt-end.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-owner": {
+  "file": "finishing/ho-owner.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-wall": {
+  "file": "finishing/ho-wall.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-ceiling": {
+  "file": "finishing/ho-ceiling.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-window": {
+  "file": "finishing/ho-window.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-tap": {
+  "file": "finishing/ho-tap.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-eng": {
+  "file": "finishing/ho-eng.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "ho-end": {
+  "file": "finishing/ho-end.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-kitchen": {
+  "file": "finishing/df-kitchen.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-samples": {
+  "file": "finishing/df-samples.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-model": {
+  "file": "finishing/df-model.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-sketch": {
+  "file": "finishing/df-sketch.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-plan": {
+  "file": "finishing/df-plan.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-board": {
+  "file": "finishing/df-board.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "df-end": {
+  "file": "finishing/df-end.mp4",
+  "w": 1080,
+  "h": 1920
  }
 }

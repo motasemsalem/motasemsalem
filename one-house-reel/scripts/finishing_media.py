@@ -143,7 +143,7 @@ CLIPS = {
     "oe-tablet": (6474153, 0.5, 0.5),      # the floor plan on a tablet
     "oe-end": (7646762, 0.5, 0.5),         # couple with the keys
     # reel: ac-wiring
-    "ac-plug": (5090779, 0.5, 0.5),       # a plug and its lead in hand
+    "ac-plug": (5090779, 4.0, 0.33),      # a plug and its lead in hand
     "ac-cables": (5090782, 0.5, 0.5),      # a tangle of old cable
     "ac-hands": (5090776, 0.5, 0.45),      # hands sorting cable and fittings
     "ac-bench": (5090778, 0.5),            # man testing cable at the bench
@@ -159,7 +159,7 @@ CLIPS = {
     "gy-eng": (6474252, 0.5),              # engineer with a tablet in a hard hat
     "gy-end": (7578553, 0.5, 0.5),         # living room with a lit ceiling
     # reel: bathroom-test
-    "bt-dark": (6474389, 0.5, 0.5),        # dark bare room
+    "bt-dark": (6474389, 0.5, 0.3),        # dark bare room
     "bt-mix": (6474078, 0.5, 0.5),         # mixing the coating in a bucket
     "bt-coat": (6474077, 0.5, 0.5),        # coating going on the wall
     "bt-water": (856403, 0.5, 0.6),        # tap dripping
