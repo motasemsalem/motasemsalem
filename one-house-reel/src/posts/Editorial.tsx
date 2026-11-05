@@ -540,6 +540,18 @@ export const EPOSTS: Record<string, EPost> = {
     ],
     line: "مقاولات|وإنشاءات",
   },
+  "ed-one-engineer": {
+    look: "bignum",
+    photo: "s-engineer-site",
+    pos: "50% 50%",
+    num: "1",
+    unit: "مهندس",
+    kicker: "تشطيب الشقة",
+    title: "مسؤول عن|شقتك كلها",
+    accent: "مسؤول",
+    sub: "من الطوب للمفتاح، بيمشّي كل الصنايعية بالترتيب والصور بتوصلك مرحلة بمرحلة",
+    line: "تشطيبات|وتجديد",
+  },
   "ed-curing": {
     look: "bignum",
     photo: "s-pour",
