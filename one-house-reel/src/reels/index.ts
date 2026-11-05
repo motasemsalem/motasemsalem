@@ -1,4 +1,14 @@
 import type { ReelDef, Timeline } from "./Reel";
+import * as acWiring from "./ac-wiring/narration";
+import acWiringTl from "./ac-wiring/timeline.json";
+import * as gypsum from "./gypsum-cracks/narration";
+import gypsumTl from "./gypsum-cracks/timeline.json";
+import * as bathTest from "./bathroom-test/narration";
+import bathTestTl from "./bathroom-test/timeline.json";
+import * as handover from "./handover-check/narration";
+import handoverTl from "./handover-check/timeline.json";
+import * as designFirst from "./design-first/narration";
+import designFirstTl from "./design-first/timeline.json";
 import * as choose from "./choose-company/narration";
 import chooseTl from "./choose-company/timeline.json";
 import * as order from "./finishing-order/narration";
@@ -185,12 +195,143 @@ export const REELS: ReelDef[] = [
       { type: "title", scene: "photos", text: "والصور بتوصلك أول بأول", accent: "الصور", size: 84 },
     ],
     signature: "roster",
-    roster: [
-      { word: "سباك", label: "سبّاك" },
-      { word: "وكهربائي", label: "كهربائي" },
-      { word: "ونقاش", label: "نقّاش" },
-      { word: "ومبلط", label: "مبلّط" },
-    ],
+    roster: {
+      scene: "trades",
+      strike: "blame",
+      one: "1 مهندس مسؤول",
+      items: [
+        { word: "سباك", label: "سبّاك" },
+        { word: "وكهربائي", label: "كهربائي" },
+        { word: "ونقاش", label: "نقّاش" },
+        { word: "ومبلط", label: "مبلّط" },
+      ],
+    },
     end: { media: "oe-end", line: "معاينة مجانية خلال 48 ساعة" },
+  },
+  {
+    id: "ac-wiring",
+    timeline: acWiringTl as Timeline,
+    scenes: acWiring.SCENES,
+    shots: [
+      { media: "ac-plug", scene: "hook", look: "warm" },
+      { media: "ac-cables", scene: "cause" },
+      { media: "ac-hands", scene: "line" },
+      { media: "ac-bench", scene: "wire" },
+      { media: "ac-shop", scene: "breaker" },
+      { media: "ac-plaster", scene: "early" },
+      { media: "ac-eng", scene: "brand", look: "warm" },
+    ],
+    cards: [
+      { type: "title", scene: "hook", text: "التكييف بيفصل لوحده؟", accent: "بيفصل", sub: "والفيشة سخنة", subWord: "والفيشة", size: 92 },
+      { type: "title", scene: "cause", text: "المشكلة في السلك", accent: "السلك", sub: "مش في التكييف", subWord: "المشكلة", size: 96 },
+      { type: "check", scene: "line", n: 1, of: 3, name: "خط لوحده من اللوحة", short: "خط لوحده", on: "خط" },
+      { type: "check", scene: "wire", n: 2, of: 3, name: "سلك تخين على قد حمله", short: "سلك تخين", on: "تخين" },
+      { type: "check", scene: "breaker", n: 3, of: 3, name: "قاطع خاص بيه", short: "قاطع خاص", on: "خاص" },
+      { type: "title", scene: "early", text: "في التأسيس… قبل المحارة", accent: "قبل", size: 84 },
+      { type: "title", scene: "brand", kicker: "في ون هاوس", text: "رسمة كهربا لكل جهاز", accent: "لكل", sub: "قبل أول سلك", subWord: "قبل", size: 88 },
+    ],
+    signature: "ticks",
+    label: "خط التكييف",
+    end: { media: "ac-end", line: "معاينة مجانية خلال 48 ساعة" },
+  },
+  {
+    id: "gypsum-cracks",
+    timeline: gypsumTl as Timeline,
+    scenes: gypsum.SCENES,
+    shots: [
+      { media: "gy-sand", scene: "hook" },
+      { media: "gy-tape", scene: "tape" },
+      { media: "gy-board", scene: "studs" },
+      { media: "gy-bath", scene: "wet", look: "warm" },
+      { media: "gy-eng", scene: "brand", look: "warm" },
+    ],
+    cards: [
+      { type: "title", scene: "hook", text: "السقف الجبس اتشرخ؟", accent: "اتشرخ؟", sub: "الشرخ ده ليه سبب", subWord: "الشرخ", size: 96 },
+      { type: "check", scene: "tape", n: 1, of: 3, name: "وصلات من غير شريط", point: "والمعجون على مرتين", on: "والمعجون" },
+      { type: "check", scene: "studs", n: 2, of: 3, name: "قطاعات متباعدة", point: "على مسافات مظبوطة", on: "على" },
+      { type: "check", scene: "wet", n: 3, of: 3, name: "لوح عادي في الحمام", point: "لوح أخضر يستحمل الرطوبة", on: "لوح" },
+      { type: "title", scene: "brand", kicker: "في ون هاوس", text: "كل لوح بيتراجع", accent: "بيتراجع", sub: "قبل ما يتقفل عليه", subWord: "قبل", size: 92 },
+    ],
+    signature: "chat",
+    label: "سبب",
+    end: { media: "gy-end", line: "معاينة مجانية خلال 48 ساعة" },
+  },
+  {
+    id: "bathroom-test",
+    timeline: bathTestTl as Timeline,
+    scenes: bathTest.SCENES,
+    shots: [
+      { media: "bt-dark", scene: "hook" },
+      { media: "bt-mix", scene: "seal" },
+      { media: "bt-coat", scene: "seal", word: "الأرضية" },
+      { media: "bt-water", scene: "fill", look: "warm" },
+      { media: "bt-floor", scene: "dry" },
+      { media: "bt-eng", scene: "brand", look: "warm" },
+    ],
+    cards: [
+      { type: "title", scene: "hook", text: "نشع في سقف الجيران؟", accent: "نشع", sub: "والحمام لسه متشطّب", subWord: "وانت", size: 92 },
+      { type: "check", scene: "seal", n: 1, of: 3, short: "عزل", name: "العزل قبل السيراميك", point: "الأرضية… وطالع على الحيطة", on: "الأرضية" },
+      { type: "check", scene: "fill", n: 2, of: 3, short: "تجربة المية", name: "نملاه مية", point: "ونسيبه يومين", on: "ونسيبه" },
+      { type: "check", scene: "dry", n: 3, of: 3, short: "سيراميك", name: "سقف الجيران ناشف؟", point: "ساعتها بس السيراميك", on: "ساعتها" },
+      { type: "title", scene: "brand", kicker: "في ون هاوس", text: "تجربة المية في كل حمام", accent: "المية", size: 88 },
+    ],
+    signature: "stages",
+    end: { media: "bt-end", line: "معاينة مجانية خلال 48 ساعة" },
+  },
+  {
+    id: "handover-check",
+    timeline: handoverTl as Timeline,
+    scenes: handover.SCENES,
+    shots: [
+      { media: "ho-owner", scene: "hook", look: "warm" },
+      { media: "ho-wall", scene: "walls" },
+      { media: "ho-ceiling", scene: "ceiling" },
+      { media: "ho-window", scene: "windows", look: "warm" },
+      { media: "ho-tap", scene: "water", look: "warm" },
+      { media: "ho-eng", scene: "brand", look: "warm" },
+    ],
+    cards: [
+      { type: "title", scene: "hook", text: "قبل ما تستلم شقتك من المطوّر", accent: "تستلم", sub: "افحص 4 حاجات", subWord: "افحص", size: 80 },
+      { type: "check", scene: "walls", n: 1, of: 4, name: "الحيطان", point: "قدة طويلة… فيه ميل؟", on: "حط" },
+      { type: "check", scene: "ceiling", n: 2, of: 4, name: "السقف", point: "نشع أو شرخ", on: "دور" },
+      { type: "check", scene: "windows", n: 3, of: 4, name: "الشبابيك", point: "المية بتدخل من حواليها؟", on: "وشوف" },
+      { type: "check", scene: "water", n: 4, of: 4, name: "ضغط المية", point: "كل الحنفيات مع بعض", on: "افتح" },
+      { type: "title", scene: "brand", kicker: "في ون هاوس", text: "المهندس يستلم معاك", accent: "معاك", size: 92 },
+    ],
+    signature: "scan",
+    label: "استلام الشقة",
+    end: { media: "ho-end", line: "معاينة مجانية خلال 48 ساعة" },
+  },
+  {
+    id: "design-first",
+    timeline: designFirstTl as Timeline,
+    scenes: designFirst.SCENES,
+    shots: [
+      { media: "df-kitchen", scene: "hook", look: "warm" },
+      { media: "df-samples", scene: "screen", look: "warm" },
+      { media: "df-model", scene: "design", look: "warm" },
+      { media: "df-sketch", scene: "design", word: "وتغير", look: "warm" },
+      { media: "df-plan", scene: "build" },
+      { media: "df-board", scene: "brand", look: "warm" },
+    ],
+    cards: [
+      { type: "title", scene: "hook", text: "عاوز تغيّر مكان المطبخ؟", accent: "تغيّر", sub: "بعد ما اتركّب", subWord: "بعد", size: 88 },
+      { type: "title", scene: "screen", text: "على الشاشة ببلاش… على الحيطة غالي", accent: "ببلاش…", size: 72 },
+      { type: "title", scene: "design", text: "تصميم 3D لكل أوضة", accent: "3D", sub: "اللون والخامة والإضاءة", subWord: "وتغير", size: 92 },
+      { type: "title", scene: "build", text: "والتنفيذ على التصميم بالظبط", accent: "بالظبط", size: 80 },
+      { type: "title", scene: "brand", kicker: "في ون هاوس", text: "بتشوف بيتك قبل ما يتبني", accent: "بتشوف", size: 86 },
+    ],
+    signature: "roster",
+    roster: {
+      scene: "hook",
+      strike: "screen",
+      one: "3D تصميم قبل التنفيذ",
+      items: [
+        { word: "تكسير", label: "تكسير" },
+        { word: "وخامة", label: "خامة من الأول" },
+        { word: "ووقت", label: "وقت ضايع" },
+      ],
+    },
+    end: { media: "df-end", line: "معاينة مجانية خلال 48 ساعة" },
   },
 ];

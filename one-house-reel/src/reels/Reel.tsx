@@ -3,7 +3,7 @@ import { AbsoluteFill, staticFile } from "remotion";
 import { Flash, Title } from "../overlay/Cine";
 import { Finish, LightLeak, type Look, type ShotDef, Sfx, Shots } from "../finishing/kit";
 import { EndCard, Trade, Watermark } from "../finishing/overlays";
-import { Bubble, Depth, Roster, Scan, Stages, Stamp } from "./signatures";
+import { Bubble, Depth, Roster, Scan, Stages, Stamp, Ticks } from "./signatures";
 
 // Short voiced reels (1080x1920) built from a plain description: which clip plays on which word, and which card
 // comes up on which line. Each reel lives in src/reels/<name>/ (narration.ts + timeline.json from
@@ -55,7 +55,7 @@ export type ReelCard =
     };
 
 // Each reel's own graphic, see ./signatures.tsx. "stamp" also stamps «الصح» on the scene named "fix".
-export type Signature = "scan" | "stamp" | "depth" | "stages" | "chat" | "roster";
+export type Signature = "scan" | "stamp" | "depth" | "stages" | "chat" | "roster" | "ticks";
 
 export type ReelDef = {
   readonly id: string;
@@ -64,8 +64,11 @@ export type ReelDef = {
   readonly shots: readonly ReelShot[];
   readonly cards: readonly ReelCard[];
   readonly signature: Signature;
-  // "roster": the trades named in the voiceover, each popping in on its word; struck out on the scene "blame".
-  readonly roster?: readonly { readonly word: string; readonly label: string }[];
+  // The signature's caption: the scan's heading, the chat's counter word («سؤال»), the ticks' heading.
+  readonly label?: string;
+  // "roster": items named in the voiceover on `scene`, each popping in on its word, struck out on `strike`,
+  // and replaced by `one` («1 مهندس مسؤول») on the scene "brand".
+  readonly roster?: { readonly scene: string; readonly strike: string; readonly one: string; readonly items: readonly { readonly word: string; readonly label: string }[] };
   readonly end: { readonly media: string; readonly line: string };
 };
 
@@ -87,19 +90,22 @@ export const Reel: React.FC<{ readonly reel: ReelDef }> = ({ reel }) => {
       <Finish />
       <LightLeak at={at("brand") - 6} />
       <Flash at={at("brand")} peak={0.45} />
-      {reel.signature === "scan" && <Scan from={span.from} to={span.to} checks={checks.map((c) => at(c.scene, c.on))} />}
+      {reel.signature === "scan" && <Scan from={span.from} to={span.to} checks={checks.map((c) => at(c.scene, c.on))} label={reel.label} />}
       {reel.signature === "stamp" && checks.map((c, i) => <Stamp key={`s${i}`} at={at(c.scene, c.on)} to={next(c.scene) - 2} />)}
       {reel.signature === "stamp" && <Stamp at={at("fix") + 6} to={next("fix") - 2} good />}
       {reel.signature === "depth" && (
         <Depth from={span.from} to={span.to} steps={checks.map((c) => ({ at: at(c.scene), depth: c.depth ?? 0, label: c.short ?? c.name }))} />
       )}
       {reel.signature === "roster" && reel.roster && (
-        <Roster items={reel.roster.map((r) => ({ at: at("trades", r.word), label: r.label }))} strikeAt={at("blame")} oneAt={at("brand")} to={next("brand") - 2} />
+        <Roster items={reel.roster.items.map((r) => ({ at: at(reel.roster!.scene, r.word), label: r.label }))} strikeAt={at(reel.roster.strike)} oneAt={at("brand")} to={next("brand") - 2} one={reel.roster.one} />
+      )}
+      {reel.signature === "ticks" && (
+        <Ticks from={span.from} to={span.to} label={reel.label ?? ""} items={checks.map((c) => ({ at: at(c.scene, c.on), label: c.short ?? c.name }))} />
       )}
       {reel.signature === "stages" && <Stages from={span.from} to={span.to} stages={checks.map((c) => ({ at: at(c.scene), label: c.short ?? c.name }))} />}
       {reel.cards.map((c, i) =>
         c.type === "check" && reel.signature === "chat" ? (
-          <Bubble key={i} from={at(c.scene)} to={next(c.scene) - 2} n={c.n} text={c.name} detail={c.point} detailAt={c.on ? at(c.scene, c.on) : undefined} />
+          <Bubble key={i} from={at(c.scene)} to={next(c.scene) - 2} n={c.n} of={c.of} label={reel.label} text={c.name} detail={c.point} detailAt={c.on ? at(c.scene, c.on) : undefined} />
         ) : c.type === "check" ? (
           <Trade key={i} from={at(c.scene)} to={next(c.scene) - 2} n={c.n} of={c.of} name={c.name} points={c.point ? [{ at: at(c.scene, c.on), text: c.point }] : []} />
         ) : (

@@ -5,14 +5,14 @@ import { bodyFont, BRAND, headingFont, SHADOW } from "../theme";
 // The one graphic that gives each voiced reel its own look on top of the shared footage grade:
 // scan (an inspection viewfinder), stamp (wrong / right stamps), depth (a depth gauge going down),
 // stages (a five-step bar lighting up), chat (questions as message bubbles), roster (the trades you'd call,
-// struck out and replaced by one engineer).
+// struck out and replaced by one answer), ticks (a checklist filling in).
 
 const GREEN = "#2ecc71";
 
 const fade = (f: number, from: number, to: number) => pop(f, from - 4, 10) * (1 - pop(f, to - 6, 8, easeInOut));
 
 // Inspection viewfinder: corner brackets, a sweeping scan line, and a tally of checks done.
-export const Scan: React.FC<{ readonly from: number; readonly to: number; readonly checks: readonly number[] }> = ({ from, to, checks }) => {
+export const Scan: React.FC<{ readonly from: number; readonly to: number; readonly checks: readonly number[]; readonly label?: string }> = ({ from, to, checks, label = "كشف على الحديد" }) => {
   const f = useCurrentFrame();
   if (f < from - 6 || f > to + 4) return null;
   const o = fade(f, from, to);
@@ -32,7 +32,7 @@ export const Scan: React.FC<{ readonly from: number; readonly to: number; readon
       </div>
       <div dir="rtl" style={{ position: "absolute", top: box.top - 74, right: box.right, display: "flex", alignItems: "center", gap: 14, fontFamily: bodyFont, fontWeight: 700, fontSize: 30, color: "white", textShadow: SHADOW }}>
         <div style={{ width: 16, height: 16, borderRadius: 8, background: BRAND.red, opacity: 0.5 + 0.5 * Math.sin(f / 5) }} />
-        كشف على الحديد
+        {label}
       </div>
       <div dir="rtl" style={{ position: "absolute", top: box.top - 74, left: box.left, display: "flex", gap: 10 }}>
         {checks.map((c, i) => (
@@ -140,7 +140,7 @@ export const Stages: React.FC<{ readonly from: number; readonly to: number; read
 };
 
 // A question as an incoming message: typing dots, then the bubble with its number.
-export const Bubble: React.FC<{ readonly from: number; readonly to: number; readonly n: number; readonly text: string; readonly detail?: string; readonly detailAt?: number }> = ({ from, to, n, text, detail, detailAt }) => {
+export const Bubble: React.FC<{ readonly from: number; readonly to: number; readonly n: number; readonly of?: number; readonly label?: string; readonly text: string; readonly detail?: string; readonly detailAt?: number }> = ({ from, to, n, of = 5, label = "سؤال", text, detail, detailAt }) => {
   const f = useCurrentFrame();
   if (f < from - 6 || f > to + 6) return null;
   const typing = f < from + 8;
@@ -152,7 +152,7 @@ export const Bubble: React.FC<{ readonly from: number; readonly to: number; read
         <div style={{ width: 64, height: 64, borderRadius: 32, background: BRAND.red, color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: headingFont, fontWeight: 900, fontSize: 34, boxShadow: "0 8px 24px rgba(224,7,26,0.5)" }}>
           {n}
         </div>
-        <div style={{ fontFamily: bodyFont, fontWeight: 700, fontSize: 30, color: "rgba(255,255,255,0.9)", textShadow: SHADOW }}>سؤال {n} من 5</div>
+        <div style={{ fontFamily: bodyFont, fontWeight: 700, fontSize: 30, color: "rgba(255,255,255,0.9)", textShadow: SHADOW }}>{label} {n} من {of}</div>
       </div>
       {typing ? (
         <div style={{ display: "inline-flex", gap: 12, padding: "26px 34px", borderRadius: "40px 40px 40px 12px", background: "white" }}>
@@ -174,8 +174,8 @@ export const Bubble: React.FC<{ readonly from: number; readonly to: number; read
   );
 };
 
-// The trades you'd call yourself, one per word, struck out together, then replaced by one engineer.
-export const Roster: React.FC<{ readonly items: readonly { readonly at: number; readonly label: string }[]; readonly strikeAt: number; readonly oneAt: number; readonly to: number }> = ({ items, strikeAt, oneAt, to }) => {
+// A list named in the voiceover, one item per word, struck out together, then replaced by one answer.
+export const Roster: React.FC<{ readonly items: readonly { readonly at: number; readonly label: string }[]; readonly strikeAt: number; readonly oneAt: number; readonly to: number; readonly one: string }> = ({ items, strikeAt, oneAt, to, one: answer }) => {
   const f = useCurrentFrame();
   if (!items.length || f < items[0].at - 6 || f > to + 4) return null;
   const list = 1 - pop(f, oneAt - 8, 10, easeInOut);
@@ -199,10 +199,33 @@ export const Roster: React.FC<{ readonly items: readonly { readonly at: number; 
       )}
       {one > 0 && (
         <div style={{ display: "inline-flex", alignItems: "center", gap: 20, padding: "18px 36px", borderRadius: 22, background: BRAND.red, opacity: Math.min(1, one), transform: `scale(${0.8 + 0.2 * one})`, transformOrigin: "right center", boxShadow: "0 20px 60px rgba(224,7,26,0.45)" }}>
-          <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 92, color: "white" }}>1</div>
-          <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 60, color: "white" }}>مهندس مسؤول</div>
+          <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 92, color: "white" }}>{answer.split(" ")[0]}</div>
+          <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 60, color: "white" }}>{answer.split(" ").slice(1).join(" ")}</div>
         </div>
       )}
+    </div>
+  );
+};
+
+// A checklist that fills in: a header, then one row per check, ticked on its word.
+export const Ticks: React.FC<{ readonly from: number; readonly to: number; readonly label: string; readonly items: readonly { readonly at: number; readonly label: string }[] }> = ({ from, to, label, items }) => {
+  const f = useCurrentFrame();
+  if (f < from - 6 || f > to + 4) return null;
+  const o = fade(f, from, to);
+  return (
+    <div dir="rtl" style={{ position: "absolute", top: 210, right: 70, opacity: o, padding: "26px 34px", borderRadius: 26, background: "rgba(2,10,22,0.62)", border: "2px solid rgba(255,255,255,0.18)" }}>
+      <div style={{ fontFamily: bodyFont, fontWeight: 700, fontSize: 30, color: "#e8c58a", marginBottom: 14 }}>{label}</div>
+      {items.map((it, i) => {
+        const on = pop(f, it.at, 12, backOut);
+        return (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 18, marginTop: 12, opacity: 0.35 + 0.65 * Math.min(1, on) }}>
+            <div style={{ width: 46, height: 46, borderRadius: 12, border: "3px solid white", background: on > 0.5 ? GREEN : "transparent", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontFamily: headingFont, fontWeight: 900, fontSize: 30, transform: `scale(${0.85 + 0.15 * Math.min(1, on)})` }}>
+              {on > 0.5 ? "✓" : ""}
+            </div>
+            <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 46, color: "white", textShadow: SHADOW }}>{it.label}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };

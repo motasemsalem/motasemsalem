@@ -142,4 +142,44 @@ CLIPS = {
     "oe-photo": (6474145, 0.5, 0.5),       # photographing the room on a phone
     "oe-tablet": (6474153, 0.5, 0.5),      # the floor plan on a tablet
     "oe-end": (7646762, 0.5, 0.5),         # couple with the keys
+    # reel: ac-wiring
+    "ac-plug": (5090779, 0.5, 0.5),       # a plug and its lead in hand
+    "ac-cables": (5090782, 0.5, 0.5),      # a tangle of old cable
+    "ac-hands": (5090776, 0.5, 0.45),      # hands sorting cable and fittings
+    "ac-bench": (5090778, 0.5),            # man testing cable at the bench
+    "ac-shop": (5090785, 0.5, 0.6),        # electrician at the workbench
+    "ac-plaster": (6474085, 0.5, 0.5),     # spraying plaster on a bare wall
+    "ac-eng": (6474372, 0.5, 0.35),        # engineer with the plan on a tablet
+    "ac-end": (7578550, 0.5, 0.5),         # finished bedroom
+    # reel: gypsum-cracks
+    "gy-sand": (6474091, 0.5, 0.5),        # sanding a gypsum-board ceiling
+    "gy-tape": (6474082, 0.5, 0.55),       # finishing the joint at floor level
+    "gy-board": (6474074, 0.5, 0.45),      # boards going up on the wall
+    "gy-bath": (7578551, 0.5, 0.5),        # finished bathroom
+    "gy-eng": (6474252, 0.5),              # engineer with a tablet in a hard hat
+    "gy-end": (7578553, 0.5, 0.5),         # living room with a lit ceiling
+    # reel: bathroom-test
+    "bt-dark": (6474389, 0.5, 0.5),        # dark bare room
+    "bt-mix": (6474078, 0.5, 0.5),         # mixing the coating in a bucket
+    "bt-coat": (6474077, 0.5, 0.5),        # coating going on the wall
+    "bt-water": (856403, 0.5, 0.6),        # tap dripping
+    "bt-floor": (6474087, 0.5),            # working the floor
+    "bt-eng": (6474253, 0.5, 0.5),         # engineer and client in the bare room
+    "bt-end": (7578552, 0.5, 0.5),         # finished dining room
+    # reel: handover-check
+    "ho-owner": (6474257, 0.5, 0.4),       # owner with the papers in a bare room
+    "ho-wall": (6474088, 0.5),             # standing at the wall
+    "ho-ceiling": (6474266, 0.5, 0.5),     # bare plaster up close
+    "ho-window": (6474364, 0.5, 0.3),      # by the window
+    "ho-tap": (10811027, 0.5, 0.4),        # shower head
+    "ho-eng": (6474392, 0.5, 0.4),         # inspector in a hard hat photographing the room
+    "ho-end": (7646757, 0.5, 0.5),         # couple with the keys
+    # reel: design-first
+    "df-kitchen": (7578549, 0.5, 0.35),    # finished kitchen
+    "df-samples": (6583394, 0.5, 0.5),     # material samples in hand
+    "df-model": (6583404, 0.5, 0.5),       # a model of the kitchen with its finishes
+    "df-sketch": (6583400, 0.5, 0.5),      # designer sketching
+    "df-plan": (6474265, 0.5, 0.5),        # the plan in hand on site
+    "df-board": (6583402, 0.5, 0.5),       # finishes board
+    "df-end": (7578554, 0.5, 0.5),         # finished living room
 }
