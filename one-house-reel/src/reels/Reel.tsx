@@ -3,7 +3,7 @@ import { AbsoluteFill, staticFile } from "remotion";
 import { Flash, Title } from "../overlay/Cine";
 import { Finish, LightLeak, type Look, type ShotDef, Sfx, Shots } from "../finishing/kit";
 import { EndCard, Trade, Watermark } from "../finishing/overlays";
-import { Bubble, Depth, Scan, Stages, Stamp } from "./signatures";
+import { Bubble, Depth, Roster, Scan, Stages, Stamp } from "./signatures";
 
 // Short voiced reels (1080x1920) built from a plain description: which clip plays on which word, and which card
 // comes up on which line. Each reel lives in src/reels/<name>/ (narration.ts + timeline.json from
@@ -55,7 +55,7 @@ export type ReelCard =
     };
 
 // Each reel's own graphic, see ./signatures.tsx. "stamp" also stamps «الصح» on the scene named "fix".
-export type Signature = "scan" | "stamp" | "depth" | "stages" | "chat";
+export type Signature = "scan" | "stamp" | "depth" | "stages" | "chat" | "roster";
 
 export type ReelDef = {
   readonly id: string;
@@ -64,6 +64,8 @@ export type ReelDef = {
   readonly shots: readonly ReelShot[];
   readonly cards: readonly ReelCard[];
   readonly signature: Signature;
+  // "roster": the trades named in the voiceover, each popping in on its word; struck out on the scene "blame".
+  readonly roster?: readonly { readonly word: string; readonly label: string }[];
   readonly end: { readonly media: string; readonly line: string };
 };
 
@@ -90,6 +92,9 @@ export const Reel: React.FC<{ readonly reel: ReelDef }> = ({ reel }) => {
       {reel.signature === "stamp" && <Stamp at={at("fix") + 6} to={next("fix") - 2} good />}
       {reel.signature === "depth" && (
         <Depth from={span.from} to={span.to} steps={checks.map((c) => ({ at: at(c.scene), depth: c.depth ?? 0, label: c.short ?? c.name }))} />
+      )}
+      {reel.signature === "roster" && reel.roster && (
+        <Roster items={reel.roster.map((r) => ({ at: at("trades", r.word), label: r.label }))} strikeAt={at("blame")} oneAt={at("brand")} to={next("brand") - 2} />
       )}
       {reel.signature === "stages" && <Stages from={span.from} to={span.to} stages={checks.map((c) => ({ at: at(c.scene), label: c.short ?? c.name }))} />}
       {reel.cards.map((c, i) =>

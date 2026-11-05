@@ -24,8 +24,13 @@ for name, (pid, start, *crop) in CLIPS.items():
     if (only and name in only) or (not only and not os.path.exists(dst)):
         src = f'{RAW}/pexels-{pid}.mp4'
         if not os.path.exists(src):
-            # Pexels' download link redirects to the largest file.
-            subprocess.run(['curl', '-sfL', '-A', 'Mozilla/5.0', '-o', src + '.part', f'https://www.pexels.com/download/video/{pid}/'], check=True)
+            # Pexels' download link redirects to the largest file. When it refuses (403), the file server still serves
+            # each rendition at a predictable name: try them from the largest down.
+            if subprocess.run(['curl', '-sfL', '-A', 'Mozilla/5.0', '-o', src + '.part', f'https://www.pexels.com/download/video/{pid}/']).returncode:
+                names = [f'{q}_{a}_{b}_{fps}fps' for q, sizes in (('uhd', ((2160, 3840), (3840, 2160), (2160, 4096), (4096, 2160))), ('hd', ((1080, 1920), (1920, 1080))))
+                         for a, b in sizes for fps in (25, 30, 24, 50, 60)]
+                if not any(subprocess.run(['curl', '-sf', '-o', src + '.part', f'https://videos.pexels.com/video-files/{pid}/{pid}-{n}.mp4']).returncode == 0 for n in names):
+                    raise SystemExit(f'no download for Pexels video {pid}')
             os.replace(src + '.part', src)
         w, h, dur = probe(src)
         size = (1080, 1920) if h > w or crop else (1920, 1080)

@@ -4,7 +4,8 @@ import { bodyFont, BRAND, headingFont, SHADOW } from "../theme";
 
 // The one graphic that gives each voiced reel its own look on top of the shared footage grade:
 // scan (an inspection viewfinder), stamp (wrong / right stamps), depth (a depth gauge going down),
-// stages (a five-step bar lighting up), chat (questions as message bubbles).
+// stages (a five-step bar lighting up), chat (questions as message bubbles), roster (the trades you'd call,
+// struck out and replaced by one engineer).
 
 const GREEN = "#2ecc71";
 
@@ -167,6 +168,39 @@ export const Bubble: React.FC<{ readonly from: number; readonly to: number; read
           {detail && detailAt !== undefined && (
             <div style={{ marginTop: 16, opacity: pop(f, detailAt, 10), fontFamily: bodyFont, fontWeight: 600, fontSize: 40, color: "white", textShadow: SHADOW }}>{detail}</div>
           )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// The trades you'd call yourself, one per word, struck out together, then replaced by one engineer.
+export const Roster: React.FC<{ readonly items: readonly { readonly at: number; readonly label: string }[]; readonly strikeAt: number; readonly oneAt: number; readonly to: number }> = ({ items, strikeAt, oneAt, to }) => {
+  const f = useCurrentFrame();
+  if (!items.length || f < items[0].at - 6 || f > to + 4) return null;
+  const list = 1 - pop(f, oneAt - 8, 10, easeInOut);
+  const one = pop(f, oneAt, 14, backOut) * (1 - pop(f, to - 6, 8, easeInOut));
+  return (
+    <div dir="rtl" style={{ position: "absolute", top: 220, left: 70, right: 70 }}>
+      {list > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 18, opacity: list }}>
+          {items.map((it, i) => {
+            const on = pop(f, it.at - 2, 10, backOut);
+            const strike = pop(f, strikeAt + i * 3, 10, easeOut);
+            return (
+              <div key={i} style={{ position: "relative", alignSelf: "flex-start", opacity: Math.min(1, on), transform: `translateX(${(1 - on) * 60}px)`, display: "flex", alignItems: "center", gap: 18, padding: "14px 30px", borderRadius: 18, background: "rgba(10,20,40,0.72)" }}>
+                <div style={{ width: 22, height: 22, borderRadius: 11, background: strike > 0.5 ? BRAND.red : "#e8c58a" }} />
+                <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 56, color: "white", textShadow: SHADOW }}>{it.label}</div>
+                <div style={{ position: "absolute", right: 20, top: "52%", height: 7, width: `calc(${strike * 100}% - 40px)`, background: BRAND.red, borderRadius: 4 }} />
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {one > 0 && (
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 20, padding: "18px 36px", borderRadius: 22, background: BRAND.red, opacity: Math.min(1, one), transform: `scale(${0.8 + 0.2 * one})`, transformOrigin: "right center", boxShadow: "0 20px 60px rgba(224,7,26,0.45)" }}>
+          <div style={{ fontFamily: headingFont, fontWeight: 900, fontSize: 92, color: "white" }}>1</div>
+          <div style={{ fontFamily: headingFont, fontWeight: 800, fontSize: 60, color: "white" }}>مهندس مسؤول</div>
         </div>
       )}
     </div>

@@ -583,5 +583,65 @@
   "file": "finishing/cc-end.mp4",
   "w": 1080,
   "h": 1920
+ },
+ "oe-owner": {
+  "file": "finishing/oe-owner.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-plumber": {
+  "file": "finishing/oe-plumber.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-electric": {
+  "file": "finishing/oe-electric.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-painter": {
+  "file": "finishing/oe-painter.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-plaster": {
+  "file": "finishing/oe-plaster.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-blame": {
+  "file": "finishing/oe-blame.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-engineer": {
+  "file": "finishing/oe-engineer.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-plan": {
+  "file": "finishing/oe-plan.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-sand": {
+  "file": "finishing/oe-sand.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-photo": {
+  "file": "finishing/oe-photo.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-tablet": {
+  "file": "finishing/oe-tablet.mp4",
+  "w": 1080,
+  "h": 1920
+ },
+ "oe-end": {
+  "file": "finishing/oe-end.mp4",
+  "w": 1080,
+  "h": 1920
  }
 }

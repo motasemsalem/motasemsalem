@@ -129,4 +129,17 @@ CLIPS = {
     "cc-think": (4620943, 1.0),            # client in a headscarf thinking it over
     "cc-luxe": (38413518, 0.0),           # bright living room
     "cc-end": (9115986, 1.0),              # father and son at home
+    # reel: one-engineer
+    "oe-owner": (6474146, 0.5),            # client reading papers in a bare apartment
+    "oe-plumber": (7584764, 0.5, 0.5),     # wrench on the drain pipes
+    "oe-electric": (6474182, 0.5, 0.45),   # drilling a wall for the wiring
+    "oe-painter": (6474152, 0.5, 0.5),     # painting the walls of a bare room
+    "oe-plaster": (6474177, 0.5, 0.5),     # skimming a wall with a trowel
+    "oe-blame": (8482297, 0.5),            # people in hard hats pointing at a wall
+    "oe-engineer": (6474150, 0.5, 0.5),    # engineer in a white hard hat, phone and tablet
+    "oe-plan": (6474143, 0.5, 0.45),       # engineer and client over the plan
+    "oe-sand": (6474173, 0.5, 0.35),       # sanding the walls, work moving on
+    "oe-photo": (6474145, 0.5, 0.5),       # photographing the room on a phone
+    "oe-tablet": (6474153, 0.5, 0.5),      # the floor plan on a tablet
+    "oe-end": (7646762, 0.5, 0.5),         # couple with the keys
 }

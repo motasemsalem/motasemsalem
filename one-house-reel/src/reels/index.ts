@@ -9,6 +9,8 @@ import * as rebar from "./rebar-check/narration";
 import rebarTl from "./rebar-check/timeline.json";
 import * as mistakes from "./slab-mistakes/narration";
 import mistakesTl from "./slab-mistakes/timeline.json";
+import * as oneEng from "./one-engineer/narration";
+import oneEngTl from "./one-engineer/timeline.json";
 
 // The voiced reels: scripts in social/voice/<id>.txt, voiced by the owner. Clips are named in scripts/finishing_media.py,
 // and no clip appears in more than one video (scripts/check-media.py).
@@ -157,5 +159,38 @@ export const REELS: ReelDef[] = [
     ],
     signature: "chat",
     end: { media: "cc-end", line: "تشطيب على أصوله" },
+  },
+  {
+    id: "one-engineer",
+    timeline: oneEngTl as Timeline,
+    scenes: oneEng.SCENES,
+    shots: [
+      { media: "oe-owner", scene: "hook", look: "warm" },
+      { media: "oe-plumber", scene: "trades" },
+      { media: "oe-electric", scene: "trades", word: "وكهربائي" },
+      { media: "oe-painter", scene: "trades", word: "ونقاش" },
+      { media: "oe-sand", scene: "trades", word: "ومبلط" },
+      { media: "oe-blame", scene: "blame" },
+      { media: "oe-engineer", scene: "brand", look: "warm" },
+      { media: "oe-plan", scene: "brand", word: "من", look: "warm" },
+      { media: "oe-plaster", scene: "order" },
+      { media: "oe-tablet", scene: "order", word: "في" },
+      { media: "oe-photo", scene: "photos", look: "warm" },
+    ],
+    cards: [
+      { type: "title", scene: "hook", text: "أول مرة تشطّب؟", accent: "تشطّب؟", sub: "هتكلّم صنايعية كتير", subWord: "هتلاقي", size: 96 },
+      { type: "title", scene: "blame", text: "وكل واحد يقول الغلط من اللي قبله", accent: "الغلط", size: 76 },
+      { type: "title", scene: "brand", kicker: "في ون هاوس", text: "مهندس واحد مسؤول عن شقتك كلها", accent: "واحد", sub: "من الطوب للمفتاح", subWord: "من", size: 80 },
+      { type: "title", scene: "order", text: "كل مرحلة في ترتيبها", accent: "ترتيبها", size: 88 },
+      { type: "title", scene: "photos", text: "والصور بتوصلك أول بأول", accent: "الصور", size: 84 },
+    ],
+    signature: "roster",
+    roster: [
+      { word: "سباك", label: "سبّاك" },
+      { word: "وكهربائي", label: "كهربائي" },
+      { word: "ونقاش", label: "نقّاش" },
+      { word: "ومبلط", label: "مبلّط" },
+    ],
+    end: { media: "oe-end", line: "معاينة مجانية خلال 48 ساعة" },
   },
 ];
