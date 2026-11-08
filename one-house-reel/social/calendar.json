@@ -76,9 +76,12 @@
   "at": "2026-11-05T14:00:00+02:00",
   "facebook": {
    "id": "1132442715947708",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18153292666551483",
+   "state": "published"
+  }
  },
  {
   "id": "finishing-05-materials",
@@ -109,9 +112,12 @@
   "at": "2026-11-06T21:00:00+02:00",
   "facebook": {
    "id": "1132443075947672",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18118213370111755",
+   "state": "published"
+  }
  },
  {
   "id": "finishing-09-smart",
@@ -154,9 +160,12 @@
   "at": "2026-11-06T14:00:00+02:00",
   "facebook": {
    "id": "1132443009281012",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "17933231646166434",
+   "state": "published"
+  }
  },
  {
   "id": "structure-04-columns",
@@ -175,27 +184,36 @@
   "at": "2026-11-07T14:00:00+02:00",
   "facebook": {
    "id": "1132443142614332",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18116963828334168",
+   "state": "published"
+  }
  },
  {
   "id": "structure-08-review",
   "at": "2026-11-04T14:00:00+02:00",
   "facebook": {
    "id": "1132442622614384",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18114416585138322",
+   "state": "published"
+  }
  },
  {
   "id": "structure-09-cta",
   "at": "2026-11-04T21:00:00+02:00",
   "facebook": {
    "id": "1132442662614380",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "17882128932549020",
+   "state": "published"
+  }
  },
  {
   "id": "slab-reel",
@@ -262,17 +280,23 @@
   "at": "2026-11-05T21:00:00+02:00",
   "facebook": {
    "id": "1106610115312964",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null
+  "instagram": {
+   "id": "18119313796983561",
+   "state": "published"
+  }
  },
  {
   "id": "ed-cover",
   "facebook": {
    "id": "1132443212614325",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18164192836436064",
+   "state": "published"
+  },
   "at": "2026-11-07T21:00:00+02:00"
  },
  {
@@ -364,5 +388,77 @@
   },
   "instagram": null,
   "at": "2026-11-12T21:00:00+02:00"
+ },
+ {
+  "id": "ed-screeds",
+  "facebook": {
+   "id": "1141225211736125",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-13T14:00:00+02:00"
+ },
+ {
+  "id": "ed-cubes",
+  "facebook": {
+   "id": "1141225261736120",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-13T21:00:00+02:00"
+ },
+ {
+  "id": "ed-counter",
+  "facebook": {
+   "id": "1141225321736114",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-14T14:00:00+02:00"
+ },
+ {
+  "id": "ed-crack",
+  "facebook": {
+   "id": "1141225371736109",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-14T21:00:00+02:00"
+ },
+ {
+  "id": "ed-parquet",
+  "facebook": {
+   "id": "1141225425069437",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-15T14:00:00+02:00"
+ },
+ {
+  "id": "ed-roof",
+  "facebook": {
+   "id": "1141225468402766",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-15T21:00:00+02:00"
+ },
+ {
+  "id": "ed-hatch",
+  "facebook": {
+   "id": "1141225538402759",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-16T14:00:00+02:00"
+ },
+ {
+  "id": "ed-nodrill",
+  "facebook": {
+   "id": "1141225588402754",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-16T21:00:00+02:00"
  }
 ]
