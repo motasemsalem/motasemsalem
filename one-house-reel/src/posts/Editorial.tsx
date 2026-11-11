@@ -171,7 +171,7 @@ const Spec: React.FC<{ readonly post: EPost }> = ({ post }) => {
       </div>
       <div dir="rtl" style={{ position: "absolute", left: 60, right: 60, top: H - 60 }}>
         <Title text={post.title} accent={post.accent} size={post.title.length > 26 ? 66 : 78} color="white" />
-        {post.sub ? <div style={{ marginTop: 16, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.steel }}>{post.sub}</div> : null}
+        {post.sub ? <div style={{ marginTop: 16, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.steel, textWrap: "balance" }}>{post.sub}</div> : null}
       </div>
       <TitleBlock line={post.line} dark />
     </AbsoluteFill>
@@ -228,7 +228,7 @@ const Measure: React.FC<{ readonly post: EPost }> = ({ post }) => {
       {top ? <Dim length={box.width} label={top} color={BRAND.navy} style={{ left: box.left, top: box.top - 74 }} /> : null}
       {side ? <Dim vertical length={box.height} label={side} color={BRAND.navy} style={{ left: box.left + box.width + 34, top: box.top }} /> : null}
       {post.sub ? (
-        <div dir="rtl" style={{ position: "absolute", left: 110, right: 110, top: box.top + box.height + 70, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.ink }}>
+        <div dir="rtl" style={{ position: "absolute", left: 110, right: 110, top: box.top + box.height + 70, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.ink, textWrap: "balance" }}>
           {post.sub}
         </div>
       ) : null}
@@ -287,7 +287,7 @@ const Report: React.FC<{ readonly post: EPost }> = ({ post }) => {
           <div style={{ fontWeight: 900, fontSize: 29 }}>المراجعة</div>
           <div style={{ fontWeight: 600, fontSize: 18, direction: "ltr", marginTop: 4 }}>ONE HOUSE</div>
         </div>
-        {post.sub ? <div style={{ position: "absolute", right: 40, left: 320, bottom: 56, fontFamily: bodyFont, fontWeight: 600, fontSize: 28, lineHeight: 1.45, color: BRAND.dim }}>{post.sub}</div> : null}
+        {post.sub ? <div style={{ position: "absolute", right: 40, left: 320, bottom: 56, fontFamily: bodyFont, fontWeight: 600, fontSize: 28, lineHeight: 1.45, color: BRAND.dim, textWrap: "balance" }}>{post.sub}</div> : null}
       </div>
       <TitleBlock line={post.line} dark={false} />
     </AbsoluteFill>
@@ -325,7 +325,7 @@ const BigNum: React.FC<{ readonly post: EPost }> = ({ post }) => (
       <div style={{ marginTop: 18 }}>
         <Title text={post.title} accent={post.accent} size={post.title.length > 24 ? 58 : 68} color="white" />
       </div>
-      {post.sub ? <div style={{ marginTop: 18, fontFamily: bodyFont, fontWeight: 600, fontSize: 29, lineHeight: 1.45, color: BRAND.steel }}>{post.sub}</div> : null}
+      {post.sub ? <div style={{ marginTop: 18, fontFamily: bodyFont, fontWeight: 600, fontSize: 29, lineHeight: 1.45, color: BRAND.steel, textWrap: "balance" }}>{post.sub}</div> : null}
     </div>
     <TitleBlock line={post.line} dark />
   </AbsoluteFill>
@@ -386,7 +386,7 @@ const Cutout: React.FC<{ readonly post: EPost }> = ({ post }) => {
     <div style={{ position: "absolute", left: 160, right: 160, top: 700, height: 2, background: BRAND.blueprint, opacity: 0.6 }} />
     <div dir="rtl" style={{ position: "absolute", right: 60, left: 60, top: 750, textAlign: "center" }}>
       <Title text={post.title} accent={post.accent} size={post.title.length > 26 ? 60 : 72} color="white" />
-      {post.sub ? <div style={{ marginTop: 20, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.steel }}>{post.sub}</div> : null}
+      {post.sub ? <div style={{ marginTop: 20, fontFamily: bodyFont, fontWeight: 600, fontSize: 30, lineHeight: 1.45, color: BRAND.steel, textWrap: "balance" }}>{post.sub}</div> : null}
     </div>
     <TitleBlock line={post.line} dark />
   </AbsoluteFill>
@@ -685,5 +685,83 @@ export const EPOSTS: Record<string, EPost> = {
     accent: "ممنوع",
     sub: "مسارات المواسير والكهربا بتتحدد قبل الصب، عشان محدش يخرم في حاجة شايلة البيت",
     line: "مقاولات|وإنشاءات",
+  },
+  "ed-contract": {
+    look: "report",
+    photo: "sign-keys",
+    pos: "70% 50%",
+    kicker: "عقد التشطيب",
+    title: "قبل ما تمضي|اتأكد إن ده مكتوب",
+    accent: "مكتوب",
+    points: ["كل خامة بالماركة والموديل", "الرسومات معتمدة قبل التنفيذ", "مدة كل مرحلة وميعاد تسليمها", "اسم المهندس المسؤول عن شقتك", "استلام كل مرحلة بمحضر"],
+    line: "تشطيبات|وتجديد",
+  },
+  "ed-lintel": {
+    look: "spec",
+    photo: "s-columns-inside",
+    pos: "20% 50%",
+    kicker: "فوق الشبابيك والأبواب",
+    title: "الشرخ المايل|فوق الشباك",
+    accent: "المايل",
+    sub: "كل فتحة في الحيطة محتاجة عتب خرسانة فوقها يشيل الطوب، ويدخل في الحيطة من الناحيتين",
+    callouts: [
+      { x: 34, y: 44, label: "هنا مكان العتب", side: "right" },
+    ],
+    line: "مقاولات|وإنشاءات",
+  },
+  "ed-handover": {
+    look: "report",
+    photo: "luxe-apartment",
+    pos: "50% 60%",
+    kicker: "استلام الشقة",
+    title: "بتستلم من المطوّر؟|افحص الأول",
+    accent: "افحص",
+    points: ["الشبابيك بتقفل محكم", "المية والصرف شغالين في كل نقطة", "ميول الحمامات والبلكونة", "مفيش شروخ في الحيطان والسقف", "مقاسات الفتحات زي الرسومات"],
+    line: "تشطيبات|وتجديد",
+  },
+  "ed-damp": {
+    look: "cutout",
+    photo: "s-foundation",
+    pos: "50% 50%",
+    word: "عزل",
+    kicker: "الأساسات",
+    title: "الرطوبة اللي طالعة من تحت|علاجها قبل الردم",
+    accent: "قبل الردم",
+    sub: "الأساسات والرقاب بتتعزل قبل ما يتردم عليها، لأن بعد الردم محدش هيوصلها",
+    line: "مقاولات|وإنشاءات",
+  },
+  "ed-batch": {
+    look: "spec",
+    photo: "tiler",
+    pos: "40% 50%",
+    kicker: "السيراميك والبورسلين",
+    title: "البلاط من شحنتين|بلونين",
+    accent: "بلونين",
+    sub: "كل الكمية بتتطلب من نفس التشغيلة، ورقمها بيتراجع على كل كرتونة قبل التركيب",
+    callouts: [
+      { x: 42, y: 70, label: "نفس رقم التشغيلة" },
+    ],
+    line: "تشطيبات|وتجديد",
+  },
+  "ed-shoring": {
+    look: "report",
+    photo: "s-excavation",
+    pos: "30% 60%",
+    kicker: "الحفر",
+    title: "بتحفر جنب عمارة؟|جارك في أمانتك",
+    accent: "جارك",
+    points: ["صور لحالة مبنى الجار قبل الحفر", "سند لجوانب الحفر", "الحفر على مراحل جنب أساساته", "نزح المية أول بأول لو ظهرت", "متابعة يومية لأي شرخ عنده"],
+    line: "مقاولات|وإنشاءات",
+  },
+  "ed-schedule": {
+    look: "cutout",
+    photo: "hoses-plan",
+    pos: "50% 50%",
+    word: "جدول",
+    kicker: "مواعيد التشطيب",
+    title: "الميعاد بيتكتب|مش بيتقال",
+    accent: "بيتكتب",
+    sub: "جدول بكل مرحلة وميعاد تسليمها، وبتستلم كل مرحلة بنفسك قبل اللي بعدها",
+    line: "تشطيبات|وتجديد",
   },
 };
