@@ -213,6 +213,7 @@ def plan(start):
 
 def respace(start):
     """Re-dates every post that hasn't gone out yet onto the two-a-day slots from `start`, moving Facebook's copies."""
+    sync()  # a post whose time has passed is live: it must not be dropped and posted again
     cal = load()
     now = datetime.now(CAIRO)
     pending = sorted((i for i in cal if not (i["facebook"] or {}).get("state") == "published" and not i["instagram"]), key=when)
