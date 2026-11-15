@@ -399,27 +399,36 @@
   "id": "ed-windows",
   "facebook": {
    "id": "1145241158001197",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18127065775921625",
+   "state": "published"
+  },
   "at": "2026-11-12T14:00:00+02:00"
  },
  {
   "id": "ed-drawings",
   "facebook": {
    "id": "1145241381334508",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18119708173816042",
+   "state": "published"
+  },
   "at": "2026-11-13T14:00:00+02:00"
  },
  {
   "id": "ed-screeds",
   "facebook": {
    "id": "1145241568001156",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18058480874583290",
+   "state": "published"
+  },
   "at": "2026-11-14T14:00:00+02:00"
  },
  {
@@ -543,27 +552,36 @@
   "id": "reel-one-engineer",
   "facebook": {
    "id": "1166026682955510",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "17956279170339413",
+   "state": "published"
+  },
   "at": "2026-11-12T21:00:00+02:00"
  },
  {
   "id": "reel-handover-check",
   "facebook": {
    "id": "2106650763329242",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "17990970935875255",
+   "state": "published"
+  },
   "at": "2026-11-13T21:00:00+02:00"
  },
  {
   "id": "reel-bathroom-test",
   "facebook": {
    "id": "1891360312306355",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18035523302912286",
+   "state": "published"
+  },
   "at": "2026-11-14T21:00:00+02:00"
  },
  {
@@ -592,5 +610,68 @@
   },
   "instagram": null,
   "at": "2026-11-17T21:00:00+02:00"
+ },
+ {
+  "id": "ed-quote",
+  "facebook": {
+   "id": "1148647690993877",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-24T14:00:00+02:00"
+ },
+ {
+  "id": "ed-extrafloor",
+  "facebook": {
+   "id": "1148647730993873",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-24T21:00:00+02:00"
+ },
+ {
+  "id": "ed-outlet",
+  "facebook": {
+   "id": "1148647770993869",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-25T14:00:00+02:00"
+ },
+ {
+  "id": "ed-tank",
+  "facebook": {
+   "id": "1148647814327198",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-25T21:00:00+02:00"
+ },
+ {
+  "id": "ed-hood",
+  "facebook": {
+   "id": "1148647857660527",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-26T14:00:00+02:00"
+ },
+ {
+  "id": "ed-wall",
+  "facebook": {
+   "id": "1148647907660522",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-26T21:00:00+02:00"
+ },
+ {
+  "id": "ed-acdrain",
+  "facebook": {
+   "id": "1148647954327184",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-27T14:00:00+02:00"
  }
 ]
