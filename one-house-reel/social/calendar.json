@@ -435,27 +435,36 @@
   "id": "ed-cubes",
   "facebook": {
    "id": "1145241728001140",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18132149482694511",
+   "state": "published"
+  },
   "at": "2026-11-15T14:00:00+02:00"
  },
  {
   "id": "ed-counter",
   "facebook": {
    "id": "1145241868001126",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18150307543587023",
+   "state": "published"
+  },
   "at": "2026-11-16T14:00:00+02:00"
  },
  {
   "id": "ed-crack",
   "facebook": {
    "id": "1145242011334445",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18122076085761272",
+   "state": "published"
+  },
   "at": "2026-11-17T14:00:00+02:00"
  },
  {
@@ -588,27 +597,36 @@
   "id": "reel-ac-wiring",
   "facebook": {
    "id": "4457602264494467",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18648120577013368",
+   "state": "published"
+  },
   "at": "2026-11-15T21:00:00+02:00"
  },
  {
   "id": "reel-gypsum-cracks",
   "facebook": {
    "id": "1893118545153502",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "17915020404482155",
+   "state": "published"
+  },
   "at": "2026-11-16T21:00:00+02:00"
  },
  {
   "id": "reel-design-first",
   "facebook": {
    "id": "1854105715936435",
-   "state": "scheduled"
+   "state": "published"
   },
-  "instagram": null,
+  "instagram": {
+   "id": "18086957381375062",
+   "state": "published"
+  },
   "at": "2026-11-17T21:00:00+02:00"
  },
  {
@@ -673,5 +691,68 @@
   },
   "instagram": null,
   "at": "2026-11-27T14:00:00+02:00"
+ },
+ {
+  "id": "ed-balcony",
+  "facebook": {
+   "id": "1151522374039742",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-27T21:00:00+02:00"
+ },
+ {
+  "id": "ed-joint",
+  "facebook": {
+   "id": "1151522414039738",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-28T14:00:00+02:00"
+ },
+ {
+  "id": "ed-heater",
+  "facebook": {
+   "id": "1151522457373067",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-28T21:00:00+02:00"
+ },
+ {
+  "id": "ed-earth",
+  "facebook": {
+   "id": "1151522507373062",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-29T14:00:00+02:00"
+ },
+ {
+  "id": "ed-grout",
+  "facebook": {
+   "id": "1151522544039725",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-29T21:00:00+02:00"
+ },
+ {
+  "id": "ed-cutcolumn",
+  "facebook": {
+   "id": "1151522584039721",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-30T14:00:00+02:00"
+ },
+ {
+  "id": "ed-cabinet",
+  "facebook": {
+   "id": "1151522637373049",
+   "state": "scheduled"
+  },
+  "instagram": null,
+  "at": "2026-11-30T21:00:00+02:00"
  }
 ]
